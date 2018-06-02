@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateFacturasTable extends Migration
+class AlterUnidadsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,8 @@ class CreateFacturasTable extends Migration
      */
     public function up()
     {
-        Schema::create('facturas', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('alfajor');
-            $table->timestamps();
+        Schema::table('unidads', function (Blueprint $table) {
+            $table->foreign('consorcio_id')->references('id')->on('consorcios');
         });
     }
 
@@ -27,6 +25,6 @@ class CreateFacturasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('facturas');
+        //
     }
 }

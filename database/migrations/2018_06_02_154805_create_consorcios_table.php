@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateFacturasTable extends Migration
+class CreateConsorciosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,13 @@ class CreateFacturasTable extends Migration
      */
     public function up()
     {
-        Schema::create('facturas', function (Blueprint $table) {
+        Schema::create('consorcios', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('alfajor');
+            $table->string('nombre');
+            $table->string('direccion');
+            $table->string('localidad');
+            $table->string('provincia');
+            $table->string('telefono');
             $table->timestamps();
         });
     }
@@ -27,6 +31,6 @@ class CreateFacturasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('facturas');
+        Schema::dropIfExists('consorcios');
     }
 }
