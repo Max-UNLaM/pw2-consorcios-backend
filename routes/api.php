@@ -18,3 +18,8 @@ Route::get('/unidad', 'UnidadController@index');
 Route::get('/consorcio', 'ConsorcioController@index');
 
 Route::get('/factura', 'FacturaController@index');
+
+# Route::post('/register', 'Auth\RegisterController@register');
+
+
+
