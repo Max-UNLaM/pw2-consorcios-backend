@@ -21,5 +21,6 @@ Route::get('/factura', 'FacturaController@index');
 
 # Route::post('/register', 'Auth\RegisterController@register');
 
-
-
+Route::group(['middleware' => ['api','cors']], function () {
+    Route::post('auth/register', 'Auth\ApiRegisterController@register');
+});
