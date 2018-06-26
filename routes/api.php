@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use App\Unidad;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -14,12 +15,19 @@ use App\Unidad;
 */
 
 
-
 # Route::post('/register', 'Auth\RegisterController@register');
 
-Route::group(['middleware' => ['api','cors']], function () {
+Route::group(['middleware' => ['api', 'cors']], function () {
+    Route::middleware('auth:api')->get('/user', function (Request $request) {
+        return $request->user();
+    });
     Route::get('/unidad', 'UnidadController@index');
     Route::get('/consorcio', 'ConsorcioController@index');
     Route::get('/factura', 'FacturaController@index');
     Route::post('auth/register', 'Auth\ApiRegisterController@register');
+    Route::post('oauth/login', 'Auth\PassportController@login');
+    Route::post('oauth/register', 'Auth\PassportController@register');
+    Route::group(['middleware' => 'auth:api'], function () {
+        Route::post('get-details', 'API\PassportController@getDetails');
+    });
 });
