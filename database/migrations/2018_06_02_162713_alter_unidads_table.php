@@ -25,6 +25,6 @@ class AlterUnidadsTable extends Migration
      */
     public function down()
     {
-        //
+
     }
 }

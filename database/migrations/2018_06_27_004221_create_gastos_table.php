@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateConsorciosTable extends Migration
+class CreateGastosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,13 @@ class CreateConsorciosTable extends Migration
      */
     public function up()
     {
-        Schema::create('consorcios', function (Blueprint $table) {
+        Schema::create('gastos', function (Blueprint $table) {
             $table->increments('id');
             $table->string('nombre');
-            $table->string('direccion');
-            $table->string('localidad');
-            $table->string('provincia');
-            $table->string('telefono');
+            $table->float('valor');
+            $table->date('fecha');
+            $table->unsignedInteger('proveedor_id');
+            $table->unsignedInteger('consorcio_id');
             $table->timestamps();
         });
     }
@@ -31,9 +31,6 @@ class CreateConsorciosTable extends Migration
      */
     public function down()
     {
-        Schema::table('unidads', function (Blueprint $table){
-            $table->dropForeign(['consorcio_id']);
-        });
-        Schema::dropIfExists('consorcios');
+        Schema::dropIfExists('gastos');
     }
 }

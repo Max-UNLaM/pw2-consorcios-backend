@@ -23,10 +23,12 @@ Route::group(['middleware' => ['api', 'cors']], function () {
     });
     Route::get('/unidad', 'UnidadController@index')->middleware('auth:api');
     Route::get('/consorcio', 'ConsorcioController@index');
-    Route::get('/factura', 'FacturaController@index');
+    Route::get('/factura', 'FacturaController@index')->middleware('auth:api', 'scopes:operator');
+    Route::post('auth/admin/token/create', 'Auth\AdminController@addRoles')->middleware('auth:api', 'scopes:admin');
     Route::post('auth/register', 'Auth\ApiRegisterController@register');
     Route::post('oauth/login', 'Auth\PassportController@login');
     Route::post('oauth/register', 'Auth\PassportController@register');
+    Route::get('/gasto', 'GastController@index');
     Route::group(['middleware' => 'auth:api'], function () {
         Route::post('get-details', 'Auth\PassportController@getDetails');
     });

@@ -81,7 +81,7 @@ class PassportController extends Controller
 
         $user = User::create($input);
 
-        $success['token'] = $user->createToken('MyApp')->accessToken;
+        $success['token'] = $user->createToken('ConsorcioLoco', ['user'])->accessToken;
 
         $success['name'] = $user->name;
 
@@ -104,6 +104,10 @@ class PassportController extends Controller
         $user = Auth::user();
 
         return response()->json(['success' => $user], $this->successStatus);
+
+    }
+
+    public function addRoles() {
 
     }
 
