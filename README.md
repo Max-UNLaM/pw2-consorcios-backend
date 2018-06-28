@@ -79,6 +79,26 @@ Para llenar la aplicación con datos de mock y de ejecución basta con ejecutar:
 
 Esto llenará de datos el sitio para poder probar funcionalidades
 
+### Clave privada personal
+
+La API utiliza un plugin de Laravel llamado passport que permite validar ingresos y registro de usuarios de forma fácil y bonita.
+
+Para poder asociar un token de usuario a la app, necesitamos crearnos un "cliente" de tokens en nuestra app. Esto se debe a que passport es oauth, o sea, que podríamos usarlo para validar usuarios de cualquier aplicación.
+
+Por suerte, generar un cliente es tan sencillo como ejecutar:
+
+```bash
+
+    php artisan passport:client --personal
+    
+```
+
+Allí nos va a preguntar el nombre que usaremos para identificar a la aplicación. En nuestro caso es: ConsorcioLoco.
+
+Los tokens que estamos generando en nuestro controller son  para esa app. ¿Qué significa esto? Que si tuviesemos otra aplicación que nada que ver, podría usar los tokens de nuestra API y en ningún momento se cruzarían los cables. Esto nos abre muchas posibilidades pero que ahora no son necesarias.
+
+Es importante generar un cliente cada vez que hacemos un refresh de las migraciones ya que estas borran la base de datos también de los tokens. El seed volverá a generar los tokens a los usuarios y estos los recuperarán cuando inicien nuevamente sesión.
+
 [subir](#index)
 
 ## Crear Modelo
