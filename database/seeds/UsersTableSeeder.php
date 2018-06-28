@@ -41,6 +41,6 @@ class UsersTableSeeder extends Seeder
         $dani->createToken('ConsorcioLoco', ['user', 'operator', 'admin']);
         $esteban->createToken('ConsorcioLoco', ['user', 'operator', 'admin']);
         $user->createToken('ConsorcioLoco', ['user']);
-        $operator->createToken('ConsorcioLoco', ['operator']);
+        $operator->createToken('ConsorcioLoco', ['operator, user']);
     }
 }

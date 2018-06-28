@@ -3,6 +3,7 @@ API para la aplicación de consorcios
 
 ## Index
 
+- [Datos Mock](#datos-mock)
 - [Instalacion](#instalacion)
   - [Dependencias](#dependencias)
   - [Migración](#migración)
@@ -10,6 +11,18 @@ API para la aplicación de consorcios
 - [Crear Modelo](#crear-modelo)
 - [Crear Controller](#crear-controller)
 - [Rutas](#rutas)
+
+
+## Datos Mock
+
+| Nombre | Contraseña | rol |
+| ------------- | :-------------: | -------------: |
+| maximiliano.depietro@gmail.com | changeme | Admin, Operator, User |
+| marconidaniel@outlook.com | changeme | Admin, Operator, User |
+| estebanmg_27@yahoo.com.ar | changeme | Admin, Operator, User |
+| user@consorcio.com | changeme | user |
+| operator@consorcio.com | changeme | operator, user |
+
 
 ## Instalación
 
@@ -34,11 +47,27 @@ Estos son los paquetes que se instalan con composer.
 Para levantar los datos basta con ejecutar: 
 
 ```bash
-    php artisan db:migrate
+    php artisan migrate
 ```
 
 Esto levantará las tablas necesarias para que el programa corra
 
+Si se quiere refrescar las bases de datos se puede aladir el comando :fresh
+
+
+```bash
+    php artisan migrate:fresh
+```
+
+Esto borrará las bases de datos y luego las volverá a crear
+
+Si se quiere quitarlas solamente:
+
+```bash
+    php artisan migrate:rollback
+```
+
+Esto solo dejará una tabla con un log de las otras tablas dropedas.
 
 ### Seed
 
