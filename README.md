@@ -32,6 +32,12 @@ La aplicación utiliza composer como gestor de paquetes:
     composer install
 ```
 
+### Resumen de pasos para ejecutar la app
+
+1) php artisan passport:client --personal (Usar ConsorcioLoco)
+2) php artisan migrate
+3) php artisan db:seed
+
 ### Dependencias
 
 Estos son los paquetes que se instalan con composer.
@@ -141,6 +147,8 @@ El comando ya deja algunas cosas hechas, como el ID (que no es necesario definir
 
 Hay diversos tipos de dato para usar para eso, ver el machete.
 
+[subir](#index)
+
 ## Crear controller
 
 Para hacer un controller, alcanza con ejecutar el comando:
@@ -153,6 +161,7 @@ __Es importante llamar al controller igual que el modelo pero con el sufijo Cont
 
 Esto creará un archivo en app/Http/Controllers con el nombre definido. Aquí podremos definir los actions de nuestra app.
 
+[subir](#index)
 
 ## Rutas
 
@@ -192,6 +201,8 @@ El group que hay definido señala que cualquier llamado a /api que hagamos en nu
 
 No creo que sea necesario añadir más grupos, pero hay que tener en cuenta que tenemos que añadir nuestras rutas dentro del grupo principal.
 
+[subir](#index)
+
 ## Roles y seguridad
 
 Para definir los accesos a nuestro sitio, enganchamos un middleware a los accesos que querramos restringir. Un middleware es un software que se interpone entre dos elementos que se comunican entre sí. En nuestro caso, el middleware se interpone entre el request del cliente y el controller de la API.
@@ -211,3 +222,4 @@ Aquí estamos diciendo que a FacturaController@index solo pueden acceder aquello
 
 __NOTA:__ Dentro del seed de usuarios, hay uno para cada rol.
 
+[subir](#index)
