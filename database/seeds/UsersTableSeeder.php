@@ -37,10 +37,10 @@ class UsersTableSeeder extends Seeder
             'email'    => 'operator@consorcio.com',
             'password' => bcrypt('changeme')
         ]);
-        $maxi->createToken('ConsorcioLoco', ['user', 'operator', 'admin']);
-        $dani->createToken('ConsorcioLoco', ['user', 'operator', 'admin']);
-        $esteban->createToken('ConsorcioLoco', ['user', 'operator', 'admin']);
-        $user->createToken('ConsorcioLoco', ['user']);
-        $operator->createToken('ConsorcioLoco', ['operator, user']);
+        $maxi->createToken('ConsorcioLoco', ['user', 'operator', 'admin'])->accessToken;
+        $dani->createToken('ConsorcioLoco', ['user', 'operator', 'admin'])->accessToken;
+        $esteban->createToken('ConsorcioLoco', ['user', 'operator', 'admin'])->accessToken;
+        $user->createToken('ConsorcioLoco', ['user'])->accessToken;
+        $operator->createToken('ConsorcioLoco', ['operator', 'user'])->accessToken;
     }
 }

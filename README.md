@@ -94,7 +94,7 @@ Para poder asociar un token de usuario a la app, necesitamos crearnos un "client
 Por suerte, generar un cliente es tan sencillo como ejecutar:
 
 ```bash
-
+    php artisan passport:keys
     php artisan passport:client --personal
     
 ```

@@ -18,8 +18,12 @@ class AdminController extends Controller
 
     public function addRoles(Request $request)
     {
-        $recibido         = $request->all();
-        $user             = User::find($recibido['user-id']);
-        $success['token'] = $user->createToken('ConsorcioLoco', $recibido['scopes'])->accessToken;
+        return response([
+          "k" => "ok"
+            ]
+        );
+     #   $recibido         = $request->all();
+     #   $user             = User::find($recibido['user-id']);
+     #   $success['token'] = $user->createToken('ConsorcioLoco', $recibido['scopes'])->accessToken;
     }
 }
