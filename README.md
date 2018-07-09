@@ -36,7 +36,9 @@ La aplicación utiliza composer como gestor de paquetes:
 
 1) php artisan passport:client --personal (Usar ConsorcioLoco)
 2) php artisan migrate
-3) php artisan db:seed
+3) php artisan passport:keys
+4) php artisan key:generate
+5) php artisan db:seed
 
 ### Dependencias
 
