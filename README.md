@@ -32,6 +32,38 @@ La aplicación utiliza composer como gestor de paquetes:
     composer install
 ```
 
+### Configurar apache
+
+Es necesario añadir un host virtual específico para el sitio
+
+En ubuntu primero:
+
+<Directory /var/www/>
+        Options Indexes FollowSymLinks
+        AllowOverride All
+        Require all granted
+</Directory>
+
+
+Y en el sitio: 
+
+<VirtualHost *:80>
+    ServerName api.consorcioloco.local
+    DocumentRoot "/srv/http/pw2-consorcios-backend/public"
+    <Directory "/srv/http/pw2-consorcios-backend/public">
+        Options Indexes FollowSymLinks
+        AllowOverride All
+        Order allow,deny
+        Allow from all
+        Header set Access-Control-Allow-Origin "*"
+        Require all granted
+    </Directory>
+</VirtualHost>
+
+Y habilitar el modulo
+
+sudo a2enmod rewrite
+
 ### Resumen de pasos para ejecutar la app
 
 1) php artisan passport:client --personal (Usar ConsorcioLoco)
