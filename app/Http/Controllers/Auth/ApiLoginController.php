@@ -10,8 +10,8 @@ namespace App\Http\Controllers\Auth;
 
 use Illuminate\Http\Request;
 
-class ApiLoginController extends LoginController
+class ApiLoginController extends PassportController
 {
-    public function login(Request $request) {
+    public function login() {
     }
 }

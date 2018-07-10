@@ -8,6 +8,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Rol;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\User;
@@ -28,14 +29,13 @@ class PassportController extends Controller
 
     public function login()
     {
-
         if (Auth::attempt(['email' => request('email'), 'password' => request('password')])) {
 
             $user = Auth::user();
+            $rol = Rol::find($user->rol_id);
+            $success['token'] = $user->createToken('ConsorcioLoco', [$rol->scope])->accessToken;
 
-            $success['token'] = $user->createToken('MyApp')->accessToken;
-
-            return response()->json(['success' => $success], $this->successStatus);
+            return response()->json(['success' => $success,'user' => json_encode($user)], $this->successStatus);
 
         } else {
 
