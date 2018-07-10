@@ -2,7 +2,6 @@
 
 use Illuminate\Http\Request;
 use App\Unidad;
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -14,9 +13,13 @@ use App\Unidad;
 |
 */
 
+Route::get('/unidad', 'UnidadController@index');
 
 # Route::post('/register', 'Auth\RegisterController@register');
 
+Route::get('/factura', 'FacturaController@index');
+
+Route::get('/expensa',  'ExpensaController@index');
 Route::group(['middleware' => ['api', 'cors']], function () {
     Route::middleware('auth:api')->get('/user', function (Request $request) {
         return $request->user();
