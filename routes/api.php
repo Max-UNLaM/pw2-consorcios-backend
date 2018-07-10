@@ -18,3 +18,5 @@ Route::get('/unidad', 'UnidadController@index');
 Route::get('/consorcio', 'ConsorcioController@index');
 
 Route::get('/factura', 'FacturaController@index');
+
+Route::get('/expensa',  'ExpensaController@index');
