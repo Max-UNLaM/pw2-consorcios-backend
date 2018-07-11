@@ -31,7 +31,7 @@ Route::group(['middleware' => ['api', 'cors']], function () {
     Route::post('auth/register', 'Auth\ApiRegisterController@register');
     Route::post('oauth/login', 'Auth\PassportController@login');
     Route::post('oauth/register', 'Auth\PassportController@register');
-    Route::get('/gasto', 'GastoController@index');
+    Route::get('/gasto', 'GastoController@index')->middleware('auth:api', 'scope:operator,admin');
     Route::group(['middleware' => 'auth:api'], function () {
         Route::post('get-details', 'Auth\PassportController@getDetails');
     });
