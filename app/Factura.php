@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class Factura extends Model
 {
-	protected $fillable = ['nombre', 'direccion', 'localidad', 'provincia'];
+	protected $fillable = ['gasto_id', 'direccion', 'localidad', 'provincia'];
 }
