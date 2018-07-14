@@ -63,6 +63,7 @@ Y en el sitio:
 Y habilitar el modulo
 
 sudo a2enmod rewrite
+sudo a2enmod headers
 
 ### Resumen de pasos para ejecutar la app
 
