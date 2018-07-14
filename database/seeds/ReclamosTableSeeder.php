@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use \Faker\Factory;
-use \app\Reclamo;
+use \App\Reclamo;
 
 class ReclamosTableSeeder extends Seeder
 {
@@ -17,10 +17,12 @@ class ReclamosTableSeeder extends Seeder
 
         for ($i = 0; $i < 10; $i++) {
             Reclamo::create([
-                'motivo' => $faker->text,
-                'fecha_reclamo' => $faker->date,
-                'fecha_resolucion' => $faker->date,
-                'conforme' => $faker->randomElement(['no', 'si'])
+                'usuario_id' => 1,
+                'unidad_id' => 1,
+                'motivo' => $faker->name,
+                'fecha_reclamo' => $faker->date(),
+                'fecha_resolucion' => $faker->date(),
+                'conforme' => 'si'
             ]);
         }
     }

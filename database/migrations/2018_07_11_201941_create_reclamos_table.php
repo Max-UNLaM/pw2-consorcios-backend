@@ -15,6 +15,7 @@ class CreateReclamosTable extends Migration
     {
         Schema::create('reclamos', function (Blueprint $table) {
             $table->increments('id');
+            $table->unsignedInteger('usuario_id');
             $table->unsignedInteger('unidad_id');
             $table->string('motivo');
             $table->date('fecha_reclamo');

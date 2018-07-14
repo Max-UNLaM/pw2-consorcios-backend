@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AlterExpensasTable extends Migration
+class AlterReclamosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,9 @@ class AlterExpensasTable extends Migration
      */
     public function up()
     {
-        Schema::table('expensas', function (Blueprint $table) {
+        Schema::table('reclamos', function (Blueprint $table) {
             $table->foreign('unidad_id')->references('id')->on('unidads');
+            $table->foreign('usuario_id')->references('id')->on('users');
         });
     }
 

@@ -25,7 +25,7 @@ class ReclamoController extends Controller
 
 	public function store(Request $request)
 	{
-		$reclamo = $this->create($request->all());
+		$reclamo = Reclamo::create($request->all());
 
 		return response([
             'reclamo' => $reclamo
