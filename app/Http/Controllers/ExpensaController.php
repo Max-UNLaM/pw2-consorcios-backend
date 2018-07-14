@@ -32,4 +32,8 @@ class ExpensaController extends Controller
     {
         return Expensa::find($id);
     }
+
+    public function delete(Request $request){
+	    Expensa::destroy($request->get('id'));
+    }
 }
