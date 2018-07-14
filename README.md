@@ -72,6 +72,14 @@ sudo a2enmod rewrite
 4) php artisan key:generate
 5) php artisan db:seed
 
+### Resumen de pasos para refrescar BBDD
+
+1) php artisan migrate:fresh
+2) php artisan passport:client --personal (Usar ConsorcioLoco)
+3) php artisan db:seed
+
+
+
 ### Dependencias
 
 Estos son los paquetes que se instalan con composer.
