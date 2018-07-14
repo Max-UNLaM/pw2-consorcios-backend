@@ -19,11 +19,11 @@ class ExpensaController extends Controller
 	}
 	public function paginate(Request $request)
     {
-        return Unidad::paginate($request->get('size'));
+        return Expensa::paginate($request->get('size'));
     }
-	public function store()
+	public function store(Request $request)
 	{
-		$expensa = $this->create($request->all());
+		$expensa = Expensa::create($request->all());
 		return response([
             'expensa' => $expensa
         ]);
