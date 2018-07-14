@@ -2,26 +2,28 @@
 
 namespace App\Http\Controllers;
 
-use App\Expensa;
+use App\Reclamo;
 use Illuminate\Http\Request;
 
-class ExpensaController extends Controller
+class ReclamoController extends Controller
 {
     public function index() {
-		return Expensa::all();
+		return Reclamo::all();
 	}
 
 	public function create(){
 
-		/*
-		if(count($errors)){
+		 /*
+
+		 if (count($errors)) {
 		 	return response(['errors' => $errors], 401);
 		}
 		*/
-		$expensa = $this->create($request->all());
+
+		$reclamo = $this->create($request->all());
 
 		return response([
-            'expensa' => $expensa
+            'reclamo' => $reclamo
         ]);
 	}
 }
