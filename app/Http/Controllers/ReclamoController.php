@@ -23,9 +23,8 @@ class ReclamoController extends Controller
         return Unidad::paginate($request->get('size'));
     }
 
-	public function store()
+	public function store(Request $request)
 	{
-
 		$reclamo = $this->create($request->all());
 
 		return response([
