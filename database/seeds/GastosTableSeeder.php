@@ -1,5 +1,7 @@
 <?php
 
+use App\Gasto;
+use Faker\Factory;
 use Illuminate\Database\Seeder;
 
 class GastosTableSeeder extends Seeder
@@ -11,6 +13,40 @@ class GastosTableSeeder extends Seeder
      */
     public function run()
     {
-        //
+        $faker = Factory::create();
+        for ($i = 0; $i < 10; $i++) {
+            Gasto::create([
+                'nombre' => $faker->name,
+                'valor' => $faker->numberBetween(0,5000),
+                'fecha' => $faker->date(),
+                'proveedor_id' => 1,
+                'consorcio_id' => 1
+            ]);
+        }
+        for ($i = 0; $i < 10; $i++) {
+            Gasto::create([
+                'nombre' => $faker->name,
+                'valor' => $faker->numberBetween(0,5000),
+                'fecha' => $faker->date(),
+                'proveedor_id' => 2,
+                'consorcio_id' => 2
+            ]);
+        }for ($i = 0; $i < 10; $i++) {
+        Gasto::create([
+            'nombre' => $faker->name,
+            'valor' => $faker->numberBetween(0,5000),
+            'fecha' => $faker->date(),
+            'proveedor_id' => 3,
+            'consorcio_id' => 3
+        ]);
+        }for ($i = 0; $i < 10; $i++) {
+            Gasto::create([
+                'nombre' => $faker->name,
+                'valor' => $faker->numberBetween(0,5000),
+                'fecha' => $faker->date(),
+                'proveedor_id' => 4,
+                'consorcio_id' => 4
+            ]);
+        }
     }
 }
