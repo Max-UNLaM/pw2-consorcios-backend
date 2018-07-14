@@ -20,6 +20,8 @@ Route::get('/unidad', 'UnidadController@index');
 Route::get('/factura', 'FacturaController@index');
 
 Route::get('/expensa',  'ExpensaController@index');
+Route::post('/expensa',  'ExpensaController@store');
+Route::delete('/expensa',  'ExpensaController@delete');
 Route::group(['middleware' => ['api', 'cors']], function () {
     Route::middleware('auth:api')->get('/user', function (Request $request) {
         return $request->user();
