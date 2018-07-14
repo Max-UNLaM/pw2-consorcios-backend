@@ -20,7 +20,7 @@ class ReclamoController extends Controller
 
 	public function paginate(Request $request)
     {
-        return Unidad::paginate($request->get('size'));
+        return Reclamo::paginate($request->get('size'));
     }
 
 	public function store(Request $request)
