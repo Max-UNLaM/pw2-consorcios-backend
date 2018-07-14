@@ -7,18 +7,24 @@ use Illuminate\Http\Request;
 
 class ReclamoController extends Controller
 {
-    public function index() {
-		return Reclamo::all();
+	public function index(Request $request)
+	{
+		if ($request->get('page')) {
+            return $this->paginate($request);
+        } else if ($request->get('id')) {
+			$this->show($request->get('id'));
+		} else {
+			return Reclamo::all();
+		}
 	}
 
-	public function create(){
+	public function paginate(Request $request)
+    {
+        return Unidad::paginate($request->get('size'));
+    }
 
-		 /*
-
-		 if (count($errors)) {
-		 	return response(['errors' => $errors], 401);
-		}
-		*/
+	public function store()
+	{
 
 		$reclamo = $this->create($request->all());
 
@@ -26,4 +32,9 @@ class ReclamoController extends Controller
             'reclamo' => $reclamo
         ]);
 	}
+
+	public function show($id)
+    {
+        return Reclamo::find($id);
+    }
 }

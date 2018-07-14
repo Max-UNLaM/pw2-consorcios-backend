@@ -7,21 +7,33 @@ use Illuminate\Http\Request;
 
 class ExpensaController extends Controller
 {
-    public function index() {
-		return Expensa::all();
+	public function index(Request $request) 
+	{
+		if ($request->get('page')) {
+            return $this->paginate($request);
+        } else if ($request->get('id')) {
+			$this->show($request->get('id'));
+		} else {
+			return Expensa::all();
+		}
 	}
 
-	public function create(){
+	public function paginate(Request $request)
+    {
+        return Unidad::paginate($request->get('size'));
+    }
 
-		/*
-		if(count($errors)){
-		 	return response(['errors' => $errors], 401);
-		}
-		*/
+	public function store()
+	{
 		$expensa = $this->create($request->all());
 
 		return response([
             'expensa' => $expensa
         ]);
 	}
+
+	public function show($id)
+    {
+        return Expensa::find($id);
+    }
 }

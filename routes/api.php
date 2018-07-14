@@ -18,13 +18,12 @@ Route::get('/unidad', 'UnidadController@index');
 
 Route::get('/factura', 'FacturaController@index');
 
-Route::get('/expensa',  'ExpensaController@index');
-Route::get('/expensa',  'ExpensaController@create');
-
-Route::get('/reclamo',  'ReclamoController@index');
-Route::get('/reclamo',  'ReclamoController@create');
-
 Route::group(['middleware' => ['api', 'cors']], function () {
+    Route::get('/expensa',  'ExpensaController@index');
+    Route::post('/expensa', 'ExpensaController@store');
+    Route::get('/reclamo',  'ReclamoController@index');
+    Route::post('/reclamo', 'ReclamoController@store');
+
     Route::middleware('auth:api')->get('/user', function (Request $request) {
         return $request->user();
     });
