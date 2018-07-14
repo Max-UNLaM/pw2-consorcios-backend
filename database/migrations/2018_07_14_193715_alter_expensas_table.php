@@ -14,7 +14,7 @@ class AlterExpensasTable extends Migration
     public function up()
     {
         Schema::table('expensas', function (Blueprint $table) {
-            $table->foreign('unidad')->references('id')->on('unidads');
+            $table->foreign('unidad_id')->references('id')->on('unidads');
         });
     }
 

@@ -1,5 +1,6 @@
 <?php
 
+use App\Expensa;
 use Illuminate\Database\Seeder;
 use \Faker\Factory;
 
@@ -16,14 +17,13 @@ class ExpensasTableSeeder extends Seeder
 
         for ($i = 0; $i < 10; $i++) {
             Expensa::create([
-                'id' => "Consorcio_$i",
-                'unidad' => "Consorcio_$i",
+                'unidad_id' => 1,
                 'año' => $faker->year,
                 'mes' => $faker->monthName,
                 'estado' => $faker->randomElement(['pago', 'impago']),
                 'emision' => $faker->date,
                 'vencimiento' => $faker->date,
-                'importe' => $faker->randomFloat,
+                'importe' => $faker->randomFloat(2, 100, 100000)
             ]);
         }
     }
