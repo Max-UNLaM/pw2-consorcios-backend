@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Expensa;
 use Illuminate\Http\Request;
 use App\Unidad;
 
@@ -30,6 +31,16 @@ class UnidadController extends Controller
     public function store(Request $request)
     {
         return Unidad::create($request->all());
+    }
+
+    public function delete($id){
+        
+        $expensas = Expensa::where('unidad_id', $id)->get();
+        foreach ($expensas as $expensa) {
+            Expensa::destroy($expensa->id);
+        }
+
+        Unidad::destroy($id);
     }
 
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Consorcio;
+use App\Unidad;
 use Illuminate\Http\Request;
 
 class ConsorcioController extends Controller
@@ -35,6 +36,13 @@ class ConsorcioController extends Controller
     }
 
     public function delete(Request $request){
+        $unidadController = new UnidadController();
+
+        $unidades = Unidad::where('consorcio_id', $request->get('id'))->get();
+
+        foreach ($unidades as $unidad) {
+            $unidadController->delete($unidad->id);
+        }
 	    $resp = Consorcio::destroy($request->get('id'));
 
         if($resp){
