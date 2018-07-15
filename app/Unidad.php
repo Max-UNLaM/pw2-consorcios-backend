@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class Unidad extends Model
 {
-    protected $fillable = ['nombre', 'direccion', 'localidad', 'provincia', 'consorcio_id'];
+    protected $fillable = ['id', 'nombre', 'direccion', 'localidad', 'provincia', 'consorcio_id'];
 }

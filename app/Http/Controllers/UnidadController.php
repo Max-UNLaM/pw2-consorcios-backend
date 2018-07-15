@@ -12,6 +12,8 @@ class UnidadController extends Controller
     {
         if ($request->get('page')) {
             return $this->paginate($request);
+        } else if($request->get('id')){
+            return $this->show($request->get('id'));
         } else {
             return Unidad::all();
         }
@@ -30,17 +32,30 @@ class UnidadController extends Controller
 
     public function store(Request $request)
     {
-        return Unidad::create($request->all());
+        if(Unidad::find($request->get('id'))) $this->delete($request->get('id'));
+
+        Unidad::create($request->all());
+
+        return $request->all();
     }
 
-    public function delete($id){
-        
+    public function delete(Request $request){
+        return $this->deleteById($request->get('id'));
+    }
+
+    public function deleteById($id){
         $expensas = Expensa::where('unidad_id', $id)->get();
         foreach ($expensas as $expensa) {
             Expensa::destroy($expensa->id);
         }
 
-        Unidad::destroy($id);
+        $resp = Unidad::destroy($id);
+
+        if($resp){
+            return 'ID '.$id.' deleted OK';
+        } else {
+            return 'ID '.$id.' not found';
+        }
     }
 
 }

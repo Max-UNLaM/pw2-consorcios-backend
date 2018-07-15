@@ -41,7 +41,7 @@ class ConsorcioController extends Controller
         $unidades = Unidad::where('consorcio_id', $request->get('id'))->get();
 
         foreach ($unidades as $unidad) {
-            $unidadController->delete($unidad->id);
+            $unidadController->deleteById($unidad->id);
         }
 	    $resp = Consorcio::destroy($request->get('id'));
 
