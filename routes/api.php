@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use App\Unidad;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -30,13 +31,14 @@ Route::group(['middleware' => ['api', 'cors']], function () {
     Route::post('/consorcio', 'ConsorcioController@store')->middleware('auth:api', 'scope:operator,admin');
     Route::delete('/consorcio', 'ConsorcioController@delete')->middleware('auth:api', 'scope:operator,admin');
     Route::get('/factura', 'FacturaController@index')->middleware('auth:api', 'scope:operator,admin');
-    Route::post('auth/admin/token/create', 'Auth\AdminController@addRoles')->middleware(['auth:api','scope:admin']);
+    Route::post('auth/admin/token/create', 'Auth\AdminController@addRoles')->middleware(['auth:api', 'scope:admin']);
     Route::post('auth/register', 'Auth\ApiRegisterController@register');
     Route::post('oauth/login', 'Auth\PassportController@login');
     Route::post('oauth/register', 'Auth\PassportController@register');
-    Route::get('/expensa',  'ExpensaController@index')->middleware('auth:api', 'scope:operator,admin');
-    Route::post('/expensa',  'ExpensaController@store')->middleware('auth:api', 'scope:operator,admin');
-    Route::delete('/expensa',  'ExpensaController@delete')->middleware('auth:api', 'scope:operator,admin');
+    Route::get('/gasto/mensual', 'GastoController@gastosMensual');
+    Route::get('/expensa', 'ExpensaController@index')->middleware('auth:api', 'scope:operator,admin');
+    Route::post('/expensa', 'ExpensaController@store')->middleware('auth:api', 'scope:operator,admin');
+    Route::delete('/expensa', 'ExpensaController@delete')->middleware('auth:api', 'scope:operator,admin');
     Route::get('/gasto', 'GastoController@index')->middleware('auth:api', 'scope:operator,admin');
     Route::post('/gasto', 'GastoController@store')->middleware('auth:api', 'scope:operator,admin');
     Route::delete('/gasto', 'GastoController@delete')->middleware('auth:api', 'scope:operator,admin');

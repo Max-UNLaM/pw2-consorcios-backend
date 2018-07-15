@@ -29,7 +29,7 @@ class GastoController extends Controller
 
     public function store(Request $request)
     {
-        if(Gasto::find($request->get('id')) != null) $this->delete($request);
+        if (Gasto::find($request->get('id')) != null) $this->delete($request);
 
         Gasto::create($request->all());
         return response([
@@ -37,13 +37,24 @@ class GastoController extends Controller
         ]);
     }
 
-    public function delete(Request $request){
+    public function delete(Request $request)
+    {
         $resp = Gasto::destroy($request->get('id'));
 
-        if($resp){
-            return 'ID '.$request->get('id').' deleted OK';
+        if ($resp) {
+            return 'ID ' . $request->get('id') . ' deleted OK';
         } else {
-            return 'ID '.$request->get('id').' not found';
+            return 'ID ' . $request->get('id') . ' not found';
         }
+    }
+
+    public function gastosMensual(Request $request)
+    {
+        $gasto = new Gasto();
+        $datos = $request->all();
+
+        return response([
+            'total' => $gasto->importeGastosMensual($datos["year"], $datos["mes"])
+        ]);
     }
 }

@@ -23,6 +23,10 @@ class Rol extends Model
         }
     }
 
+    public function verifyRol(array $rol) {
+
+    }
+
 
     /**
      * Get first Rol of specified name

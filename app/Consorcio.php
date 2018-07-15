@@ -6,5 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Consorcio extends Model
 {
-    protected $fillable = ['id', 'nombre', 'direccion', 'localidad', 'provincia', 'telefono'];
+    protected $fillable = ['nombre', 'direccion', 'localidad', 'provincia', 'telefono'];
+
 }
