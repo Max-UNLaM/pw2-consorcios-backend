@@ -19,9 +19,6 @@ Route::get('/unidad', 'UnidadController@index');
 
 Route::get('/factura', 'FacturaController@index');
 
-Route::get('/expensa',  'ExpensaController@index');
-Route::post('/expensa',  'ExpensaController@store');
-Route::delete('/expensa',  'ExpensaController@delete');
 Route::group(['middleware' => ['api', 'cors']], function () {
     Route::middleware('auth:api')->get('/user', function (Request $request) {
         return $request->user();
@@ -33,6 +30,9 @@ Route::group(['middleware' => ['api', 'cors']], function () {
     Route::post('auth/register', 'Auth\ApiRegisterController@register');
     Route::post('oauth/login', 'Auth\PassportController@login');
     Route::post('oauth/register', 'Auth\PassportController@register');
+    Route::get('/expensa',  'ExpensaController@index')->middleware('auth:api', 'scope:operator,admin');
+    Route::post('/expensa',  'ExpensaController@store')->middleware('auth:api', 'scope:operator,admin');
+    Route::delete('/expensa',  'ExpensaController@delete')->middleware('auth:api', 'scope:operator,admin');
     Route::get('/gasto', 'GastoController@index')->middleware('auth:api', 'scope:operator,admin');
     Route::group(['middleware' => 'auth:api'], function () {
         Route::post('get-details', 'Auth\PassportController@getDetails');
