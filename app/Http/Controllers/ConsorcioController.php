@@ -10,6 +10,8 @@ class ConsorcioController extends Controller
 	public function index(Request $request) {
         if ($request->get('page')) {
             return $this->paginate($request);
+        } else if($request->get('id')) {
+            return $this->show($request->get('id'));
         } else {
             return Consorcio::all();
         }
@@ -27,7 +29,19 @@ class ConsorcioController extends Controller
 
     public function store(Request $request)
     {
+        if(Consorcio::find($request->get('id'))) $this->delete($request);
+
         return Consorcio::create($request->all());
+    }
+
+    public function delete(Request $request){
+	    $resp = Consorcio::destroy($request->get('id'));
+
+        if($resp){
+            return 'ID '.$request->get('id').' deleted OK';
+        } else {
+            return 'ID '.$request->get('id').' not found';
+        }
     }
 
 
