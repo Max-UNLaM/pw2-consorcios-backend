@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class Gasto extends Model
 {
-    protected $fillable = ['nombre', 'valor', 'fecha', 'proveedor_id', 'consorcio_id'];
+    protected $fillable = ['id', 'nombre', 'valor', 'fecha', 'proveedor_id', 'consorcio_id'];
 }

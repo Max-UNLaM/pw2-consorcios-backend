@@ -34,6 +34,8 @@ Route::group(['middleware' => ['api', 'cors']], function () {
     Route::post('/expensa',  'ExpensaController@store')->middleware('auth:api', 'scope:operator,admin');
     Route::delete('/expensa',  'ExpensaController@delete')->middleware('auth:api', 'scope:operator,admin');
     Route::get('/gasto', 'GastoController@index')->middleware('auth:api', 'scope:operator,admin');
+    Route::post('/gasto', 'GastoController@store')->middleware('auth:api', 'scope:operator,admin');
+    Route::delete('/gasto', 'GastoController@delete')->middleware('auth:api', 'scope:operator,admin');
     Route::group(['middleware' => 'auth:api'], function () {
         Route::post('get-details', 'Auth\PassportController@getDetails');
     });

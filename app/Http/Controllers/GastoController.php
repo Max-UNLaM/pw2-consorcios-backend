@@ -29,6 +29,21 @@ class GastoController extends Controller
 
     public function store(Request $request)
     {
-        return Gasto::create($request->all());
+        if(Gasto::find($request->get('id')) != null) $this->delete($request);
+
+        Gasto::create($request->all());
+        return response([
+            'gasto' => $request->all()
+        ]);
+    }
+
+    public function delete(Request $request){
+        $resp = Gasto::destroy($request->get('id'));
+
+        if($resp){
+            return 'ID '.$request->get('id').' deleted OK';
+        } else {
+            return 'ID '.$request->get('id').' not found';
+        }
     }
 }
