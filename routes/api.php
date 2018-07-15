@@ -24,9 +24,9 @@ Route::group(['middleware' => ['api', 'cors']], function () {
     Route::middleware('auth:api')->get('/user', function (Request $request) {
         return $request->user();
     });
-    Route::get('/unidad', 'UnidadController@index');//->middleware('auth:api', 'scope:operator,admin');
-    Route::post('/unidad', 'UnidadController@store');//->middleware('auth:api', 'scope:operator,admin');
-    Route::delete('/unidad', 'UnidadController@delete');//->middleware('auth:api', 'scope:operator,admin');
+    Route::get('/unidad', 'UnidadController@index')->middleware('auth:api', 'scope:operator,admin');
+    Route::post('/unidad', 'UnidadController@store')->middleware('auth:api', 'scope:operator,admin');
+    Route::delete('/unidad', 'UnidadController@delete')->middleware('auth:api', 'scope:operator,admin');
     Route::get('/consorcio', 'ConsorcioController@index')->middleware('auth:api', 'scope:operator,admin');
     Route::post('/consorcio', 'ConsorcioController@store')->middleware('auth:api', 'scope:operator,admin');
     Route::delete('/consorcio', 'ConsorcioController@delete')->middleware('auth:api', 'scope:operator,admin');
