@@ -39,6 +39,12 @@ class ExpensaController extends Controller
     }
 
     public function delete(Request $request){
-	    Expensa::destroy($request->get('id'));
+	    $resp = Expensa::destroy($request->get('id'));
+
+	    if($resp){
+	        return 'ID '.$request->get('id').' deleted OK';
+        } else {
+	        return 'ID '.$request->get('id').' not found';
+        }
     }
 }
