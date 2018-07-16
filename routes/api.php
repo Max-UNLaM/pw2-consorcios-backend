@@ -36,7 +36,8 @@ Route::group(['middleware' => ['api', 'cors']], function () {
     Route::post('oauth/login', 'Auth\PassportController@login');
     Route::post('oauth/register', 'Auth\PassportController@register');
     Route::get('/gasto/mensual', 'GastoController@gastosMensual');
-    Route::get('/expensa', 'ExpensaController@index')->middleware('auth:api', 'scope:operator,admin');
+    Route::get('/admin/expensa', 'ExpensaController@index')->middleware('auth:api', 'scope:operator,admin');
+    Route::get('/user/expensa', 'ExpensaController@user')->middleware('auth:api', 'scope:user,operator,admin');
     Route::post('/expensa', 'ExpensaController@store')->middleware('auth:api', 'scope:operator,admin');
     Route::delete('/expensa', 'ExpensaController@delete')->middleware('auth:api', 'scope:operator,admin');
     Route::get('/gasto', 'GastoController@index')->middleware('auth:api', 'scope:operator,admin');

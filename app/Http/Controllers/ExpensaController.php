@@ -25,6 +25,25 @@ class ExpensaController extends Controller
         }
     }
 
+    public function user(Request $request) {
+        if ($request->get('page')) {
+            return $this->userPaginate($request);
+        } else if ($request->get('puerta')) {
+            return "PATOVA";
+        } else if ($request->get('id')) {
+            return $this->show($request->get('id'));
+        } else if ($request->get('unidad_id')) {
+            return $this->listByUnidad($request->get('unidad_id'));
+        } else {
+            return Expensa::all();
+        }
+    }
+
+    protected function userPaginate(Request $request) {
+        return Expensa::paginate($request->get('size'))
+            ->where('unidad_id', $request->get('unidad_id'));
+    }
+
     protected function listByUnidad(int $unidadId)
     {
         return Expensa::listByUnidad($unidadId);
