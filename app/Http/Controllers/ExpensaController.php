@@ -14,11 +14,20 @@ class ExpensaController extends Controller
     {
         if ($request->get('page')) {
             return $this->paginate($request);
+        } else if ($request->get('puerta')) {
+            return "PATOVA";
         } else if ($request->get('id')) {
             return $this->show($request->get('id'));
+        } else if ($request->get('unidad_id')) {
+            return $this->listByUnidad($request->get('unidad_id'));
         } else {
             return Expensa::all();
         }
+    }
+
+    protected function listByUnidad(int $unidadId)
+    {
+        return Expensa::listByUnidad($unidadId);
     }
 
     public function paginate(Request $request)
@@ -29,14 +38,10 @@ class ExpensaController extends Controller
     public function store(Request $request)
     {
         $gasto = new Gasto();
-
         if (Expensa::find($request->get('id')) != null) $this->delete($request);
-
         $expensaNueva = $request->all();
         $expensaNueva['importe'] = ($gasto->importeGastosMensual($expensaNueva['año'], $expensaNueva['mes']) * 1.2) * Unidad::calcularCoeficiente($expensaNueva['unidad_id']);
-
         Expensa::create($expensaNueva);
-
         return response([
             'expensa' => $expensaNueva
         ]);
