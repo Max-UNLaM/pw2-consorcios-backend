@@ -45,4 +45,7 @@ Route::group(['middleware' => ['api', 'cors']], function () {
     Route::group(['middleware' => 'auth:api'], function () {
         Route::post('get-details', 'Auth\PassportController@getDetails');
     });
+    Route::get('/reclamo',  'ReclamoController@index')->middleware('auth:api', 'scope:operator,admin');;
+    Route::post('/reclamo', 'ReclamoController@store')->middleware('auth:api', 'scope:operator,admin');;
+    Route::delete('/reclamo', 'ReclamoController@delete')->middleware('auth:api', 'scope:operator,admin');;
 });
