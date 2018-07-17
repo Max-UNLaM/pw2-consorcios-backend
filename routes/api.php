@@ -31,6 +31,12 @@ Route::group(['middleware' => ['api', 'cors']], function () {
     Route::put('/admin/expensa', 'ExpensaController@update')->middleware('auth:api', 'scope:operator,admin');
     Route::delete('/admin/expensa', 'ExpensaController@delete')->middleware('auth:api', 'scope:operator,admin');
 
+    Route::get('/admin/reclamo', 'ReclamoController@index')->middleware('auth:api', 'scope:operator,admin');
+    Route::get('/user/reclamo', 'ReclamoController@user')->middleware('auth:api', 'scope:user,operator,admin');
+    Route::post('/user/reclamo', 'ReclamoController@store')->middleware('auth:api', 'scope:user,operator,admin');
+    Route::put('/admin/reclamo', 'ReclamoController@update')->middleware('auth:api', 'scope:operator,admin');
+    Route::delete('/admin/reclamo', 'ReclamoController@delete')->middleware('auth:api', 'scope:operator,admin');
+
     Route::get('/unidad', 'UnidadController@index')->middleware('auth:api', 'scope:operator,admin');
     Route::post('/unidad', 'UnidadController@store')->middleware('auth:api', 'scope:operator,admin');
     Route::delete('/unidad', 'UnidadController@delete')->middleware('auth:api', 'scope:operator,admin');
@@ -49,7 +55,4 @@ Route::group(['middleware' => ['api', 'cors']], function () {
     Route::group(['middleware' => 'auth:api'], function () {
         Route::post('get-details', 'Auth\PassportController@getDetails');
     });
-    Route::get('/reclamo',  'ReclamoController@index')->middleware('auth:api', 'scope:operator,admin');;
-    Route::post('/reclamo', 'ReclamoController@store')->middleware('auth:api', 'scope:operator,admin');;
-    Route::delete('/reclamo', 'ReclamoController@delete')->middleware('auth:api', 'scope:operator,admin');;
 });
