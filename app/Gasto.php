@@ -21,4 +21,17 @@ class Gasto extends Model
         return $this->gastosMensual($anio, $mes)
             ->sum('valor');
     }
+
+
+    public function gastosPorConsorcio(string $anio, string $mes, int $consorcioId)
+    {
+        return $this->gastosMensual($anio, $mes)
+            ->where('consorcio_id', $consorcioId);
+    }
+
+    public function importeGastosMensualConsorcio(string $anio, string $mes, int $consorcioId) {
+        return $this->gastosPorConsorcio($anio, $mes, $consorcioId)
+        ->sum('valor');
+    }
+
 }
