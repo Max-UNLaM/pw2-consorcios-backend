@@ -26,7 +26,7 @@ Route::group(['middleware' => ['api', 'cors']], function () {
     });
     //Rutas de expensas a replicar en el resto de los models, tener en cuenta los /user/ y /admin/
     Route::get('/admin/expensa', 'ExpensaController@index')->middleware('auth:api', 'scope:operator,admin');
-    Route::get('/user/expensa', 'ExpensaController@user')->middleware('auth:api', 'scope:user');
+    Route::get('/user/expensa', 'ExpensaController@user')->middleware('auth:api', 'scope:user,operator,admin');
     Route::post('/admin/expensa', 'ExpensaController@store')->middleware('auth:api', 'scope:operator,admin');
     Route::put('/admin/expensa', 'ExpensaController@update')->middleware('auth:api', 'scope:operator,admin');
     Route::delete('/admin/expensa', 'ExpensaController@delete')->middleware('auth:api', 'scope:operator,admin');
