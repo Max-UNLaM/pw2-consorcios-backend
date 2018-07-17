@@ -19,7 +19,7 @@ class Unidad extends Model
         return ($total != 0) ? (1 / $total) : 1;
     }
 
-    public static function getAllUnidadOfUser(int $userId) {
+    public static function getIdAllUnidadOfUser(int $userId) {
         return DB::table('unidads')
             ->where('usuario_id', $userId)
             ->get(['id']);
@@ -29,6 +29,11 @@ class Unidad extends Model
         return DB::table('unidads')
             ->where('consorcio_id', $consorcio_id)
             ->get(['id']);
+    }
+
+    public static function getAllUnidadOfUser(int $userId) {
+        return DB::table('unidads')
+            ->where('usuario_id', $userId);
     }
 
 
