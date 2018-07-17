@@ -7,6 +7,7 @@ use App\Gasto;
 use App\Unidad;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Pagination\Paginator;
 
 class ExpensaController extends Controller
 {
@@ -29,18 +30,28 @@ class ExpensaController extends Controller
     {
         if ($request->get('puerta')) {
             return "PATOVA";
+        } else if ($request->get('unidad_id')) {
+            return $this->listByUnidad($request);
         } else if ($request->get('page')) {
-            return $this->userPaginate($request);
+            return $this->userGetAllExpensasPaginate($request);
         } else if ($request->get('id')) {
             return $this->show($request->get('id'));
-        } else if ($request->get('unidad_id')) {
-            return $this->listByUnidad($request->get('unidad_id'));
         } else {
             return Expensa::all();
         }
     }
 
-    protected function userPaginate(Request $request)
+    protected function userGetAllExpensasPaginate(Request $request)
+    {
+        return Expensa::userGetAllUsersExpensas(Auth::user()->getAuthIdentifier())->paginate($request->get('size'));
+    }
+
+    protected function userGetAllExpensas()
+    {
+        return Expensa::userGetAllUsersExpensas(Auth::user()->getAuthIdentifier())->all();
+    }
+
+    protected function userGetByUnidadPaginate(Request $request)
     {
         $unidad = Unidad::find($request->get('unidad_id'));
         if (!$unidad) {
@@ -49,13 +60,18 @@ class ExpensaController extends Controller
         if ($unidad->usuario_id != Auth::user()->getAuthIdentifier()) {
             return response('No autorizado', 403);
         }
-        return Expensa::paginate($request->get('size'))
-            ->where('unidad_id', $request->get('unidad_id'));
+        return Expensa::userGetAllUsersExpensas(Auth::user()->getAuthIdentifier())->paginate($request);
+
     }
 
-    protected function listByUnidad(int $unidadId)
+    protected function listByUnidad(Request $request)
     {
-        return Expensa::listByUnidad($unidadId);
+        if ($request->get('page')) {
+            $size = $request->get('size') ? $request->get('size') : 10;
+            return Expensa::listByUnidad($request->get('unidad_id'))->paginate($size);
+        } else {
+            return Expensa::listByUnidad($request->get('unidad'))->all();
+        }
     }
 
     public function paginate(Request $request)
