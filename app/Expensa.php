@@ -22,15 +22,18 @@ class Expensa extends Model
     {
         $gasto = new Gasto();
         $expensaNueva['importe'] = ($gasto->importeGastosMensualConsorcio($expensaNueva['año'], $expensaNueva['mes'], $expensaNueva['unidad_id']) * 1.2) * Unidad::calcularCoeficiente($expensaNueva['unidad_id']);
-        return Expensa::create([
-            'unidad_id' => $expensaNueva->unidad_id,
-            'año' => $expensaNueva->año,
-            'mes' => $expensaNueva->mes,
-            'estado' => $expensaNueva->estado,
-            'emision' => $expensaNueva->emision,
-            'vencimiento' => $expensaNueva->vencimiento,
-            'importe' => $expensaNueva->importe
-        ]);
+
+        if($expensaNueva['importe']){
+            return $expensa = Expensa::create([
+                    'unidad_id' => $expensaNueva->unidad_id,
+                    'año' => $expensaNueva->año,
+                    'mes' => $expensaNueva->mes,
+                    'estado' => $expensaNueva->estado,
+                    'emision' => $expensaNueva->emision,
+                    'vencimiento' => $expensaNueva->vencimiento,
+                    'importe' => $expensaNueva->importe
+                ]);
+        }
     }
 
     public static function listByUnidad($unidadId)
