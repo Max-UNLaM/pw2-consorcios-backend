@@ -10,7 +10,7 @@ class Reclamo extends Model
     protected $fillable = ['usuario_id', 'unidad_id', 'motivo', 'fecha_reclamo', 'fecha_resolucion', 'conforme'];
 
     public static function getIdAllReclamosOfUser(int $userId) {
-        return DB::table('reclamo')
+        return DB::table('reclamos')
             ->where('usuario_id', $userId)
             ->get(['id']);
     }

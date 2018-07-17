@@ -18,12 +18,13 @@ class ReclamoController extends Controller
             return Reclamo::all();
         }
     }
+
     public function user(Request $request)
     {
         if ($request->get('puerta')) {
             return "PATOVA";
         } elseif ($request->get('page')) {
-            return $this->getAllReclamosOfUserPaginada($request, Auth::user()->getAuthIdentifier())->get(['*']);
+            return $this->getAllReclamosOfUserPaginada($request, Auth::user()->getAuthIdentifier());
         } else {
             return $this->getAllReclamosOfUser(Auth::user()->getAuthIdentifier())->get(['*']);
         }
@@ -37,7 +38,7 @@ class ReclamoController extends Controller
 
     protected function getAllReclamosOfUser($userId)
     {
-        return Reclamo::getIdAllReclamosOfUser($userId);
+        return Reclamo::getAllReclamosOfUser($userId);
     }
 
     public function paginate(Request $request)
@@ -52,9 +53,16 @@ class ReclamoController extends Controller
 
     public function store(Request $request)
     {
-        if (Reclamo::find($request->get('id'))) $this->delete($request->get('id'));
-        Reclamo::create($request->all());
-        return $request->all();
+        $carga = [
+            'usuario_id' => Auth::user()->getAuthIdentifier(),
+            'unidad_id' => $request->get('unidad_id'),
+            'motivo' => $request->get('motivo'),
+            'fecha_reclamo' => $request->get('fecha_reclamo'),
+            'fecha_resolucion' => '1989-01-01',
+            'conforme' => '0:0:0'
+        ];
+        Reclamo::create($carga);
+        return $carga;
     }
 
     public function delete(Request $request)
@@ -66,20 +74,21 @@ class ReclamoController extends Controller
             return 'ID ' . $request->get('id') . ' not found';
         }
     }
-    
-    public function update(Request $request){
+
+    public function update(Request $request)
+    {
         //Busco el reclamo correspondiente
         $reclamo = Reclamo::find($request->get('id'));
 
         //Pregunto si encontro un reclamo con ese id
-        if($reclamo){
+        if ($reclamo) {
             //Actualizo los atributos del reclamo encontrado 
             $reclamo->usuario_id = $request->get('usuario_id');
             $reclamo->unidad_id = $request->get('unidad_id');
             $reclamo->motivo = $request->get('motivo');
             $reclamo->fecha_reclamo = $request->get('fecha_reclamo');
             $reclamo->fecha_resolucion = $request->get('fecha_resolucion');
-            $reclamo->conforme= $request->get('conforme');     
+            $reclamo->conforme = $request->get('conforme');
 
             //Guardo los cambios
             $reclamo->save();
