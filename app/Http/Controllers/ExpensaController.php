@@ -56,11 +56,8 @@ class ExpensaController extends Controller
 
     public function store(Request $request)
     {
-        $gasto = new Gasto();
-        if (Expensa::find($request->get('id')) != null) $this->delete($request);
-        $expensaNueva = $request->all();
-        $expensaNueva['importe'] = ($gasto->importeGastosMensual($expensaNueva['año'], $expensaNueva['mes']) * 1.2) * Unidad::calcularCoeficiente($expensaNueva['unidad_id']);
-        Expensa::create($expensaNueva);
+        # if (Expensa::find($request->get('id')) != null) $this->delete($request);
+        $expensaNueva = Expensa::crearExpensaConImporte($request->all());
         return response([
             'expensa' => $expensaNueva
         ]);
