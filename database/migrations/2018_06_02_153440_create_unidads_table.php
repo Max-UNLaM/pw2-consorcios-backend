@@ -19,6 +19,7 @@ class CreateUnidadsTable extends Migration
             $table->string('direccion');
             $table->string('localidad');
             $table->string('provincia');
+            $table->unsignedInteger('usuario_id');
             $table->unsignedInteger('consorcio_id');
             $table->timestamps();
         });
@@ -31,6 +32,9 @@ class CreateUnidadsTable extends Migration
      */
     public function down()
     {
+        Schema::table('unidads', function (Blueprint $table) {
+            $table->foreign('usuario_id')->references('id')->on('users');
+        });
         Schema::dropIfExists('unidads');
     }
 }

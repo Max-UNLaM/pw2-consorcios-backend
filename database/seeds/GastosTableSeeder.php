@@ -27,7 +27,7 @@ class GastosTableSeeder extends Seeder
             Gasto::create([
                 'nombre' => $faker->name,
                 'valor' => $faker->numberBetween(0,5000),
-                'fecha' => $faker->date(),
+                'fecha' => "2018-04-10",
                 'proveedor_id' => 2,
                 'consorcio_id' => 2
             ]);
@@ -35,7 +35,7 @@ class GastosTableSeeder extends Seeder
         Gasto::create([
             'nombre' => $faker->name,
             'valor' => $faker->numberBetween(0,5000),
-            'fecha' => $faker->date(),
+            'fecha' => "2018-02-10",
             'proveedor_id' => 3,
             'consorcio_id' => 3
         ]);
@@ -43,7 +43,7 @@ class GastosTableSeeder extends Seeder
             Gasto::create([
                 'nombre' => $faker->name,
                 'valor' => $faker->numberBetween(0,5000),
-                'fecha' => $faker->date(),
+                'fecha' => "2018-03-10",
                 'proveedor_id' => 4,
                 'consorcio_id' => 4
             ]);

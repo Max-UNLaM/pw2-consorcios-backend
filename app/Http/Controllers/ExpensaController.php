@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use App\Expensa;
 use App\Gasto;
 use App\Unidad;
-use App\Consorcio;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ExpensaController extends Controller
 {
@@ -25,11 +25,12 @@ class ExpensaController extends Controller
         }
     }
 
-    public function user(Request $request) {
-        if ($request->get('page')) {
-            return $this->userPaginate($request);
-        } else if ($request->get('puerta')) {
+    public function user(Request $request)
+    {
+        if ($request->get('puerta')) {
             return "PATOVA";
+        } else if ($request->get('page')) {
+            return $this->userPaginate($request);
         } else if ($request->get('id')) {
             return $this->show($request->get('id'));
         } else if ($request->get('unidad_id')) {
@@ -39,7 +40,15 @@ class ExpensaController extends Controller
         }
     }
 
-    protected function userPaginate(Request $request) {
+    protected function userPaginate(Request $request)
+    {
+        $unidad = Unidad::find($request->get('unidad_id'));
+        if (!$unidad) {
+            return response('No se encuentra esta unidad', 404);
+        }
+        if ($unidad->usuario_id != Auth::user()->getAuthIdentifier()) {
+            return response('No autorizado', 403);
+        }
         return Expensa::paginate($request->get('size'))
             ->where('unidad_id', $request->get('unidad_id'));
     }
