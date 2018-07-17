@@ -3,9 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Expensa;
-use App\Gasto;
 use App\Unidad;
-use App\Consorcio;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
