@@ -24,6 +24,13 @@ Route::group(['middleware' => ['api', 'cors']], function () {
     Route::middleware('auth:api')->get('/user', function (Request $request) {
         return $request->user();
     });
+    //Rutas de expensas a replicar en el resto de los models, tener en cuenta los /user/ y /admin/
+    Route::get('/admin/expensa', 'ExpensaController@index')->middleware('auth:api', 'scope:operator,admin');
+    Route::get('/user/expensa', 'ExpensaController@user')->middleware('auth:api', 'scope:user');
+    Route::post('/admin/expensa', 'ExpensaController@store')->middleware('auth:api', 'scope:operator,admin');
+    Route::put('/admin/expensa', 'ExpensaController@update')->middleware('auth:api', 'scope:operator,admin');
+    Route::delete('/admin/expensa', 'ExpensaController@delete')->middleware('auth:api', 'scope:operator,admin');
+
     Route::get('/unidad', 'UnidadController@index')->middleware('auth:api', 'scope:operator,admin');
     Route::post('/unidad', 'UnidadController@store')->middleware('auth:api', 'scope:operator,admin');
     Route::delete('/unidad', 'UnidadController@delete')->middleware('auth:api', 'scope:operator,admin');
@@ -36,9 +43,6 @@ Route::group(['middleware' => ['api', 'cors']], function () {
     Route::post('oauth/login', 'Auth\PassportController@login');
     Route::post('oauth/register', 'Auth\PassportController@register');
     Route::get('/gasto/mensual', 'GastoController@gastosMensual');
-    Route::get('/expensa', 'ExpensaController@index')->middleware('auth:api', 'scope:operator,admin');
-    Route::post('/expensa', 'ExpensaController@store')->middleware('auth:api', 'scope:operator,admin');
-    Route::delete('/expensa', 'ExpensaController@delete')->middleware('auth:api', 'scope:operator,admin');
     Route::get('/gasto', 'GastoController@index')->middleware('auth:api', 'scope:operator,admin');
     Route::post('/gasto', 'GastoController@store')->middleware('auth:api', 'scope:operator,admin');
     Route::delete('/gasto', 'GastoController@delete')->middleware('auth:api', 'scope:operator,admin');
