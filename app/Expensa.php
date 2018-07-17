@@ -21,14 +21,30 @@ class Expensa extends Model
     public static function crearExpensaConImporte(Expensa $expensaNueva)
     {
         $gasto = new Gasto();
-        $expensaNueva['importe'] = ($gasto->importeGastosMensualConsorcio($expensaNueva['año'], $expensaNueva['mes'], $expensaNueva['consorcio_id']) * 1.2) * Unidad::calcularCoeficiente($expensaNueva['unidad_id']);
-        return Expensa::create($expensaNueva);
+        $expensaNueva['importe'] = ($gasto->importeGastosMensualConsorcio($expensaNueva['año'], $expensaNueva['mes'], $expensaNueva['unidad_id']) * 1.2) * Unidad::calcularCoeficiente($expensaNueva['unidad_id']);
+        return Expensa::create([
+            'unidad_id' => $expensaNueva->unidad_id,
+            'año' => $expensaNueva->año,
+            'mes' => $expensaNueva->mes,
+            'estado' => $expensaNueva->estado,
+            'emision' => $expensaNueva->emision,
+            'vencimiento' => $expensaNueva->vencimiento,
+            'importe' => $expensaNueva->importe
+        ]);
     }
 
     public static function listByUnidad($unidadId)
     {
         return DB::table('expensas')
             ->where('unidad_id', $unidadId)
+            ->get();
+    }
+
+    public static function obtenerExpensaPorUnidadMesAnio(int $unidad_id, string $mes, string $año){
+        return DB::table('expensas')
+            ->where('unidad_id', $unidad_id)
+            ->where('mes', $mes)
+            ->where('año', $año)
             ->get();
     }
 }

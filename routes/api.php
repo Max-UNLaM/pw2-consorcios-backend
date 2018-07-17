@@ -30,6 +30,7 @@ Route::group(['middleware' => ['api', 'cors']], function () {
     Route::post('/admin/expensa', 'ExpensaController@store')->middleware('auth:api', 'scope:operator,admin');
     Route::put('/admin/expensa', 'ExpensaController@update')->middleware('auth:api', 'scope:operator,admin');
     Route::delete('/admin/expensa', 'ExpensaController@delete')->middleware('auth:api', 'scope:operator,admin');
+    Route::put('/admin/generar-expensas', 'ExpensaController@generarExpensas')->middleware('auth:api', 'scope:operator,admin');
 
     Route::get('/unidad', 'UnidadController@index')->middleware('auth:api', 'scope:operator,admin');
     Route::post('/unidad', 'UnidadController@store')->middleware('auth:api', 'scope:operator,admin');

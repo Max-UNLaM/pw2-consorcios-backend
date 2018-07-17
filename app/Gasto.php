@@ -12,8 +12,7 @@ class Gasto extends Model
     protected function gastosMensual(string $anio, string $mes)
     {
         return DB::table('gastos')
-            ->where('fecha', '>=', "${anio}-${mes}-00")
-            ->where('fecha', '<=', "${anio}-${mes}-31");
+            ->where('fecha', 'like', $anio.'-'.$mes.'%');
     }
 
     public function importeGastosMensual(string $anio, string $mes)

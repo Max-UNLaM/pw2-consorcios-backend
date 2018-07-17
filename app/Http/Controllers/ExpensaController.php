@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Consorcio;
 use App\Expensa;
 use App\Unidad;
 use Illuminate\Http\Request;
@@ -80,9 +81,18 @@ class ExpensaController extends Controller
 
     public function store(Request $request)
     {
-        $expensaNueva = Expensa::crearExpensaConImporte($request->all());
+        $expensaSinImporte = new Expensa();
+
+        $expensaSinImporte->unidad_id = $request->get('unidad_id');
+        $expensaSinImporte->año = $request->get('año');
+        $expensaSinImporte->mes = $request->get('mes');
+        $expensaSinImporte->estado = $request->get('estado');
+        $expensaSinImporte->emision = $request->get('emision');
+        $expensaSinImporte->vencimiento = $request->get('vencimiento');
+
+        $expensaConImporte = Expensa::crearExpensaConImporte($expensaSinImporte);
         return response([
-            'expensa' => $expensaNueva
+            'expensa' => $expensaConImporte
         ]);
     }
 
@@ -127,7 +137,55 @@ class ExpensaController extends Controller
         if ($resp) {
             return 'ID ' . $request->get('id') . ' deleted OK';
         } else {
-            return 'ID ' . $request->get('id') . ' not found';
+            return response(['ID ' . $request->get('id') . ' not found'], 404);
         }
+    }
+
+    public function generarExpensas(Request $request){
+        $mes = $request->get('mes');
+        $anio = $request->get('año');
+        $consorcio_id = $request->get('consorcio_id');
+        $unidad_id = $request->get('unidad_id');
+        $expensaSinImporte = new Expensa();
+
+        if(!$mes || !$anio) return response(['Mes o año invalidos'], 400);
+        if($consorcio_id && $unidad_id) return response(['No se aceptan numero de consorcio y unidad en un mismo pedido'], 400);
+
+        if ($unidad_id) {
+                $expensaSinImporte->unidad_id = (int) $unidad_id;
+                $expensaSinImporte->año = $anio;
+                $expensaSinImporte->mes = $mes;
+                $expensaSinImporte->estado = 'impago';
+                $expensaSinImporte->emision = $anio.'-'.$mes.'-10';
+                $expensaSinImporte->vencimiento = $anio.'-'.$mes.'-20';
+
+                if(sizeof(Expensa::obtenerExpensaPorUnidadMesAnio($unidad_id, $mes, $anio))){
+                    return response(['Las expensas de esa unidad en ese periodo ya fueron calculadas'], 400);
+                } else {
+                    Expensa::crearExpensaConImporte($expensaSinImporte);
+                }
+
+
+        } else {
+            $consorcios = $consorcio_id ? array(Consorcio::find($consorcio_id)) : Consorcio::all();
+
+            foreach ($consorcios as $consorcio){
+                $unidadesDelConsorcio = Unidad::obtenerIdUnidadesPorIdConsorcio($consorcio->id);
+
+                foreach ($unidadesDelConsorcio as $unidad){
+
+                    $expensaSinImporte->unidad_id = $unidad->id;
+                    $expensaSinImporte->año = $anio;
+                    $expensaSinImporte->mes = $mes;
+                    $expensaSinImporte->estado = 'impago';
+                    $expensaSinImporte->emision = $anio.'-'.$mes.'-10';
+                    $expensaSinImporte->vencimiento = $anio.'-'.$mes.'-20';
+
+                    if(!sizeof(Expensa::obtenerExpensaPorUnidadMesAnio($unidad->id, $mes, $anio))) Expensa::crearExpensaConImporte($expensaSinImporte);
+                }
+            }
+        }
+
+        return "Las expensas se han creado correctamente";
     }
 }

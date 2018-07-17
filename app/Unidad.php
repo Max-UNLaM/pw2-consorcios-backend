@@ -15,12 +15,19 @@ class Unidad extends Model
         $total = DB::table('unidads')
             ->where('consorcio_id', Unidad::obtenerSucursal($id)->id)
             ->count();
-        return 1 / $total;
+
+        return ($total != 0) ? (1 / $total) : 1;
     }
 
     public static function getAllUnidadOfUser(int $userId) {
         return DB::table('unidads')
             ->where('usuario_id', $userId)
+            ->get(['id']);
+    }
+
+    public static function obtenerIdUnidadesPorIdConsorcio(int $consorcio_id) {
+        return DB::table('unidads')
+            ->where('consorcio_id', $consorcio_id)
             ->get(['id']);
     }
 
