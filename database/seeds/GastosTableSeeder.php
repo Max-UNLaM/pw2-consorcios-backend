@@ -14,39 +14,23 @@ class GastosTableSeeder extends Seeder
     public function run()
     {
         $faker = Factory::create();
-        for ($i = 0; $i < 10; $i++) {
-            Gasto::create([
-                'nombre' => $faker->name,
-                'valor' => $faker->numberBetween(0,5000),
-                'fecha' => "2018-05-10",
-                'proveedor_id' => 1,
-                'consorcio_id' => 1
-            ]);
-        }
-        for ($i = 0; $i < 10; $i++) {
-            Gasto::create([
-                'nombre' => $faker->name,
-                'valor' => $faker->numberBetween(0,5000),
-                'fecha' => "2018-04-10",
-                'proveedor_id' => 2,
-                'consorcio_id' => 2
-            ]);
-        }for ($i = 0; $i < 10; $i++) {
-        Gasto::create([
-            'nombre' => $faker->name,
-            'valor' => $faker->numberBetween(0,5000),
-            'fecha' => "2018-02-10",
-            'proveedor_id' => 3,
-            'consorcio_id' => 3
-        ]);
-        }for ($i = 0; $i < 10; $i++) {
-            Gasto::create([
-                'nombre' => $faker->name,
-                'valor' => $faker->numberBetween(0,5000),
-                'fecha' => "2018-03-10",
-                'proveedor_id' => 4,
-                'consorcio_id' => 4
-            ]);
+        $consorcios = \App\Consorcio::all();
+        $meses = array('01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12');
+        $cantidadDeProveedores = sizeof(\App\Proveedor::all());
+        $cantidadDeGastosMensuales = 25;
+
+        foreach ($consorcios as $consorcio){
+            foreach ($meses as $mes){
+                for ($i = 0; $i < $cantidadDeGastosMensuales; $i++) {
+                    Gasto::create([
+                        'nombre' => $faker->name,
+                        'valor' => $faker->numberBetween(0,5000),
+                        'fecha' => "2018-'.$mes.'-10",
+                        'proveedor_id' => $faker->numberBetween(1, $cantidadDeProveedores),
+                        'consorcio_id' => $consorcio->id
+                    ]);
+                }
+            }
         }
     }
 }
