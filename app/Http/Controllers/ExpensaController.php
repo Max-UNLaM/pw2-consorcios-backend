@@ -45,7 +45,7 @@ class ExpensaController extends Controller
     {
         return Expensa::userGetAllUsersExpensas(Auth::user()->getAuthIdentifier())->paginate($request->get('size'));
     }
-
+    
     protected function userGetAllExpensas()
     {
         return Expensa::userGetAllUsersExpensas(Auth::user()->getAuthIdentifier())->all();
