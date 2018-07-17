@@ -20,6 +20,7 @@ class UnidadesTableSeeder extends Seeder
                 'direccion' => $faker->streetAddress,
                 'localidad' => $faker->titleMale,
                 'provincia' => 'Buenos Aires',
+                'usuario_id' => 1,
                 'consorcio_id' => 1
             ]);
         }
@@ -29,6 +30,7 @@ class UnidadesTableSeeder extends Seeder
                 'direccion' => $faker->streetAddress,
                 'localidad' => $faker->titleMale,
                 'provincia' => 'Buenos Aires',
+                'usuario_id' => 1,
                 'consorcio_id' => 2
             ]);
         }
@@ -38,6 +40,7 @@ class UnidadesTableSeeder extends Seeder
                 'direccion' => $faker->streetAddress,
                 'localidad' => $faker->titleMale,
                 'provincia' => 'Buenos Aires',
+                'usuario_id' => 1,
                 'consorcio_id' => 3
             ]);
         }
@@ -47,7 +50,8 @@ class UnidadesTableSeeder extends Seeder
                 'direccion' => $faker->streetAddress,
                 'localidad' => $faker->titleMale,
                 'provincia' => 'Buenos Aires',
-                'consorcio_id' => 4
+                'consorcio_id' => 4,
+                'usuario_id' => 2,
             ]);
         }
     }
