@@ -40,7 +40,7 @@ Route::group(['middleware' => ['api', 'cors']], function () {
     Route::post('/admin/unidad', 'UnidadController@store')->middleware('auth:api', 'scope:operator,admin');
     Route::delete('/admin/unidad', 'UnidadController@delete')->middleware('auth:api', 'scope:operator,admin');
     //User
-    Route::get('/user/unidad', 'UnidadController@index')->middleware('auth:api', 'scope:user:operator,admin');
+    Route::get('/user/unidad', 'UnidadController@user')->middleware('auth:api', 'scope:user:operator,admin');
 
     //Expensas
     //Admin
