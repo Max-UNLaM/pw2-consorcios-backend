@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class EstadoDeReclamos extends Model
+class EstadoDeReclamo extends Model
 {
     protected $fillable = ['id', 'detalle'];
 }

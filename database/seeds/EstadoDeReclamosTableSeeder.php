@@ -1,6 +1,6 @@
 <?php
 
-use App\EstadoDeReclamos;
+use App\EstadoDeReclamo;
 use Illuminate\Database\Seeder;
 
 class EstadoDeReclamosTableSeeder extends Seeder
@@ -12,26 +12,24 @@ class EstadoDeReclamosTableSeeder extends Seeder
      */
     public function run()
     {
-       
-        EstadoDeReclamos::create([
+        EstadoDeReclamo::create([
             'id' => '1',
             'detalle' => 'Resuelto'
         ]);
 
-        EstadoDeReclamos::create([
+        EstadoDeReclamo::create([
             'id' => '2',
             'detalle' => 'No Resuelto'
         ]);
 
-        EstadoDeReclamos::create([
+        EstadoDeReclamo::create([
             'id' => '3',
             'detalle' => 'Rechazado'
         ]);
 
-        EstadoDeReclamos::create([
+        EstadoDeReclamo::create([
             'id' => '4',
             'detalle' => 'Esperando confirmacion'
         ]);
     }
 }
-
