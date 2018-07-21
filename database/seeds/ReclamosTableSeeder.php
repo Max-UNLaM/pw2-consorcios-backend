@@ -20,7 +20,7 @@ class ReclamosTableSeeder extends Seeder
                 'unidad_id' => 1,
                 'estado_de_reclamo_id' => 4,
                 'motivo' => $faker->randomElement(array('Cañería rota', 'Ruidos molestos', 'Malos vecinos', 'Vecino insoportable', 'No me dejan dormir', 'El administrador es un ladrón', 'Las expensas son caras', 'La pintura esta horrible', 'El portero es mal tipo', 'No anda la luz del pasillo', 'El ascensor no funciona')),
-                'fecha_reclamo' => $faker->date(),
+                'fecha_reclamo' => $faker->dateTimeThisYear,
             ]);
         }
     }
