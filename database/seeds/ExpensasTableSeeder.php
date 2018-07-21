@@ -1,8 +1,6 @@
 <?php
 
-use App\Expensa;
 use Illuminate\Database\Seeder;
-use \Faker\Factory;
 
 class ExpensasTableSeeder extends Seeder
 {

@@ -59,8 +59,7 @@ class ReclamoController extends Controller
             'unidad_id' => $request->get('unidad_id'),
             'motivo' => $request->get('motivo'),
             'fecha_reclamo' => $request->get('fecha_reclamo'),
-            'fecha_resolucion' => '1989-01-01',
-            'conforme' => '0:0:0'
+            'estado_de_reclamo_id' => 4
         ];
         Reclamo::create($carga);
         return $carga;
@@ -89,7 +88,7 @@ class ReclamoController extends Controller
             $reclamo->motivo = $request->get('motivo');
             $reclamo->fecha_reclamo = $request->get('fecha_reclamo');
             $reclamo->fecha_resolucion = $request->get('fecha_resolucion');
-            $reclamo->conforme = $request->get('conforme');
+            $reclamo->conforme = $request->get('resuelto');
 
             //Guardo los cambios
             $reclamo->save();

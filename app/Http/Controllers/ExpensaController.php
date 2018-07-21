@@ -188,4 +188,4 @@ class ExpensaController extends Controller
 
         return "Las expensas se han creado correctamente";
     }
-}
+}	

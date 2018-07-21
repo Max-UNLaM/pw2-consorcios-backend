@@ -1,6 +1,5 @@
-<?php
-
 use Illuminate\Http\Request;
+<?php
 use App\Unidad;
 
 /*
@@ -21,6 +20,11 @@ Route::get('/unidad', 'UnidadController@index');
 Route::get('/factura', 'FacturaController@index');
 
 Route::group(['middleware' => ['api', 'cors']], function () {
+    Route::get('/expensa',  'ExpensaController@index');
+    Route::post('/expensa', 'ExpensaController@store');
+    Route::get('/reclamo',  'ReclamoController@index');
+    Route::post('/reclamo', 'ReclamoController@store');
+
     Route::middleware('auth:api')->get('/user', function (Request $request) {
         return $request->user();
     });

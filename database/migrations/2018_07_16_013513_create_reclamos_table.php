@@ -17,10 +17,9 @@ class CreateReclamosTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('usuario_id');
             $table->unsignedInteger('unidad_id');
+            $table->unsignedInteger('estado_de_reclamo_id');
             $table->string('motivo');
             $table->date('fecha_reclamo');
-            $table->date('fecha_resolucion');
-            $table->string('conforme');
             $table->timestamps();
         });
     }
@@ -34,6 +33,8 @@ class CreateReclamosTable extends Migration
     {
         Schema::table('reclamos', function (Blueprint $table){
             $table->dropForeign(['unidad_id']);
+            $table->dropForeign(['usuario_id']);
+            $table->dropForeign(['estado_de_reclamo_id']);
         });
         Schema::dropIfExists('reclamos');
     }
