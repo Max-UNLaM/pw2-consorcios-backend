@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateUnidadsTable extends Migration
+class CreateReclamosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,14 @@ class CreateUnidadsTable extends Migration
      */
     public function up()
     {
-        Schema::create('unidads', function (Blueprint $table) {
+        Schema::create('reclamos', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('nombre');
-            $table->string('direccion');
-            $table->string('localidad');
-            $table->string('provincia');
             $table->unsignedInteger('usuario_id');
-            $table->unsignedInteger('consorcio_id');
+            $table->unsignedInteger('unidad_id');
+            $table->string('motivo');
+            $table->date('fecha_reclamo');
+            $table->date('fecha_resolucion');
+            $table->string('conforme');
             $table->timestamps();
         });
     }
@@ -32,9 +32,9 @@ class CreateUnidadsTable extends Migration
      */
     public function down()
     {
-        Schema::table('unidads', function (Blueprint $table) {
-            $table->foreign('usuario_id')->references('id')->on('users');
+        Schema::table('reclamos', function (Blueprint $table){
+            $table->dropForeign(['unidad_id']);
         });
-        Schema::dropIfExists('unidads');
+        Schema::dropIfExists('reclamos');
     }
 }

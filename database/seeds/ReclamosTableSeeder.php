@@ -14,7 +14,6 @@ class ReclamosTableSeeder extends Seeder
     public function run()
     {
         $faker = Factory::create();
-
         for ($i = 0; $i < 10; $i++) {
             Reclamo::create([
                 'usuario_id' => 1,

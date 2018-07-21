@@ -20,7 +20,8 @@ class UnidadesTableSeeder extends Seeder
                 'direccion' => $faker->streetAddress,
                 'localidad' => $faker->titleMale,
                 'provincia' => 'Buenos Aires',
-                'consorcio_id' => 1
+                'usuario_id' => $faker->numberBetween(1, 5),
+                'consorcio_id' => $faker->numberBetween(1, 40)
             ]);
         }
         for ($i = 0; $i < 10; $i++) {
@@ -29,7 +30,8 @@ class UnidadesTableSeeder extends Seeder
                 'direccion' => $faker->streetAddress,
                 'localidad' => $faker->titleMale,
                 'provincia' => 'Buenos Aires',
-                'consorcio_id' => 2
+                'usuario_id' => $faker->numberBetween(1, 5),
+                'consorcio_id' => $faker->numberBetween(1, 40)
             ]);
         }
         for ($i = 0; $i < 10; $i++) {
@@ -38,7 +40,8 @@ class UnidadesTableSeeder extends Seeder
                 'direccion' => $faker->streetAddress,
                 'localidad' => $faker->titleMale,
                 'provincia' => 'Buenos Aires',
-                'consorcio_id' => 3
+                'usuario_id' => $faker->numberBetween(1, 5),
+                'consorcio_id' => $faker->numberBetween(1, 40)
             ]);
         }
         for ($i = 0; $i < 10; $i++) {
@@ -47,7 +50,8 @@ class UnidadesTableSeeder extends Seeder
                 'direccion' => $faker->streetAddress,
                 'localidad' => $faker->titleMale,
                 'provincia' => 'Buenos Aires',
-                'consorcio_id' => 4
+                'consorcio_id' => $faker->numberBetween(1, 40),
+                'usuario_id' => $faker->numberBetween(1, 5)
             ]);
         }
     }

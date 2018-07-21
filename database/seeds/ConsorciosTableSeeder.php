@@ -15,7 +15,7 @@ class ConsorciosTableSeeder extends Seeder
     {
         $faker = Factory::create();
 
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 20; $i++) {
             Consorcio::create([
                 'nombre' => "Consorcio_$i",
                 'direccion' => $faker->streetAddress,
@@ -25,7 +25,7 @@ class ConsorciosTableSeeder extends Seeder
             ]);
         }
 
-        for ($i = 10; $i < 20; $i++) {
+        for ($i = 20; $i < 40; $i++) {
             Consorcio::create([
                 'nombre' => "Consorcio_$i",
                 'direccion' => $faker->streetAddress,
