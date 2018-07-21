@@ -26,7 +26,8 @@ class ReclamoController extends Controller
         } elseif ($request->get('page')) {
             return $this->getAllReclamosOfUserPaginada($request, Auth::user()->getAuthIdentifier());
         } else {
-            return $this->getAllReclamosOfUser(Auth::user()->getAuthIdentifier())->get(['*']);
+            return $this->getAllReclamosOfUser(Auth::user()->getAuthIdentifier())
+                ->get(['*']);
         }
     }
 
