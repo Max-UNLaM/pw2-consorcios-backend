@@ -18,10 +18,9 @@ class ReclamosTableSeeder extends Seeder
             Reclamo::create([
                 'usuario_id' => 1,
                 'unidad_id' => 1,
+                'estado_de_reclamo_id' => 4,
                 'motivo' => $faker->name,
                 'fecha_reclamo' => $faker->date(),
-                'fecha_resolucion' => $faker->date(),
-                'conforme' => 'si'
             ]);
         }
     }
