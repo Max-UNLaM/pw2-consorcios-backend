@@ -23,7 +23,10 @@ class ConsorciosTableSeeder extends Seeder
                 'direccion' => $faker->streetAddress,
                 'localidad' => $faker->randomElement(array('CABA', 'Ramos Mejia', 'Ciudadela', 'Morón', 'San Justo', 'Pilar')),
                 'provincia' => 'Buenos Aires',
-                'telefono' => $faker->phoneNumber
+                'telefono' => $faker->phoneNumber,
+                'email' => $faker->email,
+                'codigo_postal' => $faker->numberBetween(1111, 1702),
+                'cuit' => '20-'.$faker->randomNumber(8, true).'-'.$faker->randomDigitNotNull
             ]);
         }
 
