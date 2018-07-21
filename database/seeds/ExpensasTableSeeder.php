@@ -1,5 +1,6 @@
 <?php
 
+use App\Expensa;
 use Illuminate\Database\Seeder;
 
 class ExpensasTableSeeder extends Seeder
