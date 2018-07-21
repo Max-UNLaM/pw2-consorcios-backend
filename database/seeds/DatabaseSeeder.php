@@ -17,8 +17,8 @@ class DatabaseSeeder extends Seeder
         # $this->call(FacturasTableSeeder::class);
         $this->call(UnidadesTableSeeder::class);
         $this->call(ProveedorsTableSeeder::class);
-        $this->call(ExpensasTableSeeder::class);
         $this->call(GastosTableSeeder::class);
+        $this->call(ExpensasTableSeeder::class);
         $this->call(ReclamosTableSeeder::class);
     }
 }

@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 class Unidad extends Model
 {
-    protected $fillable = ['nombre', 'direccion', 'localidad', 'provincia', 'consorcio_id', 'usuario_id'];
+    protected $fillable = ['nombre', 'consorcio_id', 'usuario_id'];
 
 
     public static function calcularCoeficiente(int $id)

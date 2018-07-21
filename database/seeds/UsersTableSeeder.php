@@ -13,9 +13,14 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
+        $faker = \Faker\Factory::create();
+        $cantidadDeUsuariosACrear = 10;
+
         $rol = new Rol();
         $admin = $rol->getFirstByName('Administrador');
         $operator = $rol->getFirstByName('Operador');
+        $usuario = $rol->getFirstByName('Usuario');
+
         $maxi     = User::create([
             'name'     => 'Maximiliano De Pietro',
             'email'    => 'maximiliano.depietro@gmail.com',
@@ -51,5 +56,14 @@ class UsersTableSeeder extends Seeder
         $maxi->withAccessToken($esteban->createToken('ConsorcioLoco', ['user', 'operator', 'admin']));
         $maxi->withAccessToken($user->createToken('ConsorcioLoco', ['user']));
         $maxi->withAccessToken($operator->createToken('ConsorcioLoco', ['operator', 'user']));
+
+        for($i = 0; $i < $cantidadDeUsuariosACrear; $i++){
+            User::create([
+               'name' => $faker->name,
+               'email' => $faker->email,
+               'password' => bcrypt('changeme'),
+               'rol_id' =>  $usuario->id
+            ]);
+        }
     }
 }

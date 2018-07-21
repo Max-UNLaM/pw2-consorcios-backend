@@ -15,24 +15,17 @@ class ConsorciosTableSeeder extends Seeder
     {
         $faker = Factory::create();
 
-        for ($i = 0; $i < 20; $i++) {
+        $cantidadDeConsorcios = 5;
+
+        for ($i = 0; $i < $cantidadDeConsorcios; $i++) {
             Consorcio::create([
-                'nombre' => "Consorcio_$i",
+                'nombre' => "Consorcio ".($i+1),
                 'direccion' => $faker->streetAddress,
-                'localidad' => "Localidad_$i",
+                'localidad' => $faker->randomElement(array('CABA', 'Ramos Mejia', 'Ciudadela', 'Morón', 'San Justo', 'Pilar')),
                 'provincia' => 'Buenos Aires',
                 'telefono' => $faker->phoneNumber
             ]);
         }
 
-        for ($i = 20; $i < 40; $i++) {
-            Consorcio::create([
-                'nombre' => "Consorcio_$i",
-                'direccion' => $faker->streetAddress,
-                'localidad' => "Localidad_$i",
-                'provincia' => 'Córdoba',
-                'telefono' => $faker->phoneNumber
-            ]);
-        }
     }
 }

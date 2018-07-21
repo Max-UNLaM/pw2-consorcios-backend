@@ -14,45 +14,36 @@ class UnidadesTableSeeder extends Seeder
     public function run()
     {
         $faker = Factory::create();
-        for ($i = 0; $i < 10; $i++) {
-            Unidad::create([
-                'nombre' => $faker->name,
-                'direccion' => $faker->streetAddress,
-                'localidad' => $faker->titleMale,
-                'provincia' => 'Buenos Aires',
-                'usuario_id' => $faker->numberBetween(1, 5),
-                'consorcio_id' => $faker->numberBetween(1, 40)
-            ]);
+
+        $cantidadDeUsuarios = sizeof(\App\User::all());
+        $cantidadDeConsorcios = sizeof(\App\Consorcio::all());
+
+        $cantidadMinimaDeUnidadesPorConsorcio = 5;
+        $cantidadDeUnidadesQueSeVanACrearDeManeraAleatoria = 100;
+
+
+        $acumuladorDeUnidades = 1;
+
+        //Aca se crea la cantidad minima de unidades por consorcio
+        for($j = 0; $j < $cantidadMinimaDeUnidadesPorConsorcio; $j++){
+            for ($i = 1; $i <= $cantidadDeConsorcios; $i++) {
+                Unidad::create([
+                    'nombre' => 'Unidad '.$acumuladorDeUnidades,
+                    'usuario_id' => $faker->numberBetween(1, $cantidadDeUsuarios/2),
+                    'consorcio_id' => $i
+                ]);
+                $acumuladorDeUnidades++;
+            }
         }
-        for ($i = 0; $i < 10; $i++) {
+
+        //Creo mas unidades que se van a repartir entre los consorcios de manera aleatoria
+        for ($i = 0; $i < $cantidadDeUnidadesQueSeVanACrearDeManeraAleatoria; $i++) {
             Unidad::create([
-                'nombre' => $faker->name,
-                'direccion' => $faker->streetAddress,
-                'localidad' => $faker->titleMale,
-                'provincia' => 'Buenos Aires',
-                'usuario_id' => $faker->numberBetween(1, 5),
-                'consorcio_id' => $faker->numberBetween(1, 40)
+                'nombre' => 'Unidad '.$acumuladorDeUnidades,
+                'usuario_id' => $faker->numberBetween(1, $cantidadDeUsuarios/2),
+                'consorcio_id' => $faker->numberBetween(1, $cantidadDeConsorcios)
             ]);
-        }
-        for ($i = 0; $i < 10; $i++) {
-            Unidad::create([
-                'nombre' => $faker->name,
-                'direccion' => $faker->streetAddress,
-                'localidad' => $faker->titleMale,
-                'provincia' => 'Buenos Aires',
-                'usuario_id' => $faker->numberBetween(1, 5),
-                'consorcio_id' => $faker->numberBetween(1, 40)
-            ]);
-        }
-        for ($i = 0; $i < 10; $i++) {
-            Unidad::create([
-                'nombre' => $faker->name,
-                'direccion' => $faker->streetAddress,
-                'localidad' => $faker->titleMale,
-                'provincia' => 'Buenos Aires',
-                'consorcio_id' => $faker->numberBetween(1, 40),
-                'usuario_id' => $faker->numberBetween(1, 5)
-            ]);
+            $acumuladorDeUnidades++;
         }
     }
 }
