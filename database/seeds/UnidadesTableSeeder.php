@@ -1,5 +1,6 @@
 <?php
 
+use App\Consorcio;
 use Illuminate\Database\Seeder;
 use \Faker\Factory;
 use \App\Unidad;
@@ -18,32 +19,26 @@ class UnidadesTableSeeder extends Seeder
         $cantidadDeUsuarios = sizeof(\App\User::all());
         $cantidadDeConsorcios = sizeof(\App\Consorcio::all());
 
-        $cantidadMinimaDeUnidadesPorConsorcio = 5;
-        $cantidadDeUnidadesQueSeVanACrearDeManeraAleatoria = 100;
-
-
-        $acumuladorDeUnidades = 1;
+        //Nota: el numero de cantidad de departamentos por piso del seeder de consorcios no puede superar la cantidad de elementos de este array
+        $letrasDeUnidades = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J');
 
         //Aca se crea la cantidad minima de unidades por consorcio
-        for($j = 0; $j < $cantidadMinimaDeUnidadesPorConsorcio; $j++){
-            for ($i = 1; $i <= $cantidadDeConsorcios; $i++) {
-                Unidad::create([
-                    'nombre' => 'Unidad '.$acumuladorDeUnidades,
-                    'usuario_id' => $faker->numberBetween(1, $cantidadDeUsuarios/2),
-                    'consorcio_id' => $i
-                ]);
-                $acumuladorDeUnidades++;
+        for ($i = 1; $i <= $cantidadDeConsorcios; $i++){
+
+            $consorcio = Consorcio::find($i);
+            $cantidadDePisos = $consorcio->cantidad_de_pisos;
+            $cantidadDeDepartamentosPorPiso = $consorcio->departamentos_por_piso;
+
+            for($j = 0; $j < $cantidadDePisos; $j++){
+                for($k = 0; $k < $cantidadDeDepartamentosPorPiso; $k++){
+                    Unidad::create([
+                        'nombre' => ($j==0) ? 'PB '.$letrasDeUnidades[$k] : $j.'° '.$letrasDeUnidades[$k],
+                        'usuario_id' => $faker->numberBetween(1, $cantidadDeUsuarios/2),
+                        'consorcio_id' => $i
+                    ]);
+                }
             }
         }
 
-        //Creo mas unidades que se van a repartir entre los consorcios de manera aleatoria
-        for ($i = 0; $i < $cantidadDeUnidadesQueSeVanACrearDeManeraAleatoria; $i++) {
-            Unidad::create([
-                'nombre' => 'Unidad '.$acumuladorDeUnidades,
-                'usuario_id' => $faker->numberBetween(1, $cantidadDeUsuarios/2),
-                'consorcio_id' => $faker->numberBetween(1, $cantidadDeConsorcios)
-            ]);
-            $acumuladorDeUnidades++;
-        }
     }
 }

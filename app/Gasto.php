@@ -11,10 +11,8 @@ class Gasto extends Model
 
     protected function gastosMensual(string $anio, string $mes)
     {
-        if(strlen($mes) == 1) $mes = '0'.$mes;
-
         return DB::table('gastos')
-            ->where('fecha', 'like', "$anio-$mes-%");
+            ->where('fecha', 'like', $anio.'-'.$mes.'%');
     }
 
     public function importeGastosMensual(string $anio, string $mes)
@@ -30,9 +28,15 @@ class Gasto extends Model
             ->where('consorcio_id', $consorcioId);
     }
 
-    public function importeGastosMensualConsorcio(string $anio, string $mes, int $consorcioId) {
-        return $this->gastosPorConsorcio($anio, $mes, $consorcioId)
-        ->sum('valor');
+    public static function importeGastosMensualConsorcio($anio, $mes, $consorcioId) {
+        $mes = (strlen($mes) == 1) ? '0'.$mes : $mes;
+
+        return Gasto::all()
+            ->where('fecha', '>=', "$anio-$mes-01")
+            ->where('fecha', '<=', "$anio-$mes-31")
+            ->where('consorcio_id', $consorcioId)
+            ->sum('valor');
+
     }
 
 }

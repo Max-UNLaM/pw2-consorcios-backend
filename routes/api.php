@@ -1,5 +1,5 @@
-use Illuminate\Http\Request;
 <?php
+use Illuminate\Http\Request;
 use App\Unidad;
 
 /*
