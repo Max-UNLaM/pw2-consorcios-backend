@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 class Gasto extends Model
 {
-    protected $fillable = ['nombre', 'valor', 'fecha', 'proveedor_id', 'consorcio_id'];
+    protected $fillable = ['nombre', 'valor', 'mes', 'anio', 'fecha', 'proveedor_id', 'consorcio_id'];
 
     protected function gastosMensual(string $anio, string $mes)
     {
@@ -28,12 +28,22 @@ class Gasto extends Model
             ->where('consorcio_id', $consorcioId);
     }
 
-    public static function importeGastosMensualConsorcio($anio, $mes, $consorcioId) {
+    public static function gastosMensualesPorConsorcio(string $anio, string $mes, int $consorcioId)
+    {
         $mes = (strlen($mes) == 1) ? '0'.$mes : $mes;
 
         return Gasto::all()
             ->where('fecha', '>=', "$anio-$mes-01")
             ->where('fecha', '<=', "$anio-$mes-31")
+            ->where('consorcio_id', $consorcioId);
+    }
+
+    public static function importeGastosMensualConsorcio($anio, $mes, $consorcioId) {
+        $mes = (strlen($mes) == 1) ? '0'.$mes : $mes;
+
+        return Gasto::all()
+            ->where('mes', '>=', "$anio-$mes-01")
+            ->where('anio', '<=', "$anio-$mes-31")
             ->where('consorcio_id', $consorcioId)
             ->sum('valor');
 

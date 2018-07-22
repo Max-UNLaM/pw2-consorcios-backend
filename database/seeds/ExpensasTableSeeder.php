@@ -35,7 +35,7 @@ class ExpensasTableSeeder extends Seeder
                     Expensa::create([
                         'unidad_id' => $unidad->id,
                         'año' => $anio,
-                        'mes' => $i,
+                        'mes' => (strlen($i) < 10) ? '0'.$i : $i,
                         'estado' => "PAGO",
                         'emision' => "$anio-$i-10",
                         'vencimiento' => "$anio-$i-20",

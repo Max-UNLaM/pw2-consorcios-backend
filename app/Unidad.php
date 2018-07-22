@@ -31,9 +31,54 @@ class Unidad extends Model
             ->get(['id']);
     }
 
+    public static function obtenerUnidadesPorIdConsorcio(int $consorcio_id) {
+        return DB::table('unidads')
+            ->where('consorcio_id', $consorcio_id)
+            ->get();
+    }
+
+    public static function obtenerPropietariosPorIdConsorcio(int $consorcio_id) {
+        $idUsuarios = DB::table('unidads')
+            ->where('consorcio_id', $consorcio_id)
+            ->get(['usuario_id'])
+            ->unique();
+
+        foreach ($idUsuarios as $idUsuario){
+            $usuarios[] = DB::table('users')
+                ->where('id', $idUsuario->usuario_id)
+                ->get()[0];
+        }
+
+        return $usuarios;
+    }
+
     public static function getAllUnidadOfUser(int $userId) {
         return DB::table('unidads')
             ->where('usuario_id', $userId);
+    }
+
+    public static function obtenerUnidadesPorUsuarioYConsorcio($usuarioId, $consorcioId) {
+        $unidades = DB::table('unidads')
+            ->where('usuario_id', $usuarioId)
+            ->where('consorcio_id', $consorcioId)
+            ->get();
+
+        return $unidades;
+    }
+
+
+    public static function obtenerIdDeUnidadesPorUsuarioYConsorcio($usuarioId, $consorcioId) {
+        $idDeUnidades = DB::table('unidads')
+            ->where('usuario_id', $usuarioId)
+            ->where('consorcio_id', $consorcioId)
+            ->get(['id'])
+            ->unique();
+
+        foreach ($idDeUnidades as $id){
+            $respuesta[] = $id->id;
+        }
+
+        return $respuesta;
     }
 
 

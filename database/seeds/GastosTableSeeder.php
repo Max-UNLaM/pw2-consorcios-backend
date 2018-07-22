@@ -30,6 +30,8 @@ class GastosTableSeeder extends Seeder
                     Gasto::create([
                         'nombre' => $faker->randomElement(array('Gastos generales', 'Gastos generales', 'Gastos generales', 'Pintura', 'Plomería', 'Electricista', 'Gasista')),
                         'valor' => $faker->numberBetween(0,3000),
+                        'mes' => 2018,
+                        'anio' => $mes,
                         'fecha' => "2018-$mes-10",
                         'proveedor_id' => $faker->numberBetween(1, $cantidadDeProveedores),
                         'consorcio_id' => $consorcio->id

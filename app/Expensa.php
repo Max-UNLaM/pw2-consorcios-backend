@@ -50,4 +50,33 @@ class Expensa extends Model
             ->where('año', $año)
             ->get();
     }
+
+    /*public static function obtenerExpensaPorUsuarioMesAnio($usuario_id, $mes, $anio){
+        return DB::table('expensas')
+            ->where('unidad_id', $usuario_id)
+            ->where('mes', $mes)
+            ->where('año', $anio)
+            ->get();
+    }*/
+
+    public static function obtenerExpensasPorMesAnioUnidades($mes, $anio, $idUnidades){
+        $mes = (strlen($mes) == 1) ? '0'.$mes : $mes;
+
+        return DB::table('expensas')
+            ->where('mes', $mes)
+            ->where('año', $anio)
+            ->whereIn('unidad_id', $idUnidades)
+            ->get();
+    }
+
+    public static function obtenerImporteMensualPorMesAnioUnidades($mes, $anio, $idUnidades){
+        $mes = (strlen($mes) == 1) ? '0'.$mes : $mes;
+
+        return DB::table('expensas')
+            ->where('mes', $mes)
+            ->where('año', $anio)
+            ->whereIn('unidad_id', $idUnidades)
+            ->get()
+            ->sum('importe');
+    }
 }

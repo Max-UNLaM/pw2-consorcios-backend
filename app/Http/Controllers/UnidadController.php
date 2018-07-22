@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Consorcio;
 use App\Expensa;
 use App\Gasto;
 use Illuminate\Http\Request;

@@ -17,8 +17,6 @@ Route::get('/unidad', 'UnidadController@index');
 
 # Route::post('/register', 'Auth\RegisterController@register');
 
-Route::get('/factura', 'FacturaController@index');
-
 Route::group(['middleware' => ['api', 'cors']], function () {
     Route::get('/expensa',  'ExpensaController@index');
     Route::post('/expensa', 'ExpensaController@store');
@@ -52,6 +50,12 @@ Route::group(['middleware' => ['api', 'cors']], function () {
     //User
     Route::get('/user/expensa', 'ExpensaController@user')->middleware('auth:api', 'scope:user,operator,admin');
 
+    //Factura
+    //Admin
+    Route::get('/admin/factura', 'FacturaController@index')->middleware('auth:api', 'scope:operator,admin');
+    //User
+    Route::get('/user/factura', 'FacturaController@user')->middleware('auth:api', 'scope:user,operator,admin');
+
     //Reclamo
     //Admin
     Route::get('/admin/reclamo', 'ReclamoController@index')->middleware('auth:api', 'scope:operator,admin');
@@ -68,9 +72,6 @@ Route::group(['middleware' => ['api', 'cors']], function () {
     Route::get('/gasto', 'GastoController@index')->middleware('auth:api', 'scope:operator,admin');
     Route::post('/gasto', 'GastoController@store')->middleware('auth:api', 'scope:operator,admin');
     Route::delete('/gasto', 'GastoController@delete')->middleware('auth:api', 'scope:operator,admin');
-
-    //Factura
-    Route::get('/factura', 'FacturaController@index')->middleware('auth:api', 'scope:operator,admin');
 
     Route::post('auth/admin/token/create', 'Auth\AdminController@addRoles')->middleware(['auth:api', 'scope:admin']);
     Route::post('auth/register', 'Auth\ApiRegisterController@register');

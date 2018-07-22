@@ -15,10 +15,13 @@ class CreateFacturasTable extends Migration
     {
         Schema::create('facturas', function (Blueprint $table) {
             $table->increments('id');
-	        $table->string('nombre');
-	        $table->string('direccion');
-	        $table->string('localidad');
-	        $table->string('provincia');
+	        $table->unsignedInteger('consorcio_id');
+	        $table->unsignedInteger('usuario_id');
+	        $table->string('mes');
+	        $table->string('anio');
+	        $table->date('emision');
+	        $table->date('vencimiento');
+	        $table->float('total');
             $table->timestamps();
         });
     }
