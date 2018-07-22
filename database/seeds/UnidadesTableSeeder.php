@@ -33,7 +33,7 @@ class UnidadesTableSeeder extends Seeder
                 for($k = 0; $k < $cantidadDeDepartamentosPorPiso; $k++){
                     Unidad::create([
                         'nombre' => ($j==0) ? 'PB '.$letrasDeUnidades[$k] : $j.'° '.$letrasDeUnidades[$k],
-                        'usuario_id' => $faker->numberBetween(1, $cantidadDeUsuarios/2),
+                        'usuario_id' => $faker->numberBetween(1, $cantidadDeUsuarios),
                         'consorcio_id' => $i
                     ]);
                 }
