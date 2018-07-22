@@ -24,9 +24,10 @@ class FacturaController extends Controller
     {
         if ($request->get('puerta')) {
             return "PATOVA";
-        } else {
-            if(!$request->get('consorcio_id')) return response(['consorcio_id requerido'], 400);
+        } else if($request->get('consorcio_id')){
             return Factura::obtenerFacturasDetalladasPorUsuarioYConsorcio(Auth::user()->getAuthIdentifier(), $request->get('consorcio_id'));
+        } else {
+            return Factura::obtenerFacturasDetalladasPorUsuario(Auth::user()->getAuthIdentifier());
         }
     }
 
