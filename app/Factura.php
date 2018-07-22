@@ -45,4 +45,12 @@ class Factura extends Model
 
         return Factura::obtenerDetalleDeFacturas($facturas);
     }
+
+    public static function obtenerFacturasDetalladasPorUsuario($usuarioId){
+        $facturas = DB::table('facturas')
+            ->where('usuario_id', $usuarioId)
+            ->get();
+
+        return Factura::obtenerDetalleDeFacturas($facturas);
+    }
 }
