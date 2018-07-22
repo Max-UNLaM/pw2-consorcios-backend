@@ -16,14 +16,15 @@ class FacturasTableSeeder extends Seeder
      */
     public function run()
     {
-        $cantidadDeMeses = 7;
+        $mesDeInicio = 5;
+        $mesFinal = 7;
         $anio = '2018';
         $consorcios = Consorcio::all();
 
         foreach ($consorcios as $consorcio){
             $propietarios = Consorcio::obtenerPropietarios($consorcio->id);
 
-            for($mes = 1; $mes <= $cantidadDeMeses; $mes++){
+            for($mes = $mesDeInicio; $mes <= $mesFinal; $mes++){
                 foreach ($propietarios as $propietario){
                     $idUnidades = Unidad::obtenerIdDeUnidadesPorUsuarioYConsorcio($propietario->id, $consorcio->id);
 

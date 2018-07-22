@@ -27,8 +27,8 @@ class ConsorciosTableSeeder extends Seeder
                 'email' => $faker->email,
                 'codigo_postal' => $faker->numberBetween(1111, 1702),
                 'cuit' => '20-'.$faker->randomNumber(8, true).'-'.$faker->randomDigitNotNull,
-                'cantidad_de_pisos' => $faker->numberBetween(2, 15),
-                'departamentos_por_piso' => $faker->numberBetween(4, 10)
+                'cantidad_de_pisos' => $faker->numberBetween(2, 8),
+                'departamentos_por_piso' => $faker->numberBetween(4, 8)
             ]);
         }
 
