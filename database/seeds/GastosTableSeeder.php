@@ -17,10 +17,11 @@ class GastosTableSeeder extends Seeder
         $consorcios = \App\Consorcio::all();
         $cantidadDeProveedores = sizeof(\App\Proveedor::all());
 
+        $mesDesdeElQueSeCreanGastos = 5;
         $mesHastaElQueSeCreanGastos = 7;
         $cantidadDeGastosMensuales = 5;
 
-        for($j = 1; $j <= $mesHastaElQueSeCreanGastos; $j++){
+        for($j = $mesDesdeElQueSeCreanGastos; $j <= $mesHastaElQueSeCreanGastos; $j++){
 
             $mes = ($j > 10) ? '0'.$j : $j;
 

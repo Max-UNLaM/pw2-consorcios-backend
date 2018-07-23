@@ -16,13 +16,12 @@ class ExpensasTableSeeder extends Seeder
     public function run()
     {
         $anio = (string) 2018;
-        $mesHastaElQueSeCreanExpensasPagas = 6;
+        $mesDesdeElQueSeCreanExpensas = 5;
+        $mesHastaElQueSeCreanExpensas = 7;
 
         $consorcios = Consorcio::all();
-        $gasto = new Gasto();
-        $expensa = new Expensa();
 
-        for($i = 1; $i <= $mesHastaElQueSeCreanExpensasPagas; $i++){
+        for($i = $mesDesdeElQueSeCreanExpensas; $i <= $mesHastaElQueSeCreanExpensas; $i++){
             foreach($consorcios as $consorcio){
                 $gastosMensualesConsorcio = Gasto::importeGastosMensualConsorcio($anio, $i, $consorcio->id);
                 $unidadesDelConsorcio = Unidad::obtenerIdUnidadesPorIdConsorcio($consorcio->id);
@@ -42,28 +41,6 @@ class ExpensasTableSeeder extends Seeder
                         'importe' => $importe
                     ]);
                 }
-            }
-        }
-
-        $mesEnElQueSeCreanExpensasImpagas = $mesHastaElQueSeCreanExpensasPagas + 1;
-
-        $mesEnElQueSeCreanExpensasImpagas = ($mesEnElQueSeCreanExpensasImpagas <10) ? '0'.$mesEnElQueSeCreanExpensasImpagas : $mesEnElQueSeCreanExpensasImpagas ;
-
-        foreach ($consorcios as $consorcio){
-            $unidadesDelConsorcio = \App\Unidad::obtenerIdUnidadesPorIdConsorcio($consorcio->id);
-
-            foreach($unidadesDelConsorcio as $unidad){
-                $mes = ($i < 10) ? '0'.$i : $i;
-
-                Expensa::create([
-                    'unidad_id' => $unidad->id,
-                    'año' => $anio,
-                    'mes' => $mesEnElQueSeCreanExpensasImpagas,
-                    'pago' => 0,
-                    'emision' => "$anio-$mesEnElQueSeCreanExpensasImpagas-10",
-                    'vencimiento' => "$anio-$mesEnElQueSeCreanExpensasImpagas-20",
-                    'importe' => (($gasto->importeGastosMensualConsorcio($anio, $mesEnElQueSeCreanExpensasImpagas, $consorcio->id)) * 1.2) * \App\Unidad::calcularCoeficiente($consorcio->id)
-                ]);
             }
         }
     }
