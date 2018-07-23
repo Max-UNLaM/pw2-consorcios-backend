@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 class Factura extends Model
 {
-    protected $fillable = ['consorcio_id', 'usuario_id', 'mes', 'anio', 'emision', 'vencimiento', 'total'];
+    protected $fillable = ['consorcio_id', 'usuario_id', 'mes', 'anio', 'emision', 'vencimiento', 'total', 'pago_parcial', 'adeuda'];
 
     public static function obtenerDetalleDeFacturas($facturasSinDetalle){
         foreach ($facturasSinDetalle as $factura){

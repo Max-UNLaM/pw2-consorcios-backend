@@ -56,6 +56,12 @@ Route::group(['middleware' => ['api', 'cors']], function () {
     //User
     Route::get('/user/factura', 'FacturaController@user')->middleware('auth:api', 'scope:user,operator,admin');
 
+    //Pago
+    //Admin
+    Route::get('/admin/pago', 'PagoController@index')->middleware('auth:api', 'scope:operator,admin');
+    //User
+    Route::get('/user/pago', 'PagoController@user')->middleware('auth:api', 'scope:user,operator,admin');
+
     //Reclamo
     //Admin
     Route::get('/admin/reclamo', 'ReclamoController@index')->middleware('auth:api', 'scope:operator,admin');

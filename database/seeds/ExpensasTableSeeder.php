@@ -36,7 +36,7 @@ class ExpensasTableSeeder extends Seeder
                         'unidad_id' => $unidad->id,
                         'año' => $anio,
                         'mes' => (strlen($i) < 10) ? '0'.$i : $i,
-                        'estado' => "PAGO",
+                        'pago' => 0,
                         'emision' => "$anio-$i-10",
                         'vencimiento' => "$anio-$i-20",
                         'importe' => $importe
@@ -59,7 +59,7 @@ class ExpensasTableSeeder extends Seeder
                     'unidad_id' => $unidad->id,
                     'año' => $anio,
                     'mes' => $mesEnElQueSeCreanExpensasImpagas,
-                    'estado' => 'IMPAGO',
+                    'pago' => 0,
                     'emision' => "$anio-$mesEnElQueSeCreanExpensasImpagas-10",
                     'vencimiento' => "$anio-$mesEnElQueSeCreanExpensasImpagas-20",
                     'importe' => (($gasto->importeGastosMensualConsorcio($anio, $mesEnElQueSeCreanExpensasImpagas, $consorcio->id)) * 1.2) * \App\Unidad::calcularCoeficiente($consorcio->id)

@@ -14,7 +14,6 @@ class DatabaseSeeder extends Seeder
         $this->call(RolsTableSeeder::class);
         $this->call(UsersTableSeeder::class);
         $this->call(ConsorciosTableSeeder::class);
-        # $this->call(FacturasTableSeeder::class);
         $this->call(UnidadesTableSeeder::class);
         $this->call(ProveedorsTableSeeder::class);
         $this->call(GastosTableSeeder::class);
@@ -22,5 +21,6 @@ class DatabaseSeeder extends Seeder
         $this->call(EstadoDeReclamosTableSeeder::class);
         $this->call(ReclamosTableSeeder::class);
         $this->call(FacturasTableSeeder::class);
+        $this->call(PagosTableSeeder::class);
     }
 }

@@ -22,6 +22,8 @@ class CreateFacturasTable extends Migration
 	        $table->date('emision');
 	        $table->date('vencimiento');
 	        $table->float('total');
+            $table->float('pago_parcial');
+            $table->float('adeuda');
             $table->timestamps();
         });
     }

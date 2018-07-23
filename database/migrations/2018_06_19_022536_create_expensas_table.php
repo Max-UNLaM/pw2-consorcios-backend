@@ -18,7 +18,7 @@ class CreateExpensasTable extends Migration
             $table->unsignedInteger('unidad_id');
             $table->string('año');
             $table->string('mes');
-            $table->string('estado');
+            $table->unsignedInteger('pago');
             $table->date('emision');
             $table->date('vencimiento');
             $table->float('importe');

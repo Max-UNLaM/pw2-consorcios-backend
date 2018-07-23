@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 class Expensa extends Model
 {
-    protected $fillable = ['unidad_id', 'año', 'mes', 'estado', 'emision', 'vencimiento', 'importe'];
+    protected $fillable = ['unidad_id', 'año', 'mes', 'pago', 'emision', 'vencimiento', 'importe'];
 
     public static function userGetAllUsersExpensas(string $userId)
     {
@@ -50,14 +50,6 @@ class Expensa extends Model
             ->where('año', $año)
             ->get();
     }
-
-    /*public static function obtenerExpensaPorUsuarioMesAnio($usuario_id, $mes, $anio){
-        return DB::table('expensas')
-            ->where('unidad_id', $usuario_id)
-            ->where('mes', $mes)
-            ->where('año', $anio)
-            ->get();
-    }*/
 
     public static function obtenerExpensasPorMesAnioUnidades($mes, $anio, $idUnidades){
         $mes = (strlen($mes) == 1) ? '0'.$mes : $mes;
