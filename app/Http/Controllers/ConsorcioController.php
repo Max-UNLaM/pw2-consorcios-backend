@@ -52,5 +52,34 @@ class ConsorcioController extends Controller
         }
     }
 
+    public function update(Request $request)
+    {
+        //Busco el consorcio correspondiente
+        $consorcio = Consorcio::find($request->get('id'));
 
+        //Pregunto si encontro un consorcio con ese id
+        if ($consorcio) {
+            //Actualizo los atributos del consorcio encontrado
+            $consorcio->nombre = $request->get('nombre');
+            $consorcio->direccion = $request->get('direccion');
+            $consorcio->localidad = $request->get('localidad');
+            $consorcio->provincia = $request->get('provincia');
+            $consorcio->telefono =  $request->get('telefono');
+            $consorcio->email = $request->get('email');
+            $consorcio->codigo_postal = $request->get('codigo_postal');
+            $consorcio->cuit = $request->get('cuit');
+            $consorcio->cantidad_de_pisos = $request->get('cantidad_de_pisos');
+            $consorcio->departamentos_por_piso = $request->get('departamentos_por_piso');
+
+            //Guardo los cambios
+            $consorcio->save();
+
+            return response([
+                'consorcioActualizado' => $consorcio
+            ]);
+        } else {
+            //Si no lo encuentra respondo un codigo 404 (not found)
+            return response(['No se encontro el consorcio que se quiere actualizar'], 404);
+        }
+    }
 }
