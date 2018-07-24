@@ -16,7 +16,7 @@ class FacturasTableSeeder extends Seeder
      */
     public function run()
     {
-        $mesDeInicio = 5;
+        $mesDeInicio = 1;
         $mesFinal = 7;
         $anio = '2018';
         $consorcios = Consorcio::all();
