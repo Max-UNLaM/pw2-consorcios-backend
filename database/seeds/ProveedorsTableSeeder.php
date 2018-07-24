@@ -14,28 +14,31 @@ class ProveedorsTableSeeder extends Seeder
     public function run()
     {
         $faker = Factory::create();
+
+        $telefonosPrefijo = array('4653', '4656', '4657', '4488', '5237');
+
         for ($i = 0; $i < 5; $i++) {
             Proveedor::create([
                 'nombre'    => $faker->name,
-                'tel' => $faker->phoneNumber,
+                'tel' => $faker->randomElement($telefonosPrefijo).'-'.$faker->randomNumber(4, true),
                 'email' => $faker->email,
-                'rubro' => 'electricidad'
+                'rubro' => 'Electricidad'
             ]);
         }
         for ($i = 0; $i < 5; $i++) {
             Proveedor::create([
                 'nombre'    => $faker->name,
-                'tel' => $faker->phoneNumber,
+                'tel' => $faker->randomElement($telefonosPrefijo).'-'.$faker->randomNumber(4, true),
                 'email' => $faker->email,
-                'rubro' => 'limpieza'
+                'rubro' => 'Limpieza'
             ]);
         }
         for ($i = 0; $i < 5; $i++) {
             Proveedor::create([
                 'nombre'    => $faker->name,
-                'tel' => $faker->phoneNumber,
+                'tel' => $faker->randomElement($telefonosPrefijo).'-'.$faker->randomNumber(4, true),
                 'email' => $faker->email,
-                'rubro' => 'construccion'
+                'rubro' => 'Construccion'
             ]);
         }
     }
