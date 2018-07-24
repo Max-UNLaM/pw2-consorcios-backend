@@ -39,7 +39,7 @@ class EstadisticaController extends Controller
         foreach ($facturasDelConsorcio as $factura){
             if($factura->adeuda == 0) $facturasPagas++;
             if($factura->pago_parcial == 0) $facturasImpagas++;
-            if(($factura->adeuda != 0) && ($factura->pago_parcial != $factura->total)) $facturasConPagoParcial++;
+            if(($factura->adeuda != 0) && ($factura->adeuda != $factura->total)) $facturasConPagoParcial++;
         }
 
         $reclamosDelConsorcio = Reclamo::obtenerReclamosPorConsorcio($consorcioId);
