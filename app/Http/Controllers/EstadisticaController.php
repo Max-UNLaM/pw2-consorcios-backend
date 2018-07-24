@@ -12,25 +12,33 @@ class EstadisticaController extends Controller
 {
     public function index(Request $request){
         $consorcioId = $request->get('consorcio_id');
+        $mes = $request->get('mes');
+        $anio = $request->get('anio');
 
         if($consorcioId){
-            return $this->estadisticasPorConsorcio($consorcioId);
+            return $this->estadisticasPorConsorcio($consorcioId, $mes, $anio);
         } else {
             $consorcios = Consorcio::all();
 
             foreach ($consorcios as $consorcio){
-                $respuesta[] = $this->estadisticasPorConsorcio($consorcio->id);
+                $respuesta[] = $this->estadisticasPorConsorcio($consorcio->id, $mes, $anio);
             }
 
             return $respuesta;
         }
     }
 
-    public function estadisticasPorConsorcio($consorcioId){
+    public function estadisticasPorConsorcio($consorcioId, $mes, $anio){
+        if($mes && $anio){
+            $facturasDelConsorcio = Factura::obtenerFacturasPorConsorcioMesAnio($consorcioId, $mes, $anio);
+            $reclamosDelConsorcio = Reclamo::obtenerReclamosPorConsorcioMesAnio($consorcioId, $mes, $anio);
+        } else {
+            $facturasDelConsorcio = Factura::obtenerFacturasPorConsorcio($consorcioId);
+            $reclamosDelConsorcio = Reclamo::obtenerReclamosPorConsorcio($consorcioId);
+        }
+
         $consorcio = Consorcio::find($consorcioId);
         $cantadadDeUnidades = sizeof(Unidad::obtenerUnidadesPorIdConsorcio($consorcioId));
-
-        $facturasDelConsorcio = Factura::obtenerFacturasPorConsorcio($consorcioId);
 
         $facturasPagas = 0;
         $facturasConPagoParcial = 0;
@@ -39,10 +47,8 @@ class EstadisticaController extends Controller
         foreach ($facturasDelConsorcio as $factura){
             if($factura->adeuda == 0) $facturasPagas++;
             if($factura->pago_parcial == 0) $facturasImpagas++;
-            if(($factura->adeuda != 0) && ($factura->pago_parcial != $factura->total)) $facturasConPagoParcial++;
+            if(($factura->adeuda != 0) && ($factura->adeuda != $factura->total)) $facturasConPagoParcial++;
         }
-
-        $reclamosDelConsorcio = Reclamo::obtenerReclamosPorConsorcio($consorcioId);
 
         $reclamosResueltos = 0;
         $reclamosNoResueltos = 0;

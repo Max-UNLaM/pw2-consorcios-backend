@@ -27,4 +27,13 @@ class Reclamo extends Model
             ->whereIn('unidad_id', $unidadesDelConsorcio)
             ->get();
     }
+
+    public static function obtenerReclamosPorConsorcioMesAnio($consorcioId, $mes, $anio){
+        $mes = ($mes < 10) ? '0'.$mes : $mes;
+
+
+        return Reclamo::obtenerReclamosPorConsorcio($consorcioId)
+            ->where('fecha_reclamo', ">", "$anio-$mes-01")
+            ->where('fecha_reclamo', "<", "$anio-$mes-31");
+    }
 }

@@ -63,4 +63,10 @@ class Factura extends Model
             ->where('consorcio_id', $consorcioId)
             ->get();
     }
+
+    public static function obtenerFacturasPorConsorcioMesAnio($consorcioId, $mes, $anio){
+        return Factura::obtenerFacturasPorConsorcio($consorcioId)
+            ->where('mes', $mes)
+            ->where('anio', $anio);
+    }
 }
