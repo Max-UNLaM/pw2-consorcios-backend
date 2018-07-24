@@ -33,18 +33,18 @@ class ExpensaController extends Controller
         } else if ($request->get('unidad_id')) {
             return $this->listByUnidad($request);
         } else if ($request->get('page')) {
-            return $this->userGetAllExpensasPaginate($request);
+            return Expensa::expensasPorUsuario(Auth::user()->getAuthIdentifier(), $request->get('size'));
         } else if ($request->get('id')) {
             return $this->show($request->get('id'));
         } else {
-            return Expensa::all();
+            return Expensa::expensasPorUsuario(Auth::user()->getAuthIdentifier(), 5);
         }
     }
 
-    protected function userGetAllExpensasPaginate(Request $request)
+    /*protected function userGetAllExpensasPaginate(Request $request)
     {
-        return Expensa::userGetAllUsersExpensas(Auth::user()->getAuthIdentifier())->paginate($request->get('size'));
-    }
+        return Expensa::expensasPorUsuario(Auth::user()->getAuthIdentifier())->paginate($request->get('size'));
+    }*/
     
     protected function userGetAllExpensas()
     {

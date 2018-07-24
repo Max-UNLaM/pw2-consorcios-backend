@@ -54,7 +54,18 @@ class Unidad extends Model
 
     public static function getAllUnidadOfUser(int $userId) {
         return DB::table('unidads')
-            ->where('usuario_id', $userId);
+            ->where('usuario_id', $userId)
+            ->get();
+    }
+
+    public static function getAllUnidadIdOfUser(int $userId) {
+        $unidads = Unidad::getAllUnidadOfUser($userId);
+
+        foreach ($unidads as $unidad){
+            $response[] = $unidad->id;
+        }
+
+        return $response;
     }
 
     public static function obtenerUnidadesPorUsuarioYConsorcio($usuarioId, $consorcioId) {

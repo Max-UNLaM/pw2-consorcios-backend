@@ -18,6 +18,15 @@ class Expensa extends Model
             ->where('users.id', '=', $userId);
     }
 
+    public static function expensasPorUsuario($usuario_id, $size){
+        $unidadesDelUsuario = Unidad::getAllUnidadIdOfUser($usuario_id);
+
+        $respuesta = DB::table('expensas')
+            ->whereIn('unidad_id', $unidadesDelUsuario);
+
+        return ($size) ? $respuesta->paginate($size): $respuesta->get();
+    }
+
     public static function crearExpensaConImporte(Expensa $expensaNueva)
     {
         $gasto = new Gasto();
