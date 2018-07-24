@@ -19,4 +19,12 @@ class Reclamo extends Model
         return DB::table('reclamos')
             ->where('usuario_id', $userId);
     }
+
+    public static function obtenerReclamosPorConsorcio($consorcioId){
+        $unidadesDelConsorcio = Unidad::getUnidadsIdByConsorcioId($consorcioId);
+
+        return DB::table('reclamos')
+            ->whereIn('unidad_id', $unidadesDelConsorcio)
+            ->get();
+    }
 }

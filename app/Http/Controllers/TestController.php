@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
+
 class TestController extends Controller
 {
     public function index(){
-        $ec = new EstadisticaController();
-        return $ec->estadisticasPorConsorcio(3);
+        return User::getUserIdsByConsorcioId(1);
     }
 
 }

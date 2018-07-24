@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Consorcio;
 use App\Factura;
+use App\Reclamo;
 use App\Unidad;
 use Illuminate\Http\Request;
 
@@ -41,6 +42,20 @@ class EstadisticaController extends Controller
             if(($factura->adeuda != 0) && ($factura->pago_parcial != $factura->total)) $facturasConPagoParcial++;
         }
 
+        $reclamosDelConsorcio = Reclamo::obtenerReclamosPorConsorcio($consorcioId);
+
+        $reclamosResueltos = 0;
+        $reclamosNoResueltos = 0;
+        $reclamosRechazados = 0;
+        $reclamosEsperandoRespuesta = 0;
+
+        foreach ($reclamosDelConsorcio as $reclamo){
+            if($reclamo->estado_de_reclamo_id == 1) $reclamosResueltos++;
+            if($reclamo->estado_de_reclamo_id == 2) $reclamosNoResueltos++;
+            if($reclamo->estado_de_reclamo_id == 3) $reclamosRechazados++;
+            if($reclamo->estado_de_reclamo_id == 4) $reclamosEsperandoRespuesta++;
+        }
+
         return ([
             'consorcio_id' => $consorcioId,
             'consorcio_nombre' =>$consorcio->nombre,
@@ -49,8 +64,11 @@ class EstadisticaController extends Controller
             'facturas_pagas' => $facturasPagas,
             'facturas_con_pago_parcial' => $facturasConPagoParcial,
             'facturas_impagas' => $facturasImpagas,
-            'reclamos_abiertos' => 160,
-            'reclamos_cerrados' => 4
+            'total_reclamos' => sizeof($reclamosDelConsorcio),
+            'reclamos_resueltos' => $reclamosResueltos,
+            'reclamos_no_resueltos' => $reclamosNoResueltos,
+            'reclamos_rechazados' => $reclamosRechazados,
+            'reclamos_esperando_respuesta' => $reclamosEsperandoRespuesta
         ]);
     }
 }

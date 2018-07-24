@@ -98,4 +98,17 @@ class Unidad extends Model
             ->where('id', $id)
             ->get()[0];
     }
+
+    public static function getUnidadsIdByConsorcioId($consorcioId){
+        $unidades = DB::table('unidads')
+            ->where('consorcio_id', $consorcioId)
+            ->get()
+            ->unique();
+
+        foreach ($unidades as $unidad){
+            $respuesta[] = $unidad->id;
+        }
+
+        return $respuesta;
+    }
 }
