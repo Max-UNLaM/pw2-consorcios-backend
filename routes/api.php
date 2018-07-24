@@ -47,6 +47,8 @@ Route::group(['middleware' => ['api', 'cors']], function () {
     Route::put('/admin/expensa', 'ExpensaController@update')->middleware('auth:api', 'scope:operator,admin');
     Route::delete('/admin/expensa', 'ExpensaController@delete')->middleware('auth:api', 'scope:operator,admin');
     Route::put('/admin/generar-expensas', 'ExpensaController@generarExpensas')->middleware('auth:api', 'scope:operator,admin');
+    Route::get('/admin/obtener-expensas-pagas', 'ExpensaController@obtenerExpensasPagas')->middleware('auth:api', 'scope:operator,admin');
+    Route::get('/admin/obtener-expensas-impagas', 'ExpensaController@obtenerExpensasImpagas')->middleware('auth:api', 'scope:operator,admin');
     //User
     Route::get('/user/expensa', 'ExpensaController@user')->middleware('auth:api', 'scope:user,operator,admin');
 
