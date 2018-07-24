@@ -24,10 +24,10 @@ class FacturaController extends Controller
     {
         if ($request->get('puerta')) {
             return "PATOVA";
+        } else if($request->get('page') && !$request->get('consorcio_id')){
+            return Factura::obtenerFacturasDetalladasPorUsuario(Auth::user()->getAuthIdentifier(), $request->get('size'));
         } else if($request->get('consorcio_id')){
-            return Factura::obtenerFacturasDetalladasPorUsuarioYConsorcio(Auth::user()->getAuthIdentifier(), $request->get('consorcio_id'));
-        } else {
-            return Factura::obtenerFacturasDetalladasPorUsuario(Auth::user()->getAuthIdentifier());
+            return Factura::obtenerFacturasDetalladasPorUsuarioYConsorcio(Auth::user()->getAuthIdentifier(), $request->get('consorcio_id'), $request->get('size'));
         }
     }
 

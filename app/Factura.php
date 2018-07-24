@@ -37,20 +37,24 @@ class Factura extends Model
         return $facturasSinDetalle;
     }
 
-    public static function obtenerFacturasDetalladasPorUsuarioYConsorcio($usuarioId, $consorcioId){
-        $facturas = DB::table('facturas')
+    public static function obtenerFacturasDetalladasPorUsuarioYConsorcio($usuarioId, $consorcioId, $size){
+        $respuesta = DB::table('facturas')
             ->where('usuario_id', $usuarioId)
             ->where('consorcio_id', $consorcioId)
-            ->get();
+            ->paginate($size);
 
-        return Factura::obtenerDetalleDeFacturas($facturas);
+        Factura::obtenerDetalleDeFacturas($respuesta->items());
+
+        return $respuesta;
     }
 
-    public static function obtenerFacturasDetalladasPorUsuario($usuarioId){
-        $facturas = DB::table('facturas')
+    public static function obtenerFacturasDetalladasPorUsuario($usuarioId, $size){
+        $respuesta = (DB::table('facturas')
             ->where('usuario_id', $usuarioId)
-            ->get();
+            ->paginate($size));
 
-        return Factura::obtenerDetalleDeFacturas($facturas);
+        Factura::obtenerDetalleDeFacturas($respuesta->items());
+
+        return $respuesta;
     }
 }
