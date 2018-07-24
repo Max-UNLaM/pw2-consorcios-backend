@@ -86,6 +86,7 @@ Route::group(['middleware' => ['api', 'cors']], function () {
     Route::get('/gasto', 'GastoController@index')->middleware('auth:api', 'scope:operator,admin');
     Route::post('/gasto', 'GastoController@store')->middleware('auth:api', 'scope:operator,admin');
     Route::delete('/gasto', 'GastoController@delete')->middleware('auth:api', 'scope:operator,admin');
+    Route::put('/gasto', 'GastoController@update')->middleware('auth:api', 'scope:operator,admin');
 
     Route::post('auth/admin/token/create', 'Auth\AdminController@addRoles')->middleware(['auth:api', 'scope:admin']);
     Route::post('auth/register', 'Auth\ApiRegisterController@register');

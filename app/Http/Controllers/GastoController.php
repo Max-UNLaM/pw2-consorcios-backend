@@ -57,4 +57,32 @@ class GastoController extends Controller
             'total' => $gasto->importeGastosMensual($datos["year"], $datos["mes"])
         ]);
     }
+
+    public function update(Request $request)
+    {
+        //Busco el gasto correspondiente
+        $gasto = Gasto::find($request->get('id'));
+
+        //Pregunto si encontro un gasto con ese id
+        if ($gasto) {
+            //Actualizo los atributos del gasto encontrado
+            $gasto->nombre = $request->get('nombre');
+            $gasto->valor = $request->get('valor');
+            $gasto->mes = $request->get('mes');
+            $gasto->anio = $request->get('anio');
+            $gasto->fecha = $request->get('fecha');
+            $gasto->proveedor_id = $request->get('proveedor_id');
+            $gasto->consorcio_id = $request->get('consorcio_id');
+           
+            //Guardo los cambios
+            $gasto->save();
+
+            return response([
+                'gastoActualizado' => $gasto
+            ]);
+        } else {
+            //Si no lo encuentra respondo un codigo 404 (not found)
+            return response(['No se encontro el pago que se quiere actualizar'], 404);
+        }
+    }
 }
