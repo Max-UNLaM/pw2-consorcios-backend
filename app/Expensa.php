@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Dto\Pago\ExpensaDto;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
@@ -93,5 +94,13 @@ class Expensa extends Model
         return DB::table('expensas')
             ->where('pago', 0)
             ->paginate($size);
+    }
+
+    public static function escupirDtos(array $expensas) {
+        $expensasLocas = [];
+        foreach ($expensas as $expensa) {
+            array_push($expensasLocas, new ExpensaDto($expensa));
+        }
+        return $expensasLocas;
     }
 }

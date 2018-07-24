@@ -79,8 +79,6 @@ Route::group(['middleware' => ['api', 'cors']], function () {
     Route::get('/user/reclamo', 'ReclamoController@user')->middleware('auth:api', 'scope:user,operator,admin');
     Route::post('/user/reclamo', 'ReclamoController@store')->middleware('auth:api', 'scope:user,operator,admin');
 
-
-
     //Gasto
     Route::get('/gasto/mensual', 'GastoController@gastosMensual');
     Route::get('/gasto', 'GastoController@index')->middleware('auth:api', 'scope:operator,admin');
@@ -94,4 +92,7 @@ Route::group(['middleware' => ['api', 'cors']], function () {
     Route::group(['middleware' => 'auth:api'], function () {
         Route::post('get-details', 'Auth\PassportController@getDetails');
     });
+
+    // TodoPago
+    Route::post('/todopago/first', 'TodoPagoController@firstStep')->middleware('auth:api', 'scope:user,operator,admin');
 });
