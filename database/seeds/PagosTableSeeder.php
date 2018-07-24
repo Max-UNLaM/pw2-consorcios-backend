@@ -26,11 +26,11 @@ class PagosTableSeeder extends Seeder
 
             $pagoTotal = $faker->randomElement($arrayRandom);
 
-            if($pagoTotal){
+            if($pagoTotal == 1){
                 Pago::pagoParcial($factura->id, $factura->adeuda, "2018-$mes-$dia");
             } else {
                 $pagoParcial = $faker->randomElement($arrayRandom);
-                if($pagoParcial){
+                if($pagoParcial == 1){
                     $montoAPagar = $faker->numberBetween(($factura->adeuda / 10), $factura->adeuda);
                     Pago::pagoParcial($factura->id, $montoAPagar, "2018-$mes-$dia");
                 }

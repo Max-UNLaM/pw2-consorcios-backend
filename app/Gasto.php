@@ -42,8 +42,8 @@ class Gasto extends Model
         $mes = (strlen($mes) == 1) ? '0'.$mes : $mes;
 
         return Gasto::all()
-            ->where('mes', '>=', "$anio-$mes-01")
-            ->where('anio', '<=', "$anio-$mes-31")
+            ->where('mes', '=', $mes)
+            ->where('anio', '=', $anio)
             ->where('consorcio_id', $consorcioId)
             ->sum('valor');
 

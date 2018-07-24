@@ -16,7 +16,7 @@ class ExpensasTableSeeder extends Seeder
     public function run()
     {
         $anio = (string) 2018;
-        $mesDesdeElQueSeCreanExpensas = 5;
+        $mesDesdeElQueSeCreanExpensas = 1;
         $mesHastaElQueSeCreanExpensas = 7;
 
         $consorcios = Consorcio::all();
