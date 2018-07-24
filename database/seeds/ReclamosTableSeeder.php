@@ -20,7 +20,8 @@ class ReclamosTableSeeder extends Seeder
         $reclamosMaximosPorConsorcio = 80;
 
         $faker = Factory::create();
-        $motivos = array('Cañería rota',
+        $motivos = array(
+            'Cañería rota',
             'Ruidos molestos',
             'Malos vecinos',
             'Vecino insoportable',
@@ -30,7 +31,14 @@ class ReclamosTableSeeder extends Seeder
             'La pintura esta horrible',
             'El portero es mal tipo',
             'No anda la luz del pasillo',
-            'El ascensor no funciona');
+            'El ascensor no funciona',
+            'Vecino tiene un bebé que llora mucho',
+            'Música fuerte en horas nocturnas',
+            'No hay agua',
+            'Falla eléctrica',
+            'Las expensas no son transparentes',
+            'Las áreas de uso común no están cuidadas'
+            );
 
         $consorcios = Consorcio::all();
 
