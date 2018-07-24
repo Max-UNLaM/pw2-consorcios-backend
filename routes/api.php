@@ -14,7 +14,9 @@ use App\Unidad;
 */
 
 Route::get('/unidad', 'UnidadController@index');
-//Route::get('/test', 'FacturaController@index');
+Route::get('/test', 'TestController@index');
+
+Route::get('/admin/estadistica', 'EstadisticaController@index');
 
 # Route::post('/register', 'Auth\RegisterController@register');
 

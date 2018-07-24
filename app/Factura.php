@@ -57,4 +57,10 @@ class Factura extends Model
 
         return $respuesta;
     }
+
+    public static function obtenerFacturasPorConsorcio($consorcioId){
+        return DB::table('facturas')
+            ->where('consorcio_id', $consorcioId)
+            ->get();
+    }
 }
