@@ -14,7 +14,7 @@ use App\Unidad;
 */
 
 Route::get('/unidad', 'UnidadController@index');
-//Route::get('/test', 'ExpensaController@index');
+//Route::get('/test', 'FacturaController@index');
 
 # Route::post('/register', 'Auth\RegisterController@register');
 
