@@ -80,4 +80,18 @@ class Expensa extends Model
             ->get()
             ->sum('importe');
     }
+
+    public static function obtenerExpensasPagas($size){
+
+        return DB::table('expensas')
+            ->where('pago', 1)
+            ->paginate($size);
+    }
+
+    public static function obtenerExpensasImpagas($size){
+
+        return DB::table('expensas')
+            ->where('pago', 0)
+            ->paginate($size);
+    }
 }

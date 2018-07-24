@@ -190,4 +190,14 @@ class ExpensaController extends Controller
 
         return "Las expensas se han creado correctamente";
     }
+
+    protected function obtenerExpensasPagas(Request $request)
+    {
+         return Expensa::obtenerExpensasPagas($request->get('size'));
+    }
+
+    protected function obtenerExpensasImpagas(Request $request)
+    {
+        return Expensa::obtenerExpensasImpagas($request->get('size'));
+    }
 }	
