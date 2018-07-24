@@ -122,8 +122,6 @@ class ExpensaController extends Controller
             //Si no la encuentra respondo un codigo 404 (not found)
             return response(['No se encontro la expensa que se quiere actualizar'], 404);
         }
-
-
     }
 
     public function show($id)
