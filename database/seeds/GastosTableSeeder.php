@@ -1,6 +1,7 @@
 <?php
 
 use App\Gasto;
+use App\Proveedor;
 use Faker\Factory;
 use Illuminate\Database\Seeder;
 
@@ -19,7 +20,7 @@ class GastosTableSeeder extends Seeder
 
         $mesDesdeElQueSeCreanGastos = 5;
         $mesHastaElQueSeCreanGastos = 7;
-        $cantidadDeGastosMensuales = 5;
+        $cantidadDeGastosMensuales = 12;
 
         for($j = $mesDesdeElQueSeCreanGastos; $j <= $mesHastaElQueSeCreanGastos; $j++){
 
@@ -28,13 +29,17 @@ class GastosTableSeeder extends Seeder
             foreach ($consorcios as $consorcio){
 
                 for ($i = 0; $i < $cantidadDeGastosMensuales; $i++) {
+                    $proveedorId = $faker->numberBetween(1, $cantidadDeProveedores);
+                    $proveedor = Proveedor::find($proveedorId);
+                    $dia = $faker->numberBetween(1, 28);
+
                     Gasto::create([
-                        'nombre' => $faker->randomElement(array('Gastos generales', 'Gastos generales', 'Gastos generales', 'Pintura', 'Plomería', 'Electricista', 'Gasista')),
-                        'valor' => $faker->numberBetween(0,3000),
+                        'nombre' => $proveedor->rubro,
+                        'valor' => $faker->numberBetween(500, 3000),
                         'mes' => $mes,
                         'anio' => 2018,
-                        'fecha' => "2018-$mes-10",
-                        'proveedor_id' => $faker->numberBetween(1, $cantidadDeProveedores),
+                        'fecha' => "2018-$mes-$dia",
+                        'proveedor_id' => $proveedorId,
                         'consorcio_id' => $consorcio->id
                     ]);
                 }
