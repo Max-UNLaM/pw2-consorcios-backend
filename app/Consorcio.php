@@ -34,7 +34,7 @@ class Consorcio extends Model
         return DB::table('consorcios')
             ->join('unidads', 'unidads.consorcio_id', '=', 'consorcios.id')
             ->join('users', 'users.id', '=', 'unidads.usuario_id')
-            ->addSelect(['consorcios.nombre as nombre', 'consorcios.direccion as direccion', 'consorcios.localidad as localidad'])
+            ->addSelect(['consorcios.id as id', 'consorcios.nombre as nombre', 'consorcios.direccion as direccion', 'consorcios.localidad as localidad'])
             ->groupBy('consorcios.id')
             ->where('usuario_id', $userId);
     }
