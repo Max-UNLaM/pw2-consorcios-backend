@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Consorcio;
 use App\Unidad;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ConsorcioController extends Controller
 {
@@ -17,6 +18,28 @@ class ConsorcioController extends Controller
             return Consorcio::all();
         }
 	}
+
+	public function user(Request $request) {
+        if ($request->get('page')) {
+            return $this->getAllConsorciosofUserPaginada($request, Auth::user()->getAuthIdentifier());
+        } else if($request->get('id')) {
+            return $this->show($request->get('id'));
+        } else {
+            return $this->getAllConsorciosOfUser(Auth::user()->getAuthIdentifier())->get(['*']);
+        }
+    }
+
+    protected function getAllConsorciosofUserPaginada(Request $request, $userId)
+    {
+        $size = $request->get('size') ? $request->get('size') : 10;
+        return $this->getAllConsorciosOfUser($userId)->paginate($size);
+    }
+
+    protected function getAllConsorciosOfUser($userId)
+    {
+        return Consorcio::getAllConsorciosOfUser($userId);
+    }
+
 
     public function paginate(Request $request)
     {

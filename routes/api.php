@@ -1,4 +1,5 @@
 <?php
+
 use Illuminate\Http\Request;
 use App\Unidad;
 
@@ -33,10 +34,12 @@ Route::group(['middleware' => ['api', 'cors']], function () {
     });
     // Consorcio
     // Admin
-    Route::get('/consorcio', 'ConsorcioController@index')->middleware('auth:api', 'scope:operator,admin');
-    Route::post('/consorcio', 'ConsorcioController@store')->middleware('auth:api', 'scope:operator,admin');
-    Route::delete('/consorcio', 'ConsorcioController@delete')->middleware('auth:api', 'scope:operator,admin');
-    Route::put('/consorcio', 'ConsorcioController@update')->middleware('auth:api', 'scope:operator,admin');
+    Route::get('/admin/consorcio', 'ConsorcioController@index')->middleware('auth:api', 'scope:operator,admin');
+    Route::post('/admin/consorcio', 'ConsorcioController@store')->middleware('auth:api', 'scope:operator,admin');
+    Route::delete('/admin/consorcio', 'ConsorcioController@delete')->middleware('auth:api', 'scope:operator,admin');
+    Route::put('/admin/consorcio', 'ConsorcioController@update')->middleware('auth:api', 'scope:operator,admin');
+    Route::get('/user/consorcio', 'ConsorcioController@user')->middleware('auth:api', 'scope:user,operator,admin');
+
 
     // Unidad
     // Admin
@@ -68,7 +71,7 @@ Route::group(['middleware' => ['api', 'cors']], function () {
     // Admin
     Route::get('/admin/pago', 'PagoController@index')->middleware('auth:api', 'scope:operator,admin');
     Route::delete('/admin/pago', 'PagoController@delete')->middleware('auth:api', 'scope:operator,admin');
-    Route::post('/admin/pago',  'PagoController@store')->middleware('auth:api',  'scope:operator,admin');
+    Route::post('/admin/pago', 'PagoController@store')->middleware('auth:api', 'scope:operator,admin');
     Route::put('/admin/pago', 'PagoController@update')->middleware('auth:api', 'scope:operator,admin');
     // User
     Route::get('/user/pago', 'PagoController@user')->middleware('auth:api', 'scope:user,operator,admin');
