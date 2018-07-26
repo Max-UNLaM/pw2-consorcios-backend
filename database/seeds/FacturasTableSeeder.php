@@ -21,27 +21,11 @@ class FacturasTableSeeder extends Seeder
         $anio = '2018';
         $consorcios = Consorcio::all();
 
-        foreach ($consorcios as $consorcio){
-            $propietarios = Consorcio::obtenerPropietarios($consorcio->id);
+        for($mes = $mesDeInicio; $mes <= $mesFinal; $mes++){
+            foreach ($consorcios as $consorcio){
 
-            for($mes = $mesDeInicio; $mes <= $mesFinal; $mes++){
-                foreach ($propietarios as $propietario){
-                    $idUnidades = Unidad::obtenerIdDeUnidadesPorUsuarioYConsorcio($propietario->id, $consorcio->id);
+                Factura::facturarPeriodo($consorcio->id, $mes, $anio);
 
-                    $total = Expensa::obtenerImporteMensualPorMesAnioUnidades($mes, $anio, $idUnidades);
-
-                    Factura::create([
-                        'consorcio_id' => $consorcio->id,
-                        'usuario_id' => $propietario->id,
-                        'mes' => $mes,
-                        'anio' => $anio,
-                        'emision' => "$anio-$mes-10",
-                        'vencimiento' => "$anio-$mes-20",
-                        'total' => $total,
-                        'pago_parcial' => 0,
-                        'adeuda' => $total
-                    ]);
-                }
             }
         }
     }
