@@ -16,12 +16,12 @@ class ConsorciosTableSeeder extends Seeder
         $faker = Factory::create();
 
             Consorcio::create([
-                'nombre' => 'Consorcio 1',
+                'nombre' => 'Torre de Mayo',
                 'direccion' => 'Avenida de Mayo 665',
                 'localidad' => 'Ramos Mejia', 
                 'provincia' => 'Buenos Aires',
                 'telefono' => '4656-8007',
-                'email' => 'consorcio1@gmail.com',
+                'email' => 'torre.de.mayo@gmail.com',
                 'codigo_postal' => 1704,
                 'cuit' => '20-'.$faker->randomNumber(8, true).'-'.$faker->randomDigitNotNull,
                 'cantidad_de_pisos' => $faker->numberBetween(2, 8),
@@ -29,12 +29,12 @@ class ConsorciosTableSeeder extends Seeder
             ]);
 
             Consorcio::create([
-                'nombre' => 'Consorcio 2',
+                'nombre' => 'Edificio Rivadavia',
                 'direccion' => 'Rivadavia 2512',
                 'localidad' => 'CABA',
                 'provincia' => 'Buenos Aires',
                 'telefono' => '4383-3225',
-                'email' => 'consorcio2@gmail.com',
+                'email' => 'edificiorivadavia@yahoo.com.ar',
                 'codigo_postal' => 1827,
                 'cuit' => '20-'.$faker->randomNumber(8, true).'-'.$faker->randomDigitNotNull,
                 'cantidad_de_pisos' => $faker->numberBetween(2, 8),
@@ -42,12 +42,12 @@ class ConsorciosTableSeeder extends Seeder
             ]);
 
             Consorcio::create([
-                'nombre' => 'Consorcio 3',
+                'nombre' => 'Gran Ciudadela',
                 'direccion' => 'Venezuela 1545',
                 'localidad' => 'Ciudadela',
                 'provincia' => 'Buenos Aires',
                 'telefono' => '4654-3264',
-                'email' => 'consorcio3@gmail.com',
+                'email' => 'gran_ciudadela@hotmail.com',
                 'codigo_postal' => 1702,
                 'cuit' => '20-'.$faker->randomNumber(8, true).'-'.$faker->randomDigitNotNull,
                 'cantidad_de_pisos' => $faker->numberBetween(2, 8),
@@ -55,12 +55,12 @@ class ConsorciosTableSeeder extends Seeder
             ]);
 
             Consorcio::create([
-                'nombre' => 'Consorcio 4',
+                'nombre' => 'Complejo 9 de julio',
                 'direccion' => '9 de Julio 437',
                 'localidad' => 'Morón',
                 'provincia' => 'Buenos Aires',
                 'telefono' => '4627-4200',
-                'email' => 'consorcio4@gmail.com',
+                'email' => 'complejo9dejulio@gmail.com',
                 'codigo_postal' => 1755,
                 'cuit' => '20-'.$faker->randomNumber(8, true).'-'.$faker->randomDigitNotNull,
                 'cantidad_de_pisos' => $faker->numberBetween(2, 8),
@@ -68,12 +68,12 @@ class ConsorciosTableSeeder extends Seeder
             ]);
 
             Consorcio::create([
-                'nombre' => 'Consorcio 5',
+                'nombre' => 'Altos de San Justo',
                 'direccion' => 'Arieta 2345',
                 'localidad' => 'San Justo',
                 'provincia' => 'Buenos Aires',
                 'telefono' => '4441-0265',
-                'email' => 'consorcio5@gmail.com',
+                'email' => 'altosdesanjusto@gmail.com',
                 'codigo_postal' => 1754,
                 'cuit' => '20-'.$faker->randomNumber(8, true).'-'.$faker->randomDigitNotNull,
                 'cantidad_de_pisos' => $faker->numberBetween(2, 8),
