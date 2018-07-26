@@ -95,8 +95,8 @@ Route::group(['middleware' => ['api', 'cors']], function () {
 
     // Estadística
     // Admin
-    Route::get('/admin/estadistica', 'EstadisticaController@index');
-
+    Route::get('/admin/estadistica', 'EstadisticaController@index')->middleware('auth:api', 'scope:operator,admin');
+    
     //Proveedores
     Route::get('/proveedor', 'ProveedorController@index')->middleware('auth:api', 'scope:operator,admin');
     Route::post('/proveedor', 'ProveedorController@store')->middleware('auth:api', 'scope:operator,admin');

@@ -25,17 +25,22 @@ class ConsorcioController extends Controller
         } else if($request->get('id')) {
             return $this->show($request->get('id'));
         } else {
-            return $this->getAllConsorciosOfUser(Auth::user()->getAuthIdentifier())->get(['*']);
+            return $this->getAllConsorciosOfUser(Auth::user()->getAuthIdentifier());
         }
     }
 
     protected function getAllConsorciosofUserPaginada(Request $request, $userId)
     {
         $size = $request->get('size') ? $request->get('size') : 10;
-        return $this->getAllConsorciosOfUser($userId)->paginate($size);
+        return $this->filterAllConsorciosOfUser($userId)->paginate($size);
     }
 
     protected function getAllConsorciosOfUser($userId)
+    {
+        return $this->filterAllConsorciosOfUser($userId)->get(['*']);
+    }
+
+    protected function filterAllConsorciosOfUser($userId)
     {
         return Consorcio::getAllConsorciosOfUser($userId);
     }
