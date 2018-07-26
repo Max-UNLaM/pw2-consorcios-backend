@@ -78,17 +78,25 @@ class Factura extends Model
 
             $total = Expensa::obtenerImporteMensualPorMesAnioUnidades($mes, $anio, $idUnidades);
 
-            Factura::create([
-                'consorcio_id' => $consorcioId,
-                'usuario_id' => $propietario->id,
-                'mes' => $mes,
-                'anio' => $anio,
-                'emision' => "$anio-$mes-10",
-                'vencimiento' => "$anio-$mes-20",
-                'total' => $total,
-                'pago_parcial' => 0,
-                'adeuda' => $total
-            ]);
+            if($total != 0){
+                Factura::create([
+                    'consorcio_id' => $consorcioId,
+                    'usuario_id' => $propietario->id,
+                    'mes' => $mes,
+                    'anio' => $anio,
+                    'emision' => "$anio-$mes-10",
+                    'vencimiento' => "$anio-$mes-20",
+                    'total' => $total,
+                    'pago_parcial' => 0,
+                    'adeuda' => $total
+                ]);
+            }
         }
+    }
+
+    public static function cantidadDeFacturasEnElPeriodo($consorcioId, $mes, $anio){
+        $facturas = Factura::obtenerFacturasPorConsorcioMesAnio($consorcioId, $mes, $anio);
+
+        return sizeof($facturas);
     }
 }
