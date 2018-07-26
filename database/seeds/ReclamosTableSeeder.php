@@ -21,7 +21,7 @@ class ReclamosTableSeeder extends Seeder
 
         $faker = Factory::create();
         $motivos = array(
-            'Cañería rota',
+            'Caniería rota',
             'Ruidos molestos',
             'Malos vecinos',
             'Vecino insoportable',

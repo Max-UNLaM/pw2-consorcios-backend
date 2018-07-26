@@ -22,7 +22,7 @@ class Factura extends Model
 
                 $conceptos[] = [
                     'unidad' => Unidad::find($expensa->unidad_id)->nombre,
-                    'concepto' => "Expensas $expensa->mes-$expensa->año",
+                    'concepto' => "Expensas $expensa->mes-$expensa->anio",
                     'valor_total' => round($expensa->importe/$coeficiente, 2),
                     'participacion' => round(($coeficiente*100), 2).'%',
                     'valor' => $expensa->importe

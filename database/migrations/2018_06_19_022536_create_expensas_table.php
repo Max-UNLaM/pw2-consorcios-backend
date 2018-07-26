@@ -16,7 +16,7 @@ class CreateExpensasTable extends Migration
         Schema::create('expensas', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('unidad_id');
-            $table->string('año');
+            $table->string('anio');
             $table->string('mes');
             $table->unsignedInteger('pago');
             $table->date('emision');

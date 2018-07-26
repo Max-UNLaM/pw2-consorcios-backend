@@ -84,7 +84,7 @@ class ExpensaController extends Controller
         $expensaSinImporte = new Expensa();
 
         $expensaSinImporte->unidad_id = $request->get('unidad_id');
-        $expensaSinImporte->año = $request->get('año');
+        $expensaSinImporte->anio = $request->get('anio');
         $expensaSinImporte->mes = $request->get('mes');
         $expensaSinImporte->estado = $request->get('estado');
         $expensaSinImporte->emision = $request->get('emision');
@@ -105,7 +105,7 @@ class ExpensaController extends Controller
         if ($expensa) {
             //Actualizo los atributos de la expensa encontrada
             $expensa->unidad_id = $request->get('unidad_id');
-            $expensa->año = $request->get('año');
+            $expensa->anio = $request->get('anio');
             $expensa->mes = $request->get('mes');
             $expensa->estado = $request->get('estado');
             $expensa->emision = $request->get('emision');
@@ -143,17 +143,17 @@ class ExpensaController extends Controller
     public function generarExpensas(Request $request)
     {
         $mes = $request->get('mes');
-        $anio = $request->get('año');
+        $anio = $request->get('anio');
         $consorcio_id = $request->get('consorcio_id');
         $unidad_id = $request->get('unidad_id');
         $expensaSinImporte = new Expensa();
 
-        if (!$mes || !$anio) return response(['Mes o año invalidos'], 400);
+        if (!$mes || !$anio) return response(['Mes o anio invalidos'], 400);
         if ($consorcio_id && $unidad_id) return response(['No se aceptan numero de consorcio y unidad en un mismo pedido'], 400);
 
         if ($unidad_id) {
             $expensaSinImporte->unidad_id = (int)$unidad_id;
-            $expensaSinImporte->año = $anio;
+            $expensaSinImporte->anio = $anio;
             $expensaSinImporte->mes = $mes;
             $expensaSinImporte->estado = 'impago';
             $expensaSinImporte->emision = $anio . '-' . $mes . '-10';
@@ -175,7 +175,7 @@ class ExpensaController extends Controller
                 foreach ($unidadesDelConsorcio as $unidad) {
 
                     $expensaSinImporte->unidad_id = $unidad->id;
-                    $expensaSinImporte->año = $anio;
+                    $expensaSinImporte->anio = $anio;
                     $expensaSinImporte->mes = $mes;
                     $expensaSinImporte->estado = 'impago';
                     $expensaSinImporte->emision = $anio . '-' . $mes . '-10';

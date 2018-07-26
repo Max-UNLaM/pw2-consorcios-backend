@@ -15,7 +15,7 @@ API para la aplicación de consorcios
 
 ## Datos Mock
 
-| Nombre | Contraseña | rol |
+| Nombre | Contrasenia | rol |
 | ------------- | :-------------: | -------------: |
 | maximiliano.depietro@gmail.com | changeme | Admin, Operator, User |
 | marconidaniel@outlook.com | changeme | Admin, Operator, User |
@@ -34,7 +34,7 @@ La aplicación utiliza composer como gestor de paquetes:
 
 ### Configurar apache
 
-Es necesario añadir un host virtual específico para el sitio
+Es necesario aniadir un host virtual específico para el sitio
 
 En ubuntu primero:
 
@@ -152,7 +152,7 @@ Es importante generar un cliente cada vez que hacemos un refresh de las migracio
 
 ## Crear Modelo
 
-A) Comando en Artisan, añadir -m si se quiere hacer una tabla
+A) Comando en Artisan, aniadir -m si se quiere hacer una tabla
 
 ```bash
     php artisan make:model NombreModelo -m
@@ -231,7 +231,7 @@ En este caso, al método estático le pasamos dos parámetros: El primero define
 
 En el caso del ejemplo, cuando alguien vaya a sitio.com/api/unidad accederá al método index() de UnidadController
 
-El /api/ es añadido por Laravel a todas las rutas que ponemos dentro de api, para difenrenciarlos de otros actions que redirigan a vistas o hagan otras cosas.
+El /api/ es aniadido por Laravel a todas las rutas que ponemos dentro de api, para difenrenciarlos de otros actions que redirigan a vistas o hagan otras cosas.
 
 
 ### Grupos
@@ -240,9 +240,9 @@ Como se verá en nuestro api.php tenemos también un llamado a group() y una def
 
 El middleware se define en app/Http/Kernel.php dentro del array $routedMiddleware. Simplemente lo que hacemos es asociar 'cors' a la clase HandleCors que descargamos.
 
-El group que hay definido señala que cualquier llamado a /api que hagamos en nuestra app, tiene que pasar por HandeCors que básicamente permite el acceso a nuestra apicación desde otros sitios webs.
+El group que hay definido seniala que cualquier llamado a /api que hagamos en nuestra app, tiene que pasar por HandeCors que básicamente permite el acceso a nuestra apicación desde otros sitios webs.
 
-No creo que sea necesario añadir más grupos, pero hay que tener en cuenta que tenemos que añadir nuestras rutas dentro del grupo principal.
+No creo que sea necesario aniadir más grupos, pero hay que tener en cuenta que tenemos que aniadir nuestras rutas dentro del grupo principal.
 
 [subir](#index)
 
