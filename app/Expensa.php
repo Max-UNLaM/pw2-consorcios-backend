@@ -108,4 +108,41 @@ class Expensa extends Model
             ->where('pago', 0)
             ->paginate($size);
     }
+
+    public static function generarExpensasDelMes($anio, $mes, $consorcioId){
+        $gastosMensualesConsorcio = Gasto::importeGastosMensualConsorcio($anio, $mes, $consorcioId);
+
+        $unidadesDelConsorcio = Unidad::obtenerIdUnidadesPorIdConsorcio($consorcioId);
+        foreach($unidadesDelConsorcio as $unidad){
+            $coeficienteDeLaUnidad = Unidad::calcularCoeficiente($consorcioId);
+            $coeficienteGanancia = 1.2;
+            $importe = $gastosMensualesConsorcio * $coeficienteGanancia * $coeficienteDeLaUnidad;
+
+            if($importe != 0){
+                Expensa::create([
+                    'unidad_id' => $unidad->id,
+                    'anio' => $anio,
+                    'mes' => (strlen($mes) < 10) ? '0'.$mes : $mes,
+                    'pago' => 'IMPAGO',
+                    'emision' => "$anio-$mes-10",
+                    'vencimiento' => "$anio-$mes-20",
+                    'importe' => $importe
+                ]);
+            }
+        }
+    }
+
+    public static function cantiadadDeExpensasEnElPeriodo($consorcioId, $mes, $anio){
+        $mes = (strlen($mes) == 1) ? '0'.$mes : $mes;
+
+        $expensas = DB::table('expensas')
+            ->join('unidads', 'unidads.id', '=', 'expensas.unidad_id')
+            ->join('consorcios', 'consorcios.id', '=', 'unidads.consorcio_id')
+            ->where('mes', $mes)
+            ->where('anio', $anio)
+            ->where('consorcios.id', $consorcioId)
+            ->get();
+
+        return sizeof($expensas);
+    }
 }

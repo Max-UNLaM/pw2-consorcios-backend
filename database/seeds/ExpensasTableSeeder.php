@@ -23,24 +23,9 @@ class ExpensasTableSeeder extends Seeder
 
         for($i = $mesDesdeElQueSeCreanExpensas; $i <= $mesHastaElQueSeCreanExpensas; $i++){
             foreach($consorcios as $consorcio){
-                $gastosMensualesConsorcio = Gasto::importeGastosMensualConsorcio($anio, $i, $consorcio->id);
-                $unidadesDelConsorcio = Unidad::obtenerIdUnidadesPorIdConsorcio($consorcio->id);
 
-                foreach($unidadesDelConsorcio as $unidad){
-                    $coeficienteDeLaUnidad = Unidad::calcularCoeficiente($consorcio->id);
-                    $coeficienteGanancia = 1.2;
-                    $importe = $gastosMensualesConsorcio * $coeficienteGanancia * $coeficienteDeLaUnidad;
+                Expensa::generarExpensasDelMes($anio, $i, $consorcio->id);
 
-                    Expensa::create([
-                        'unidad_id' => $unidad->id,
-                        'anio' => $anio,
-                        'mes' => (strlen($i) < 10) ? '0'.$i : $i,
-                        'pago' => 'IMPAGO',
-                        'emision' => "$anio-$i-10",
-                        'vencimiento' => "$anio-$i-20",
-                        'importe' => $importe
-                    ]);
-                }
             }
         }
     }
