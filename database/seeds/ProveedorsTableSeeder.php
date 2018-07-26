@@ -16,8 +16,54 @@ class ProveedorsTableSeeder extends Seeder
         $faker = Factory::create();
 
         $telefonosPrefijo = array('4653', '4656', '4657', '4488', '5237');
-        $nombres=array('Juan', 'Carlos', 'Roberto', 'Luis', 'Marcelo', 'Eduardo', 'Alejandro', 'Rodrigo');
-        $apellidos = array('Perez', 'Gomez', 'Suarez', 'Gonzalez', 'Marconi', 'Estoyanoff');
+        $nombres = array('Mateo',
+            'Daniel',
+            'Pablo',
+            'Álvaro',
+            'Adrián',
+            'David',
+            'Diego',
+            'Javier',
+            'Mario',
+            'Sergio',
+            'Marcos',
+            'Manuel',
+            'Martín',
+            'Nicolás',
+            'Jorge',
+            'Iván',
+            'Carlos',
+            'Miguel',
+            'Lucas',
+            'Lucía',
+            'María',
+            'Paula',
+            'Daniela',
+            'Sara',
+            'Carla',
+            'Martina',
+            'Sofía',
+            'Julia',
+            'Alba');
+        $apellidos = array('Perez',
+            'Gomez',
+            'Suarez',
+            'Gonzalez',
+            'Marconi',
+            'Estoyanoff',
+            'Diaz',
+            'Romero',
+            'Sosa',
+            'Torres',
+            'Benítez',
+            'Acosta',
+            'Flores',
+            'Medina',
+            'Ravenna',
+            'Ruíz',
+            'Villa',
+            'Gómez');
+
         $separadorCorreo = array('', '_', '.');
         $extraCorreo= array('', '2010', '2011', '2012', '2013', '2014', '2015', 'ciudadela', 'ramosmejia');
         $tipoCorreo = array("@hotmail.com", '@gmail.com', '@yahoo.com.ar', '@fibertel.com');

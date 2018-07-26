@@ -14,7 +14,60 @@ class UsersTableSeeder extends Seeder
     public function run()
     {
         $faker = \Faker\Factory::create();
-        $cantidadDeUsuariosACrear = 10;
+        $cantidadDeUsuariosACrear = 18;
+
+        $nombres = array('Mateo',
+                        'Daniel',
+                        'Pablo',
+                        'Álvaro',
+                        'Adrián',
+                        'David',
+                        'Diego',
+                        'Javier',
+                        'Mario',
+                        'Sergio',
+                        'Marcos',
+                        'Manuel',
+                        'Martín',
+                        'Nicolás',
+                        'Jorge',
+                        'Iván',
+                        'Carlos',
+                        'Miguel',
+                        'Lucas',
+                        'Lucía',
+                        'María',
+                        'Paula',
+                        'Daniela',
+                        'Sara',
+                        'Carla',
+                        'Martina',
+                        'Sofía',
+                        'Julia',
+                        'Alba');
+
+        $apellidos = array('Perez',
+                        'Gomez',
+                        'Suarez',
+                        'Gonzalez',
+                        'Marconi',
+                        'Estoyanoff',
+                        'Diaz',
+                        'Romero',
+                        'Sosa',
+                        'Torres',
+                        'Benítez',
+                        'Acosta',
+                        'Flores',
+                        'Medina',
+                        'Ravenna',
+                        'Ruíz',
+                        'Villa',
+                        'Gómez');
+
+        $separadorCorreo = array('', '_', '.');
+        $extraCorreo= array('', '2010', '2011', '2012', '2013', '2014', '2015', 'ciudadela', 'ramosmejia');
+        $tipoCorreo = array("@hotmail.com", '@gmail.com', '@yahoo.com.ar', '@fibertel.com');
 
         $rol = new Rol();
         $admin = $rol->getFirstByName('Administrador');
@@ -58,9 +111,16 @@ class UsersTableSeeder extends Seeder
         $maxi->withAccessToken($operator->createToken('ConsorcioLoco', ['operator', 'user']));
 
         for($i = 0; $i < $cantidadDeUsuariosACrear; $i++){
+            $nombre = $faker->randomElement($nombres);
+            $apellido = $faker->randomElement($apellidos);
+            $separador = $faker->randomElement($separadorCorreo);
+            $extra = $faker->randomElement($extraCorreo);
+            $correo = $faker->randomElement($tipoCorreo);
+
+
             User::create([
-               'name' => $faker->name,
-               'email' => $faker->email,
+               'name' => $nombre.' '.$apellido,
+               'email' => strtolower($nombre).$separador.strtolower($apellido).$extra.$correo,
                'password' => bcrypt('changeme'),
                'rol_id' =>  $usuario->id
             ]);

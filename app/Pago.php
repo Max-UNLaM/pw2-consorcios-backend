@@ -43,16 +43,27 @@ class Pago extends Model
         return $resp;
     }
 
-    public static function obtenerPagosPorUsuarioYFactura($usuario_id, $factura_id){
+    public static function list(){
         return DB::table('pagos')
+            ->join('users', 'users.id', '=', 'pagos.usuario_id')
+            ->addSelect([
+                'pagos.id as id',
+                'users.id as usuario_id',
+                'users.name as usuario_nombre',
+                'pagos.factura_id as factura_id',
+                'pagos.fecha as fecha',
+                'pagos.monto as monto'
+            ]);
+    }
+
+    public static function obtenerPagosPorUsuarioYFactura($usuario_id, $factura_id){
+        return Pago::list()
             ->where('usuario_id', $usuario_id)
-            ->where('factura_id', $factura_id)
-            ->get();
+            ->where('factura_id', $factura_id);
     }
 
     public static function obtenerPagosPorUsuario($usuario_id){
-        return DB::table('pagos')
-            ->where('usuario_id', $usuario_id)
-            ->get();
+        return Pago::list()
+            ->where('usuario_id', $usuario_id);
     }
 }

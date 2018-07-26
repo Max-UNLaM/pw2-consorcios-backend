@@ -1,8 +1,6 @@
 <?php
 
 use Illuminate\Http\Request;
-use App\Unidad;
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -64,6 +62,7 @@ Route::group(['middleware' => ['api', 'cors']], function () {
     // Factura
     // Admin
     Route::get('/admin/factura', 'FacturaController@index')->middleware('auth:api', 'scope:operator,admin');
+    Route::post('/admin/factura', 'FacturaController@facturarPeriodo')->middleware('auth:api', 'scope:operator,admin');
     // User
     Route::get('/user/factura', 'FacturaController@user')->middleware('auth:api', 'scope:user,operator,admin');
 
@@ -98,8 +97,8 @@ Route::group(['middleware' => ['api', 'cors']], function () {
     Route::get('/admin/estadistica', 'EstadisticaController@index')->middleware('auth:api', 'scope:operator,admin');
     
     //Proveedores
-    Route::get('/proveedor', 'ProveedorController@index')->middleware('auth:api', 'scope:operator,admin');
-    Route::post('/proveedor', 'ProveedorController@store')->middleware('auth:api', 'scope:operator,admin');
-    Route::put('/proveedor', 'ProveedorController@update')->middleware('auth:api', 'scope:operator,admin');
-    Route::delete('/proveedor', 'ProveedorController@delete')->middleware('auth:api', 'scope:operator,admin');
+    Route::get('/admin/proveedor', 'ProveedorController@index')->middleware('auth:api', 'scope:operator,admin');
+    Route::post('/admin/proveedor', 'ProveedorController@store')->middleware('auth:api', 'scope:operator,admin');
+    Route::put('/admin/proveedor', 'ProveedorController@update')->middleware('auth:api', 'scope:operator,admin');
+    Route::delete('/admin/proveedor', 'ProveedorController@delete')->middleware('auth:api', 'scope:operator,admin');
 });
