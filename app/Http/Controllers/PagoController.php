@@ -22,12 +22,16 @@ class PagoController extends Controller
 
     public function user(Request $request)
     {
+        $size = $request->get('size') ? $request->get('size') : 5;
+
         if ($request->get('puerta')) {
             return "PATOVA";
         } else if($request->get('factura_id')){
-            return Pago::obtenerPagosPorUsuarioYFactura(Auth::user()->getAuthIdentifier(),$request->get('factura_id'));
+            return Pago::obtenerPagosPorUsuarioYFactura(Auth::user()->getAuthIdentifier(),$request->get('factura_id'))
+                ->paginate($size);
         } else {
-            return Pago::obtenerPagosPorUsuario(Auth::user()->getAuthIdentifier());
+            return Pago::obtenerPagosPorUsuario(Auth::user()->getAuthIdentifier())
+                ->paginate($size);
         }
     }
 

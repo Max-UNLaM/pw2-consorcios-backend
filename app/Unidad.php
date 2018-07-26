@@ -111,4 +111,26 @@ class Unidad extends Model
 
         return $respuesta;
     }
+
+    public static function list(){
+        return DB::table('unidads')
+            ->join('consorcios', 'unidads.consorcio_id', '=', 'consorcios.id')
+            ->join('users', 'users.id', '=', 'unidads.usuario_id')
+            ->addSelect([
+                'unidads.id as id',
+                'unidads.nombre as nombre',
+                'users.id as usuario_id',
+                'users.name as usuario_nombre',
+                'consorcios.id as consorcio_id',
+                'consorcios.nombre as consorcio_nombre',
+            ]);
+    }
+
+    public static function unidadById($unidadId){
+        return Unidad::list()->where('unidads.id', $unidadId);
+    }
+
+    public static function unidadsByUser($usuarioId){
+        return Unidad::list()->where('usuario_id', $usuarioId);
+    }
 }
