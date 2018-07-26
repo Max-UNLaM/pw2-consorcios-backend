@@ -92,8 +92,8 @@ class Factura extends Model
         }
     }
 
-    public static function existenFacturasEnElPeriodo($consorcioId, $mes, $anio){
-        $facturas = Factura::obtenerFacturasPorConsorcioMesAnio($consorcioId, $mes, $anio)->get();
+    public static function cantidadDeFacturasEnElPeriodo($consorcioId, $mes, $anio){
+        $facturas = Factura::obtenerFacturasPorConsorcioMesAnio($consorcioId, $mes, $anio);
 
         return sizeof($facturas);
     }
