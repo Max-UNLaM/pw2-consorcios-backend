@@ -23,6 +23,7 @@ class ExpensaController extends Controller
         }
     }
 
+
     public function user(Request $request)
     {
         $userId = Auth::user()->getAuthIdentifier();
