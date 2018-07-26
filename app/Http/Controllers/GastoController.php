@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Proveedor;
 use Illuminate\Http\Request;
 use App\Gasto;
 
@@ -29,11 +30,19 @@ class GastoController extends Controller
 
     public function store(Request $request)
     {
-        if (Gasto::find($request->get('id')) != null) $this->delete($request);
 
-        Gasto::create($request->all());
+        $gasto = Gasto::create([
+            'nombre' => Proveedor::find($request->get('proveedor_id'))->rubro,
+            'valor' => $request->get('valor'),
+            'fecha' => $request->get('fecha'),
+            'proveedor_id' => $request->get('proveedor_id'),
+            'consorcio_id' => $request->get('consorcio_id'),
+            'mes' => $request->get('mes'),
+            'anio' => $request->get('anio')
+        ]);
+
         return response([
-            'gasto' => $request->all()
+            'gasto' => $gasto
         ]);
     }
 
