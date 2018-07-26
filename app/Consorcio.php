@@ -11,20 +11,7 @@ class Consorcio extends Model
 
     public static function obtenerPropietarios($consorcio_id)
     {
-        $unidadesDelConsorcio = Unidad::obtenerPropietariosPorIdConsorcio($consorcio_id);
-
-        return $unidadesDelConsorcio;
-
-
-        $idDePropietarios = $unidadesDelConsorcio->get(['usuario_id']);//->unique();
-
-        return $idDePropietarios;
-
-        $propietarios = array();
-
-        foreach ($idDePropietarios as $idPropietario) {
-            $propietarios . push(User::find($idPropietario));
-        }
+        $propietarios = Unidad::obtenerPropietariosPorIdConsorcio($consorcio_id);
 
         return $propietarios;
     }
