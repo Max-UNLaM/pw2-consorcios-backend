@@ -19,8 +19,8 @@ class ProveedorsTableSeeder extends Seeder
         $nombres = array('Mateo',
             'Daniel',
             'Pablo',
-            'Álvaro',
-            'Adrián',
+            'Alvaro',
+            'Adrian',
             'David',
             'Diego',
             'Javier',
@@ -28,21 +28,21 @@ class ProveedorsTableSeeder extends Seeder
             'Sergio',
             'Marcos',
             'Manuel',
-            'Martín',
-            'Nicolás',
+            'Martin',
+            'Nicolas',
             'Jorge',
-            'Iván',
+            'Ivan',
             'Carlos',
             'Miguel',
             'Lucas',
-            'Lucía',
-            'María',
+            'Lucia',
+            'Maria',
             'Paula',
             'Daniela',
             'Sara',
             'Carla',
             'Martina',
-            'Sofía',
+            'Sofia',
             'Julia',
             'Alba');
         $apellidos = array('Perez',
@@ -55,19 +55,19 @@ class ProveedorsTableSeeder extends Seeder
             'Romero',
             'Sosa',
             'Torres',
-            'Benítez',
+            'Benitez',
             'Acosta',
             'Flores',
             'Medina',
             'Ravenna',
-            'Ruíz',
+            'Ruiz',
             'Villa',
-            'Gómez');
+            'Gomez');
 
-        $separadorCorreo = array('', '_', '.');
+        $separadorCorreo = array('', '_');
         $extraCorreo= array('', '2010', '2011', '2012', '2013', '2014', '2015', 'ciudadela', 'ramosmejia');
         $tipoCorreo = array("@hotmail.com", '@gmail.com', '@yahoo.com.ar', '@fibertel.com');
-        $rubros = array('Electricista', 'Construccion', 'Plomería', 'Gasista', 'Otros', 'Otros', 'Otros');
+        $rubros = array('Electricista', 'Construccion', 'Plomeria', 'Gasista', 'Otros', 'Otros', 'Otros');
 
         foreach ($rubros as $rubro){
             for ($i = 0; $i < 10; $i++) {

@@ -13,18 +13,16 @@ class ExpensaController extends Controller
 {
     public function index(Request $request)
     {
-        if ($request->get('puerta')) {
-            return response(["entra" => "PATOVA"]);
-        } else if ($request->get('page')) {
-            return $this->paginate($request);
-        } else if ($request->get('id')) {
+        if ($request->get('id')) {
             return $this->show($request->get('id'));
-        } else if ($request->get('unidad_id')) {
-            return $this->listByUnidad($request->get('unidad_id'));
+        } else if($request->get('page')) {
+            $size = $request->get('size') ? $request->get('size') : 5;
+            return Expensa::list()->paginate($size);
         } else {
-            return Expensa::all();
+            return Expensa::list()->paginate(5);
         }
     }
+
 
     public function user(Request $request)
     {
