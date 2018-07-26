@@ -19,6 +19,22 @@ class Expensa extends Model
     }
 
     public static function expensasPorUsuario($usuario_id){
+        return DB::table('expensas')
+            ->join('unidads', 'unidads.id', '=', 'expensas.unidad_id')
+            ->join('consorcios', 'consorcios.id', '=', 'unidads.consorcio_id')
+            ->addSelect([
+                'expensas.id as id',
+                'consorcios.nombre as consorcio_nombre',
+                'unidads.nombre as unidad_nombre',
+                'unidads.id as unidad_id',
+                'expensas.anio as anio',
+                'expensas.mes as mes',
+                'expensas.pago as estado',
+                'expensas.vencimiento as vencimiento',
+                'expensas.emision as emision',
+                'expensas.importe as importe'
+            ])
+            ->where('unidads.usuario_id', '=', $usuario_id);
         $unidadesDelUsuario = Unidad::getAllUnidadIdOfUser($usuario_id);
 
         return DB::table('expensas')
