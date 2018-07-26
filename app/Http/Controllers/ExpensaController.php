@@ -37,7 +37,8 @@ class ExpensaController extends Controller
         } else if ($request->get('unidad_id')) {
             return $this->listByUnidad($request);
         } else {
-            return Expensa::expensasPorUsuario($userId, $request->get('size'));
+            $size = $request->get('size') ? $request->get('size') : 5; 
+            return Expensa::expensasPorUsuario($userId, $size);
         }
     }
 
