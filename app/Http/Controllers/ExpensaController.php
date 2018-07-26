@@ -28,16 +28,16 @@ class ExpensaController extends Controller
 
     public function user(Request $request)
     {
+        $userId = Auth::user()->getAuthIdentifier();
+
         if ($request->get('puerta')) {
             return response(["entra" => "PATOVA"]);
-        } else if ($request->get('unidad_id')) {
-            return $this->listByUnidad($request);
-        } else if ($request->get('page')) {
-            return Expensa::expensasPorUsuario(Auth::user()->getAuthIdentifier(), $request->get('size'));
         } else if ($request->get('id')) {
             return $this->show($request->get('id'));
+        } else if ($request->get('unidad_id')) {
+            return $this->listByUnidad($request);
         } else {
-            return Expensa::expensasPorUsuario(Auth::user()->getAuthIdentifier(), 5);
+            return Expensa::expensasPorUsuario($userId, $request->get('size'));
         }
     }
 
@@ -67,10 +67,9 @@ class ExpensaController extends Controller
     protected function listByUnidad(Request $request)
     {
         if ($request->get('page')) {
-            $size = $request->get('size') ? $request->get('size') : 10;
-            return Expensa::listByUnidad($request->get('unidad_id'))->paginate($size);
+            return Expensa::listByUnidad($request->get('unidad_id'))->paginate($request->get('size'));
         } else {
-            return Expensa::listByUnidad($request->get('unidad'))->all();
+            return Expensa::listByUnidad($request->get('unidad_id'))->get();
         }
     }
 

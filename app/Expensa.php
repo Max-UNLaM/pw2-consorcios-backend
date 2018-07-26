@@ -48,8 +48,21 @@ class Expensa extends Model
     public static function listByUnidad($unidadId)
     {
         return DB::table('expensas')
-            ->where('unidad_id', $unidadId)
-            ->get();
+            ->join('unidads', 'unidads.id', '=', 'expensas.unidad_id')
+            ->join('consorcios', 'consorcios.id', '=', 'unidads.consorcio_id')
+            ->addSelect([
+                'expensas.id as id',
+                'expensas.unidad_id as unidad_id',
+                'consorcios.nombre as nombre_consorcio',
+                'unidads.nombre as unidad_nombre',
+                'expensas.mes as mes',
+                'expensas.año as anio',
+                'expensas.emision as emision',
+                'expensas.vencimiento as vencimiento',
+                'expensas.importe as importe',
+                'expensas.pago as pago'
+            ])
+            ->where('unidad_id', $unidadId);
     }
 
     public static function obtenerExpensaPorUnidadMesAnio(int $unidad_id, string $mes, string $año){
