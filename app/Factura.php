@@ -91,4 +91,10 @@ class Factura extends Model
             ]);
         }
     }
+
+    public static function existenFacturasEnElPeriodo($consorcioId, $mes, $anio){
+        $facturas = Factura::obtenerFacturasPorConsorcioMesAnio($consorcioId, $mes, $anio)->get();
+
+        return sizeof($facturas);
+    }
 }
