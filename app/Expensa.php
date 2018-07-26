@@ -43,8 +43,7 @@ class Expensa extends Model
         }
     }
 
-    public static function listByUnidad($unidadId)
-    {
+    public static function list(){
         return DB::table('expensas')
             ->join('unidads', 'unidads.id', '=', 'expensas.unidad_id')
             ->join('consorcios', 'consorcios.id', '=', 'unidads.consorcio_id')
@@ -59,8 +58,12 @@ class Expensa extends Model
                 'expensas.vencimiento as vencimiento',
                 'expensas.importe as importe',
                 'expensas.pago as pago'
-            ])
-            ->where('unidad_id', $unidadId);
+            ]);
+    }
+
+    public static function listByUnidad($unidadId)
+    {
+        return Expensa::list()->where('unidad_id', $unidadId);
     }
 
     public static function obtenerExpensaPorUnidadMesAnio(int $unidad_id, string $mes, string $año){
