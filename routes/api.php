@@ -95,5 +95,5 @@ Route::group(['middleware' => ['api', 'cors']], function () {
 
     // Estadística
     // Admin
-    Route::get('/admin/estadistica', 'EstadisticaController@index');
+    Route::get('/admin/estadistica', 'EstadisticaController@index')->middleware('auth:api', 'scope:operator,admin');
 });
