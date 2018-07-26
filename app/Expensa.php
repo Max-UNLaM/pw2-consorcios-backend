@@ -54,7 +54,7 @@ class Expensa extends Model
                     'estado' => $expensaNueva->estado,
                     'emision' => $expensaNueva->emision,
                     'vencimiento' => $expensaNueva->vencimiento,
-                   'importe' => $expensaNueva->importe
+                    'importe' => $expensaNueva->importe
                 ]);
         }
     }
