@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Consorcio;
+use App\Expensa;
 use App\Factura;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -51,6 +52,10 @@ class FacturaController extends Controller
         }
 
         foreach ($consorcios as $consorcio){
+            if(Expensa::cantiadadDeExpensasEnElPeriodo($consorcio->id, $mes, $anio) == 0){
+                Expensa::generarExpensasDelMes($anio, $mes, $consorcio->id);
+            }
+
             if(Factura::cantidadDeFacturasEnElPeriodo($consorcio->id, $mes, $anio) == 0){
                 Factura::facturarPeriodo($consorcio->id, $mes, $anio);
             }
