@@ -49,4 +49,22 @@ class Gasto extends Model
 
     }
 
+    public static function list(){
+
+        return DB::table('gastos')
+            ->join('proveedors', 'proveedors.id', '=', 'gastos.proveedors_id')
+            ->join('consorcios', 'consorcio.id', '=', 'gastos.consorcio_id')
+            ->addSelect([
+                'gastos.id as id',
+                'gastos.nombre as nombre',
+                'gastos.valor as valor',
+                'gasto.mes as mes',
+                'gasto.anio as anio',
+                'gasto.fecha as fecha',
+                'gasto.proveedor_id as proveedor_id',
+                'gasto.consorcio_id as consorcio_id',
+            ]);
+
+    }
+   
 }

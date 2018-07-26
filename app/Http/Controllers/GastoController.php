@@ -10,10 +10,11 @@ class GastoController extends Controller
 {
     public function index(Request $request)
     {
+        $size = $request->get('size') ? $request->get('size') : 5;
         if ($request->get('page')) {
-            return $this->paginate($request);
+            return Gasto::list()->paginate($size);
         } else {
-            return Gasto::all();
+            return Gasto::list()->paginate(5);
         }
     }
 
