@@ -28,7 +28,7 @@ class Pago extends Model
 
             foreach ($expensas as $expensa){
                 $exp = Expensa::find($expensa->id);
-                $exp->pago = 1;
+                $exp->pago = 'PAGO';
                 $exp->update();
             }
         }
