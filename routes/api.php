@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -95,7 +96,7 @@ Route::group(['middleware' => ['api', 'cors']], function () {
     // Estadística
     // Admin
     Route::get('/admin/estadistica', 'EstadisticaController@index')->middleware('auth:api', 'scope:operator,admin');
-    
+
     //Proveedores
     Route::get('/admin/proveedor', 'ProveedorController@index')->middleware('auth:api', 'scope:operator,admin');
     Route::post('/admin/proveedor', 'ProveedorController@store')->middleware('auth:api', 'scope:operator,admin');
