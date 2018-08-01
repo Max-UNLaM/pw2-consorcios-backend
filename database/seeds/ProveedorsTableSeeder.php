@@ -70,21 +70,19 @@ class ProveedorsTableSeeder extends Seeder
         $rubros = array('Electricista', 'Construccion', 'Plomeria', 'Gasista', 'Otros', 'Otros', 'Otros');
 
         foreach ($rubros as $rubro){
-            for ($i = 0; $i < 10; $i++) {
-                $nombre = $faker->randomElement($nombres);
-                $apellido = $faker->randomElement($apellidos);
-                $separador = $faker->randomElement($separadorCorreo);
-                $extra = $faker->randomElement($extraCorreo);
-                $correo = $faker->randomElement($tipoCorreo);
-                $email = strtolower($nombre).$separador.strtolower($apellido).$extra.$correo;
+            $nombre = $faker->randomElement($nombres);
+            $apellido = $faker->randomElement($apellidos);
+            $separador = $faker->randomElement($separadorCorreo);
+            $extra = $faker->randomElement($extraCorreo);
+            $correo = $faker->randomElement($tipoCorreo);
+            $email = strtolower($nombre).$separador.strtolower($apellido).$extra.$correo;
 
-                Proveedor::create([
-                    'nombre'    => $nombre.' '.$apellido,
-                    'tel' => $faker->randomElement($telefonosPrefijo).'-'.$faker->randomNumber(4, true),
-                    'email' => $email,
-                    'rubro' => $rubro
-                ]);
-            }
+            Proveedor::create([
+                'nombre'    => $nombre.' '.$apellido,
+                'tel' => $faker->randomElement($telefonosPrefijo).'-'.$faker->randomNumber(4, true),
+                'email' => $email,
+                'rubro' => $rubro
+            ]);
         }
     }
 }
