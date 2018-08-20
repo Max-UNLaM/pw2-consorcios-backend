@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Proveedor;
 use Illuminate\Http\Request;
 use App\Gasto;
 
@@ -9,10 +10,11 @@ class GastoController extends Controller
 {
     public function index(Request $request)
     {
+        $size = $request->get('size') ? $request->get('size') : 5;
         if ($request->get('page')) {
-            return $this->paginate($request);
+            return Gasto::list()->paginate($size);
         } else {
-            return Gasto::all();
+            return Gasto::list()->paginate(5);
         }
     }
 
@@ -29,11 +31,19 @@ class GastoController extends Controller
 
     public function store(Request $request)
     {
-        if (Gasto::find($request->get('id')) != null) $this->delete($request);
 
-        Gasto::create($request->all());
+        $gasto = Gasto::create([
+            'nombre' => Proveedor::find($request->get('proveedor_id'))->rubro,
+            'valor' => $request->get('valor'),
+            'fecha' => $request->get('fecha'),
+            'proveedor_id' => $request->get('proveedor_id'),
+            'consorcio_id' => $request->get('consorcio_id'),
+            'mes' => $request->get('mes'),
+            'anio' => $request->get('anio')
+        ]);
+
         return response([
-            'gasto' => $request->all()
+            'gasto' => $gasto
         ]);
     }
 
@@ -56,5 +66,33 @@ class GastoController extends Controller
         return response([
             'total' => $gasto->importeGastosMensual($datos["year"], $datos["mes"])
         ]);
+    }
+
+    public function update(Request $request)
+    {
+        //Busco el gasto correspondiente
+        $gasto = Gasto::find($request->get('id'));
+
+        //Pregunto si encontro un gasto con ese id
+        if ($gasto) {
+            //Actualizo los atributos del gasto encontrado
+            $gasto->nombre = $request->get('nombre');
+            $gasto->valor = $request->get('valor');
+            $gasto->mes = $request->get('mes');
+            $gasto->anio = $request->get('anio');
+            $gasto->fecha = $request->get('fecha');
+            $gasto->proveedor_id = $request->get('proveedor_id');
+            $gasto->consorcio_id = $request->get('consorcio_id');
+           
+            //Guardo los cambios
+            $gasto->save();
+
+            return response([
+                'gastoActualizado' => $gasto
+            ]);
+        } else {
+            //Si no lo encuentra respondo un codigo 404 (not found)
+            return response(['No se encontro el pago que se quiere actualizar'], 404);
+        }
     }
 }

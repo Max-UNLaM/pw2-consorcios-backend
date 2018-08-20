@@ -15,24 +15,69 @@ class ConsorciosTableSeeder extends Seeder
     {
         $faker = Factory::create();
 
-        for ($i = 0; $i < 20; $i++) {
             Consorcio::create([
-                'nombre' => "Consorcio_$i",
-                'direccion' => $faker->streetAddress,
-                'localidad' => "Localidad_$i",
+                'nombre' => 'Torre de Mayo',
+                'direccion' => 'Avenida de Mayo 665',
+                'localidad' => 'Ramos Mejia', 
                 'provincia' => 'Buenos Aires',
-                'telefono' => $faker->phoneNumber
+                'telefono' => '4656-8007',
+                'email' => 'torre.de.mayo@gmail.com',
+                'codigo_postal' => 1704,
+                'cuit' => '20-'.$faker->randomNumber(8, true).'-'.$faker->randomDigitNotNull,
+                'cantidad_de_pisos' => $faker->numberBetween(2, 8),
+                'departamentos_por_piso' => $faker->numberBetween(4, 8)
             ]);
-        }
 
-        for ($i = 20; $i < 40; $i++) {
             Consorcio::create([
-                'nombre' => "Consorcio_$i",
-                'direccion' => $faker->streetAddress,
-                'localidad' => "Localidad_$i",
-                'provincia' => 'Córdoba',
-                'telefono' => $faker->phoneNumber
+                'nombre' => 'Edificio Rivadavia',
+                'direccion' => 'Rivadavia 2512',
+                'localidad' => 'CABA',
+                'provincia' => 'Buenos Aires',
+                'telefono' => '4383-3225',
+                'email' => 'edificiorivadavia@yahoo.com.ar',
+                'codigo_postal' => 1827,
+                'cuit' => '20-'.$faker->randomNumber(8, true).'-'.$faker->randomDigitNotNull,
+                'cantidad_de_pisos' => $faker->numberBetween(2, 8),
+                'departamentos_por_piso' => $faker->numberBetween(4, 8)
             ]);
-        }
+
+            Consorcio::create([
+                'nombre' => 'Gran Ciudadela',
+                'direccion' => 'Venezuela 1545',
+                'localidad' => 'Ciudadela',
+                'provincia' => 'Buenos Aires',
+                'telefono' => '4654-3264',
+                'email' => 'gran_ciudadela@hotmail.com',
+                'codigo_postal' => 1702,
+                'cuit' => '20-'.$faker->randomNumber(8, true).'-'.$faker->randomDigitNotNull,
+                'cantidad_de_pisos' => $faker->numberBetween(2, 8),
+                'departamentos_por_piso' => $faker->numberBetween(4, 8)
+            ]);
+
+            Consorcio::create([
+                'nombre' => 'Complejo 9 de julio',
+                'direccion' => '9 de Julio 437',
+                'localidad' => 'Morón',
+                'provincia' => 'Buenos Aires',
+                'telefono' => '4627-4200',
+                'email' => 'complejo9dejulio@gmail.com',
+                'codigo_postal' => 1755,
+                'cuit' => '20-'.$faker->randomNumber(8, true).'-'.$faker->randomDigitNotNull,
+                'cantidad_de_pisos' => $faker->numberBetween(2, 8),
+                'departamentos_por_piso' => $faker->numberBetween(4, 8)
+            ]);
+
+            Consorcio::create([
+                'nombre' => 'Altos de San Justo',
+                'direccion' => 'Arieta 2345',
+                'localidad' => 'San Justo',
+                'provincia' => 'Buenos Aires',
+                'telefono' => '4441-0265',
+                'email' => 'altosdesanjusto@gmail.com',
+                'codigo_postal' => 1754,
+                'cuit' => '20-'.$faker->randomNumber(8, true).'-'.$faker->randomDigitNotNull,
+                'cantidad_de_pisos' => $faker->numberBetween(2, 8),
+                'departamentos_por_piso' => $faker->numberBetween(4, 8)
+            ]);
     }
 }

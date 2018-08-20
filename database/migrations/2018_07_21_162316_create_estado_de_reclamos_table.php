@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AlterReclamosTable extends Migration
+class CreateEstadoDeReclamosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,12 @@ class AlterReclamosTable extends Migration
      */
     public function up()
     {
-        Schema::table('reclamos', function (Blueprint $table) {
-            $table->foreign('unidad_id')->references('id')->on('unidads');
-            $table->foreign('usuario_id')->references('id')->on('users');
+        Schema::create('estado_de_reclamos', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('detalle');
+            $table->timestamps();
         });
+      
     }
 
     /**
@@ -26,6 +28,6 @@ class AlterReclamosTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('estado_de_reclamo');
     }
 }

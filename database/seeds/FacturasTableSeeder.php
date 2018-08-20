@@ -1,6 +1,9 @@
 <?php
 
+use App\Consorcio;
+use App\Expensa;
 use \App\Factura;
+use App\Unidad;
 use \Faker\Factory;
 use Illuminate\Database\Seeder;
 
@@ -13,27 +16,17 @@ class FacturasTableSeeder extends Seeder
      */
     public function run()
     {
+        $mesDeInicio = 1;
+        $mesFinal = 7;
+        $anio = '2018';
+        $consorcios = Consorcio::all();
 
-	    $faker = Factory::create();
+        for($mes = $mesDeInicio; $mes <= $mesFinal; $mes++){
+            foreach ($consorcios as $consorcio){
 
-	    for ($i = 0; $i < 10; $i++) {
-		    Factura::create([
-			    'nombre' => "Consorcio_$i",
-			    'direccion' => $faker->streetAddress,
-			    'localidad' => "Localidad_$i",
-			    'provincia' => 'Buenos Aires',
-			    'telefono' => $faker->phoneNumber
-		    ]);
-	    }
+                Factura::facturarPeriodo($consorcio->id, $mes, $anio);
 
-	    for ($i = 10; $i < 20; $i++) {
-		    Factura::create([
-			    'nombre' => "Consorcio_$i",
-			    'direccion' => $faker->streetAddress,
-			    'localidad' => "Localidad_$i",
-			    'provincia' => 'Córdoba',
-			    'telefono' => $faker->phoneNumber
-		    ]);
-	    }
+            }
+        }
     }
 }

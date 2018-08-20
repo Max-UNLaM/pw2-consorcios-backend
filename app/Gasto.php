@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 class Gasto extends Model
 {
-    protected $fillable = ['nombre', 'valor', 'fecha', 'proveedor_id', 'consorcio_id'];
+    protected $fillable = ['nombre', 'valor', 'mes', 'anio', 'fecha', 'proveedor_id', 'consorcio_id'];
 
     protected function gastosMensual(string $anio, string $mes)
     {
@@ -28,9 +28,45 @@ class Gasto extends Model
             ->where('consorcio_id', $consorcioId);
     }
 
-    public function importeGastosMensualConsorcio(string $anio, string $mes, int $consorcioId) {
-        return $this->gastosPorConsorcio($anio, $mes, $consorcioId)
-        ->sum('valor');
+    public static function gastosMensualesPorConsorcio(string $anio, string $mes, int $consorcioId)
+    {
+        $mes = (strlen($mes) == 1) ? '0'.$mes : $mes;
+
+        return Gasto::all()
+            ->where('fecha', '>=', "$anio-$mes-01")
+            ->where('fecha', '<=', "$anio-$mes-31")
+            ->where('consorcio_id', $consorcioId);
     }
 
+    public static function importeGastosMensualConsorcio($anio, $mes, $consorcioId) {
+        $mes = (strlen($mes) == 1) ? '0'.$mes : $mes;
+
+        return Gasto::all()
+            ->where('mes', '=', $mes)
+            ->where('anio', '=', $anio)
+            ->where('consorcio_id', $consorcioId)
+            ->sum('valor');
+
+    }
+
+    public static function list(){
+
+        return DB::table('gastos')
+            ->join('proveedors', 'proveedors.id', '=', 'gastos.proveedor_id')
+            ->join('consorcios', 'consorcios.id', '=', 'gastos.consorcio_id')
+            ->addSelect([
+                'gastos.id as id',
+                'gastos.nombre as nombre',
+                'consorcios.nombre as consorcio_nombre',
+                'proveedors.nombre as proveedor_nombre',
+                'gastos.valor as valor',
+                'gastos.mes as mes',
+                'gastos.anio as anio',
+                'gastos.fecha as fecha',
+                'gastos.proveedor_id as proveedor_id',
+                'gastos.consorcio_id as consorcio_id'
+            ]);
+
+    }
+   
 }

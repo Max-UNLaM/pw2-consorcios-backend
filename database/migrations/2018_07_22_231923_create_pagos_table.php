@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateUnidadsTable extends Migration
+class CreatePagosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,12 @@ class CreateUnidadsTable extends Migration
      */
     public function up()
     {
-        Schema::create('unidads', function (Blueprint $table) {
+        Schema::create('pagos', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('nombre');
             $table->unsignedInteger('usuario_id');
-            $table->unsignedInteger('consorcio_id');
+            $table->unsignedInteger('factura_id');
+            $table->date('fecha');
+            $table->float('monto');
             $table->timestamps();
         });
     }
@@ -29,9 +30,6 @@ class CreateUnidadsTable extends Migration
      */
     public function down()
     {
-        Schema::table('unidads', function (Blueprint $table) {
-            $table->foreign('usuario_id')->references('id')->on('users');
-        });
-        Schema::dropIfExists('unidads');
+        Schema::dropIfExists('pagos');
     }
 }

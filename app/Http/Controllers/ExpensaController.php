@@ -13,39 +13,40 @@ class ExpensaController extends Controller
 {
     public function index(Request $request)
     {
-        if ($request->get('puerta')) {
-            return "PATOVA";
-        } else if ($request->get('page')) {
-            return $this->paginate($request);
-        } else if ($request->get('id')) {
+        if ($request->get('id')) {
             return $this->show($request->get('id'));
-        } else if ($request->get('unidad_id')) {
-            return $this->listByUnidad($request->get('unidad_id'));
+        } else if ($request->get('page')) {
+            $size = $request->get('size') ? $request->get('size') : 5;
+            return Expensa::list()->paginate($size);
         } else {
-            return Expensa::all();
+            return Expensa::list()->paginate(5);
         }
     }
+
 
     public function user(Request $request)
     {
+        $userId = Auth::user()->getAuthIdentifier();
+
         if ($request->get('puerta')) {
-            return "PATOVA";
+            return response(["entra" => "PATOVA"]);
+        } else if ($request->get('id')) {
+            return $this->show($request->get('id'));
         } else if ($request->get('unidad_id')) {
             return $this->listByUnidad($request);
         } else if ($request->get('page')) {
-            return $this->userGetAllExpensasPaginate($request);
-        } else if ($request->get('id')) {
-            return $this->show($request->get('id'));
+            $size = $request->get('size') ? $request->get('size') : 5;
+            return Expensa::expensasPorUsuario($userId)->paginate($size);
         } else {
-            return Expensa::all();
+            return Expensa::expensasPorUsuario($userId)->get();
         }
     }
 
-    protected function userGetAllExpensasPaginate(Request $request)
+    /*protected function userGetAllExpensasPaginate(Request $request)
     {
-        return Expensa::userGetAllUsersExpensas(Auth::user()->getAuthIdentifier())->paginate($request->get('size'));
-    }
-    
+        return Expensa::expensasPorUsuario(Auth::user()->getAuthIdentifier())->paginate($request->get('size'));
+    }*/
+
     protected function userGetAllExpensas()
     {
         return Expensa::userGetAllUsersExpensas(Auth::user()->getAuthIdentifier())->all();
@@ -67,10 +68,9 @@ class ExpensaController extends Controller
     protected function listByUnidad(Request $request)
     {
         if ($request->get('page')) {
-            $size = $request->get('size') ? $request->get('size') : 10;
-            return Expensa::listByUnidad($request->get('unidad_id'))->paginate($size);
+            return Expensa::listByUnidad($request->get('unidad_id'))->paginate($request->get('size'));
         } else {
-            return Expensa::listByUnidad($request->get('unidad'))->all();
+            return Expensa::listByUnidad($request->get('unidad_id'))->get();
         }
     }
 
@@ -84,7 +84,7 @@ class ExpensaController extends Controller
         $expensaSinImporte = new Expensa();
 
         $expensaSinImporte->unidad_id = $request->get('unidad_id');
-        $expensaSinImporte->año = $request->get('año');
+        $expensaSinImporte->anio = $request->get('anio');
         $expensaSinImporte->mes = $request->get('mes');
         $expensaSinImporte->estado = $request->get('estado');
         $expensaSinImporte->emision = $request->get('emision');
@@ -96,20 +96,21 @@ class ExpensaController extends Controller
         ]);
     }
 
-    public function update(Request $request){
+    public function update(Request $request)
+    {
         //Busco la expensa correspondiente
         $expensa = Expensa::find($request->get('id'));
 
         //Pregunto si encontro una expensa con ese id
-        if($expensa){
+        if ($expensa) {
             //Actualizo los atributos de la expensa encontrada
             $expensa->unidad_id = $request->get('unidad_id');
-            $expensa->año = $request->get('año');
+            $expensa->anio = $request->get('anio');
             $expensa->mes = $request->get('mes');
             $expensa->estado = $request->get('estado');
             $expensa->emision = $request->get('emision');
             $expensa->vencimiento = $request->get('vencimiento');
-            $expensa->importe= $request->get('importe');
+            $expensa->importe = $request->get('importe');
 
             //Guardo los cambios
             $expensa->save();
@@ -121,8 +122,6 @@ class ExpensaController extends Controller
             //Si no la encuentra respondo un codigo 404 (not found)
             return response(['No se encontro la expensa que se quiere actualizar'], 404);
         }
-
-
     }
 
     public function show($id)
@@ -141,51 +140,59 @@ class ExpensaController extends Controller
         }
     }
 
-    public function generarExpensas(Request $request){
+    public function generarExpensas(Request $request)
+    {
         $mes = $request->get('mes');
-        $anio = $request->get('año');
+        $anio = $request->get('anio');
         $consorcio_id = $request->get('consorcio_id');
         $unidad_id = $request->get('unidad_id');
         $expensaSinImporte = new Expensa();
 
-        if(!$mes || !$anio) return response(['Mes o año invalidos'], 400);
-        if($consorcio_id && $unidad_id) return response(['No se aceptan numero de consorcio y unidad en un mismo pedido'], 400);
+        if (!$mes || !$anio) return response(['Mes o anio invalidos'], 400);
+        if ($consorcio_id && $unidad_id) return response(['No se aceptan numero de consorcio y unidad en un mismo pedido'], 400);
 
         if ($unidad_id) {
-                $expensaSinImporte->unidad_id = (int) $unidad_id;
-                $expensaSinImporte->año = $anio;
-                $expensaSinImporte->mes = $mes;
-                $expensaSinImporte->estado = 'impago';
-                $expensaSinImporte->emision = $anio.'-'.$mes.'-10';
-                $expensaSinImporte->vencimiento = $anio.'-'.$mes.'-20';
+            $expensaSinImporte->unidad_id = (int)$unidad_id;
+            $expensaSinImporte->anio = $anio;
+            $expensaSinImporte->mes = $mes;
+            $expensaSinImporte->estado = 'impago';
+            $expensaSinImporte->emision = $anio . '-' . $mes . '-10';
+            $expensaSinImporte->vencimiento = $anio . '-' . $mes . '-20';
 
-                if(sizeof(Expensa::obtenerExpensaPorUnidadMesAnio($unidad_id, $mes, $anio))){
-                    return response(['Las expensas de esa unidad en ese periodo ya fueron calculadas'], 400);
-                } else {
-                    Expensa::crearExpensaConImporte($expensaSinImporte);
-                }
+            if (sizeof(Expensa::obtenerExpensaPorUnidadMesAnio($unidad_id, $mes, $anio))) {
+                return response(['Las expensas de esa unidad en ese periodo ya fueron calculadas'], 400);
+            } else {
+                Expensa::crearExpensaConImporte($expensaSinImporte);
+            }
 
 
         } else {
             $consorcios = $consorcio_id ? array(Consorcio::find($consorcio_id)) : Consorcio::all();
-
-            foreach ($consorcios as $consorcio){
+            foreach ($consorcios as $consorcio) {
                 $unidadesDelConsorcio = Unidad::obtenerIdUnidadesPorIdConsorcio($consorcio->id);
-
-                foreach ($unidadesDelConsorcio as $unidad){
-
+                foreach ($unidadesDelConsorcio as $unidad) {
                     $expensaSinImporte->unidad_id = $unidad->id;
-                    $expensaSinImporte->año = $anio;
+                    $expensaSinImporte->anio = $anio;
                     $expensaSinImporte->mes = $mes;
                     $expensaSinImporte->estado = 'impago';
-                    $expensaSinImporte->emision = $anio.'-'.$mes.'-10';
-                    $expensaSinImporte->vencimiento = $anio.'-'.$mes.'-20';
+                    $expensaSinImporte->emision = $anio . '-' . $mes . '-10';
+                    $expensaSinImporte->vencimiento = $anio . '-' . $mes . '-20';
 
-                    if(!sizeof(Expensa::obtenerExpensaPorUnidadMesAnio($unidad->id, $mes, $anio))) Expensa::crearExpensaConImporte($expensaSinImporte);
+                    if (!sizeof(Expensa::obtenerExpensaPorUnidadMesAnio($unidad->id, $mes, $anio))) Expensa::crearExpensaConImporte($expensaSinImporte);
                 }
             }
         }
 
         return "Las expensas se han creado correctamente";
     }
-}
+
+    protected function obtenerExpensasPagas(Request $request)
+    {
+        return Expensa::obtenerExpensasPagas($request->get('size'));
+    }
+
+    protected function obtenerExpensasImpagas(Request $request)
+    {
+        return Expensa::obtenerExpensasImpagas($request->get('size'));
+    }
+}	

@@ -25,7 +25,7 @@ class RolsTableSeeder extends Seeder
         ]);
         // User
         Rol::create([
-            'nombre' => 'Operador',
+            'nombre' => 'Usuario',
             'scope' => 'user'
         ]);
     }

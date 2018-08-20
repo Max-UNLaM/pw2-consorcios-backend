@@ -2,22 +2,24 @@
 
 namespace App\Http\Controllers;
 
+use App\Consorcio;
 use App\Expensa;
+use App\Gasto;
 use Illuminate\Http\Request;
 use App\Unidad;
 use Illuminate\Support\Facades\Auth;
-use Laravel\Passport\Bridge\User;
 
 class UnidadController extends Controller
 {
     public function index(Request $request)
     {
-        if ($request->get('page')) {
-            return $this->paginate($request);
-        } else if ($request->get('id')) {
-            return $this->show($request->get('id'));
+        if ($request->get('id')) {
+            return Unidad::unidadById($request->get('id'))->get();
+        } else if ($request->get('page')) {
+            $size = $request->get('size') ? $request->get('size') : 5;
+            return Unidad::list()->paginate($size);
         } else {
-            return Unidad::all();
+            return Unidad::list()->paginate(5);
         }
     }
 
@@ -25,10 +27,13 @@ class UnidadController extends Controller
     {
         if ($request->get('puerta')) {
             return "PATOVA";
-        } elseif ($request->get('page')) {
-            return $this->getAllUnidadesOfUserPaginada($request, Auth::user()->getAuthIdentifier())->get(['*']);
+        } else if ($request->get('id')){
+            return Unidad::unidadById($request->get('id'))->get();
+        } else if ($request->get('page')){
+            $size = $request->get('size') ? $request->get('size') : 5;
+            return Unidad::unidadsByUser(Auth::user()->getAuthIdentifier())->paginate($size);
         } else {
-            return $this->getAllUnidadesOfUser(Auth::user()->getAuthIdentifier())->get(['*']);
+            return Unidad::unidadsByUser(Auth::user()->getAuthIdentifier())->get();
         }
     }
 

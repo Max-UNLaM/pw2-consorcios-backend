@@ -20,6 +20,11 @@ class CreateConsorciosTable extends Migration
             $table->string('localidad');
             $table->string('provincia');
             $table->string('telefono');
+            $table->string('email');
+            $table->unsignedInteger('codigo_postal');
+            $table->string('cuit');
+            $table->unsignedInteger('cantidad_de_pisos');
+            $table->unsignedInteger('departamentos_por_piso');
             $table->timestamps();
         });
     }

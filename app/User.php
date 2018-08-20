@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Illuminate\Support\Facades\DB;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -27,4 +28,18 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public static function getUserIdsByConsorcioId($consorcioId){
+        $usuarios = DB::table('unidads')
+            ->where('consorcio_id', $consorcioId)
+            ->get(['usuario_id'])
+            ->unique();
+
+        foreach ($usuarios as $usuario){
+            $respuesta[] = $usuario->usuario_id;
+        }
+
+        return $respuesta;
+
+    }
 }
