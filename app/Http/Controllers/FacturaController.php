@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Consorcio;
-use App\Expensa;
 use App\Factura;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -26,39 +25,43 @@ class FacturaController extends Controller
     {
         if ($request->get('puerta')) {
             return "PATOVA";
-        } else if($request->get('page') && !$request->get('consorcio_id')){
+        } else if ($request->get('page') && !$request->get('consorcio_id')) {
             return Factura::obtenerFacturasDetalladasPorUsuario(Auth::user()->getAuthIdentifier(), $request->get('size'));
-        } else if($request->get('consorcio_id')){
+        } else if ($request->get('consorcio_id')) {
             return Factura::obtenerFacturasDetalladasPorUsuarioYConsorcio(Auth::user()->getAuthIdentifier(), $request->get('consorcio_id'), $request->get('size'));
+        } else {
+            return Factura::obtenerFacturasDetalladasPorUsuario(Auth::user()->getAuthIdentifier(), $request->get('size'));
         }
     }
 
-    public function paginate(Request $request){
+    public function paginate(Request $request)
+    {
         return Factura::paginate($request->get('size'));
     }
 
-    public function facturarPeriodo(Request $request){
+    public function facturarPeriodo(Request $request)
+    {
         $consorcioId = $request->get('consorcio_id');
         $mes = $request->get('mes');
         $anio = $request->get('anio');
         $facturaciones = 0;
 
-        if(!$mes) return response(['Parametro mes requerido'], 400);
-        if(!$anio) return response(['Parametro anio requerido'], 400);
+        if (!$mes) return response(['Parametro mes requerido'], 400);
+        if (!$anio) return response(['Parametro anio requerido'], 400);
 
-        if($consorcioId){
+        if ($consorcioId) {
             $consorcios = array(Consorcio::find($consorcioId));
         } else {
             $consorcios = Consorcio::all();
         }
 
-        foreach ($consorcios as $consorcio){
-        # TODO mover a Expensas!
-        #    if(Expensa::cantiadadDeExpensasEnElPeriodo($consorcio->id, $mes, $anio) == 0){
-        #        Expensa::generarExpensasDelMes($anio, $mes, $consorcio->id);
-        #    }
+        foreach ($consorcios as $consorcio) {
+            # TODO mover a Expensas!
+            #    if(Expensa::cantiadadDeExpensasEnElPeriodo($consorcio->id, $mes, $anio) == 0){
+            #        Expensa::generarExpensasDelMes($anio, $mes, $consorcio->id);
+            #    }
 
-            if(Factura::cantidadDeFacturasEnElPeriodo($consorcio->id, $mes, $anio) == 0){
+            if (Factura::cantidadDeFacturasEnElPeriodo($consorcio->id, $mes, $anio) == 0) {
                 $facturaciones += Factura::facturarPeriodo($consorcio->id, $mes, $anio);
             }
         }

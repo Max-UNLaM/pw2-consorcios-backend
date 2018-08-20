@@ -15,7 +15,7 @@ class ExpensaController extends Controller
     {
         if ($request->get('id')) {
             return $this->show($request->get('id'));
-        } else if($request->get('page')) {
+        } else if ($request->get('page')) {
             $size = $request->get('size') ? $request->get('size') : 5;
             return Expensa::list()->paginate($size);
         } else {
@@ -34,7 +34,7 @@ class ExpensaController extends Controller
             return $this->show($request->get('id'));
         } else if ($request->get('unidad_id')) {
             return $this->listByUnidad($request);
-        } else if ($request->get('page')){
+        } else if ($request->get('page')) {
             $size = $request->get('size') ? $request->get('size') : 5;
             return Expensa::expensasPorUsuario($userId)->paginate($size);
         } else {
@@ -168,12 +168,9 @@ class ExpensaController extends Controller
 
         } else {
             $consorcios = $consorcio_id ? array(Consorcio::find($consorcio_id)) : Consorcio::all();
-
             foreach ($consorcios as $consorcio) {
                 $unidadesDelConsorcio = Unidad::obtenerIdUnidadesPorIdConsorcio($consorcio->id);
-
                 foreach ($unidadesDelConsorcio as $unidad) {
-
                     $expensaSinImporte->unidad_id = $unidad->id;
                     $expensaSinImporte->anio = $anio;
                     $expensaSinImporte->mes = $mes;
@@ -191,7 +188,7 @@ class ExpensaController extends Controller
 
     protected function obtenerExpensasPagas(Request $request)
     {
-         return Expensa::obtenerExpensasPagas($request->get('size'));
+        return Expensa::obtenerExpensasPagas($request->get('size'));
     }
 
     protected function obtenerExpensasImpagas(Request $request)
