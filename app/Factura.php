@@ -45,20 +45,29 @@ class Factura extends Model
             ->where('consorcio_id', $consorcioId)
             ->paginate($size);
 
-        Factura::obtenerDetalleDeFacturas($respuesta->items());
-
-        return $respuesta;
+        return Factura::obtenerDetalleDeFacturas($respuesta->items());
     }
+
 
     public static function obtenerFacturasDetalladasPorUsuario($usuarioId, $size)
     {
         $respuesta = (DB::table('facturas')
             ->where('usuario_id', $usuarioId)
             ->paginate($size));
-
         Factura::obtenerDetalleDeFacturas($respuesta->items());
-
         return $respuesta;
+    }
+
+    public static function abrirFacturaDetallada($facturaId)
+    {
+        return Factura::listarFacturaDetallada()->where('facturas.id', $facturaId);
+    }
+
+    public static function listarFacturaDetallada()
+    {
+        return DB::table('facturas')
+            ->join('expensas as e', 'facturas.anio', '=',  'e.anio')
+            ->join('expensas as ex','facturas.mes','=','ex.mes');
     }
 
     public static function obtenerFacturasPorConsorcio($consorcioId)
@@ -73,6 +82,11 @@ class Factura extends Model
         return Factura::obtenerFacturasPorConsorcio($consorcioId)
             ->where('mes', $mes)
             ->where('anio', $anio);
+    }
+
+    public static function facturaById(string $id)
+    {
+        return Factura::find($id);
     }
 
     public static function facturarPeriodo($consorcioId, $mes, $anio)

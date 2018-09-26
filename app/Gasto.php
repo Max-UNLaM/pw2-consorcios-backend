@@ -31,22 +31,16 @@ class Gasto extends Model
     public static function gastosMensualesPorConsorcio(string $anio, string $mes, int $consorcioId)
     {
         $mes = (strlen($mes) == 1) ? '0'.$mes : $mes;
-
         return Gasto::all()
             ->where('fecha', '>=', "$anio-$mes-01")
             ->where('fecha', '<=', "$anio-$mes-31")
             ->where('consorcio_id', $consorcioId);
     }
 
-    public static function importeGastosMensualConsorcio($anio, $mes, $consorcioId) {
-        $mes = (strlen($mes) == 1) ? '0'.$mes : $mes;
-
-        return Gasto::all()
-            ->where('mes', '=', $mes)
-            ->where('anio', '=', $anio)
-            ->where('consorcio_id', $consorcioId)
+    public static function importeGastosMensualConsorcio(string $anio, string $mes, int $consorcioId)
+    {
+        Gasto::gastosMensualesPorConsorcio($anio, $mes, $consorcioId)
             ->sum('valor');
-
     }
 
     public static function list(){

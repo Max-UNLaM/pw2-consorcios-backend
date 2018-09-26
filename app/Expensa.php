@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 class Expensa extends Model
 {
-    protected $fillable = ['unidad_id', 'anio', 'mes', 'pago', 'emision', 'vencimiento', 'importe'];
+    protected $fillable = ['unidad_id', 'anio', 'mes', 'pago', 'emision', 'vencimiento', 'importe', 'factura_id'];
 
     public static function userGetAllUsersExpensas(string $userId)
     {
@@ -18,7 +18,8 @@ class Expensa extends Model
             ->where('users.id', '=', $userId);
     }
 
-    public static function expensasPorUsuario($usuario_id){
+    public static function expensasPorUsuario($usuario_id)
+    {
         return DB::table('expensas')
             ->join('unidads', 'unidads.id', '=', 'expensas.unidad_id')
             ->join('consorcios', 'consorcios.id', '=', 'unidads.consorcio_id')
@@ -46,20 +47,21 @@ class Expensa extends Model
         $gasto = new Gasto();
         $expensaNueva['importe'] = ($gasto->importeGastosMensualConsorcio($expensaNueva['anio'], $expensaNueva['mes'], $expensaNueva['unidad_id']) * 1.2) * Unidad::calcularCoeficiente($expensaNueva['unidad_id']);
 
-        if($expensaNueva['importe']){
+        if ($expensaNueva['importe']) {
             return $expensa = Expensa::create([
-                    'unidad_id' => $expensaNueva->unidad_id,
-                    'anio' => $expensaNueva->anio,
-                    'mes' => $expensaNueva->mes,
-                    'estado' => $expensaNueva->estado,
-                    'emision' => $expensaNueva->emision,
-                    'vencimiento' => $expensaNueva->vencimiento,
-                    'importe' => $expensaNueva->importe
-                ]);
+                'unidad_id' => $expensaNueva->unidad_id,
+                'anio' => $expensaNueva->anio,
+                'mes' => $expensaNueva->mes,
+                'estado' => $expensaNueva->estado,
+                'emision' => $expensaNueva->emision,
+                'vencimiento' => $expensaNueva->vencimiento,
+                'importe' => $expensaNueva->importe
+            ]);
         }
     }
 
-    public static function list(){
+    public static function list()
+    {
         return DB::table('expensas')
             ->join('unidads', 'unidads.id', '=', 'expensas.unidad_id')
             ->join('consorcios', 'consorcios.id', '=', 'unidads.consorcio_id')
@@ -82,7 +84,8 @@ class Expensa extends Model
         return Expensa::list()->where('unidad_id', $unidadId);
     }
 
-    public static function obtenerExpensaPorUnidadMesAnio(int $unidad_id, string $mes, string $anio){
+    public static function obtenerExpensaPorUnidadMesAnio(int $unidad_id, string $mes, string $anio)
+    {
         return DB::table('expensas')
             ->where('unidad_id', $unidad_id)
             ->where('mes', $mes)
@@ -90,8 +93,9 @@ class Expensa extends Model
             ->get();
     }
 
-    public static function obtenerExpensasPorMesAnioUnidades($mes, $anio, $idUnidades){
-        $mes = (strlen($mes) == 1) ? '0'.$mes : $mes;
+    public static function obtenerExpensasPorMesAnioUnidades($mes, $anio, $idUnidades)
+    {
+        $mes = (strlen($mes) == 1) ? '0' . $mes : $mes;
 
         return DB::table('expensas')
             ->where('mes', $mes)
@@ -100,56 +104,58 @@ class Expensa extends Model
             ->get();
     }
 
-    public static function obtenerImporteMensualPorMesAnioUnidades($mes, $anio, $idUnidades){
-        $mes = (strlen($mes) == 1) ? '0'.$mes : $mes;
-
-        return DB::table('expensas')
-            ->where('mes', $mes)
-            ->where('anio', $anio)
-            ->whereIn('unidad_id', $idUnidades)
-            ->get()
+    public static function obtenerImporteMensualPorMesAnioUnidades($mes, $anio, $idUnidades)
+    {
+        return Expensa::obtenerExpensasPorMesAnioUnidades($mes, $anio, $idUnidades)
             ->sum('importe');
     }
 
-    public static function obtenerExpensasPagas($size){
+    public static function obtenerExpensasPagas($size)
+    {
 
         return DB::table('expensas')
             ->where('pago', 1)
             ->paginate($size);
     }
 
-    public static function obtenerExpensasImpagas($size){
+    public static function obtenerExpensasImpagas($size)
+    {
 
         return DB::table('expensas')
             ->where('pago', 0)
             ->paginate($size);
     }
 
-    public static function generarExpensasDelMes($anio, $mes, $consorcioId){
-        $gastosMensualesConsorcio = Gasto::importeGastosMensualConsorcio($anio, $mes, $consorcioId);
-
+    public static function generarExpensasDelMes($anio, $mes, $consorcioId)
+    {
+        $importeGastosMensualesConsorcio = Gasto::importeGastosMensualConsorcio($anio, $mes, $consorcioId);
         $unidadesDelConsorcio = Unidad::obtenerIdUnidadesPorIdConsorcio($consorcioId);
-        foreach($unidadesDelConsorcio as $unidad){
+        foreach ($unidadesDelConsorcio as $unidad) {
             $coeficienteDeLaUnidad = Unidad::calcularCoeficiente($consorcioId);
             $coeficienteGanancia = 1.2;
-            $importe = $gastosMensualesConsorcio * $coeficienteGanancia * $coeficienteDeLaUnidad;
+            $importe = $importeGastosMensualesConsorcio * $coeficienteGanancia * $coeficienteDeLaUnidad;
 
-            if($importe != 0){
-                Expensa::create([
+            if ($importe != 0) {
+                $expensa = Expensa::create([
                     'unidad_id' => $unidad->id,
                     'anio' => $anio,
-                    'mes' => (strlen($mes) < 10) ? '0'.$mes : $mes,
+                    'mes' => (strlen($mes) < 10) ? '0' . $mes : $mes,
                     'pago' => 'IMPAGO',
                     'emision' => "$anio-$mes-10",
                     'vencimiento' => "$anio-$mes-20",
                     'importe' => $importe
                 ]);
+                $gastosDelPeriodo = Gasto::gastosMensualesPorConsorcio($anio, $mes, $consorcioId);
+                foreach ($gastosDelPeriodo as $gasto) {
+                    $gasto->expensas->save($expensa);
+                }
             }
         }
     }
 
-    public static function cantiadadDeExpensasEnElPeriodo($consorcioId, $mes, $anio){
-        $mes = (strlen($mes) == 1) ? '0'.$mes : $mes;
+    public static function cantiadadDeExpensasEnElPeriodo($consorcioId, $mes, $anio)
+    {
+        $mes = (strlen($mes) == 1) ? '0' . $mes : $mes;
 
         $expensas = DB::table('expensas')
             ->join('unidads', 'unidads.id', '=', 'expensas.unidad_id')
