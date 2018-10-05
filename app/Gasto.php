@@ -62,5 +62,9 @@ class Gasto extends Model
             ]);
 
     }
+
+    public static function filterByConsorcio($consorcioId){
+        return Gasto::list()->where('gastos.consorcio_id', $consorcioId);
+    }
    
 }

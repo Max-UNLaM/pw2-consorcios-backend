@@ -42,4 +42,12 @@ class User extends Authenticatable
         return $respuesta;
 
     }
+
+    public function isOperator(){
+        if($this->rol_id == 2){ //2 es el id del rol operator
+            return 1;
+        } else {
+            return 0;
+        }
+    }
 }

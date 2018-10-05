@@ -3,18 +3,22 @@
 namespace App\Http\Controllers;
 
 use App\Proveedor;
+use App\User;
 use Illuminate\Http\Request;
 use App\Gasto;
+use Illuminate\Support\Facades\Auth;
 
 class GastoController extends Controller
 {
     public function index(Request $request)
     {
+        $user =  User::find(Auth::user()->getAuthIdentifier());
         $size = $request->get('size') ? $request->get('size') : 5;
-        if ($request->get('page')) {
-            return Gasto::list()->paginate($size);
+
+        if($user->isOperator()){
+            return Gasto::filterByConsorcio($user->administra_consorcio)->paginate($size);
         } else {
-            return Gasto::list()->paginate(5);
+            return Gasto::list()->paginate($size);
         }
     }
 
