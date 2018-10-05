@@ -96,13 +96,14 @@ class UsersTableSeeder extends Seeder
             'name'     => 'Miles Davis',
             'email'    => 'user@consorcio.com',
             'password' => bcrypt('changeme'),
-            'rol_id' => $operator->id
+            'rol_id' => $usuario->id
         ]);
         $operator = User::create([
             'name'     => 'Smooth Operator',
             'email'    => 'operator@consorcio.com',
             'password' => bcrypt('changeme'),
-            'rol_id' => $operator->id
+            'rol_id' => $operator->id,
+            'administra_consorcio'=> 1
         ]);
         $maxi->withAccessToken($maxi->createToken('ConsorcioLoco', ['user', 'operator', 'admin']));
         $maxi->withAccessToken($dani->createToken('ConsorcioLoco', ['user', 'operator', 'admin']));
