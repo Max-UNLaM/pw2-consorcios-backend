@@ -44,10 +44,6 @@ class User extends Authenticatable
     }
 
     public function isOperator(){
-        if($this->rol_id == 2){ //2 es el id del rol operator
-            return 1;
-        } else {
-            return 0;
-        }
+        return ($this->rol_id == 2) ? 1 : 0; //2 es el id del rol operator
     }
 }

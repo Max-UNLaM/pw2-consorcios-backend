@@ -12,7 +12,7 @@ class GastoController extends Controller
 {
     public function index(Request $request)
     {
-        $user =  User::find(Auth::user()->getAuthIdentifier());
+        $user = User::find(Auth::user()->getAuthIdentifier());
         $size = $request->get('size') ? $request->get('size') : 5;
 
         if($user->isOperator()){
