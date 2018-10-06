@@ -62,13 +62,18 @@ class GastoController extends Controller
 
     public function delete(Request $request)
     {
-        $resp = Gasto::destroy($request->get('id'));
+        $id = $request->get('id');
+        if(!$id) return response("Campo id es obligatorio", 400);
 
-        if ($resp) {
-            return 'ID ' . $request->get('id') . ' deleted OK';
-        } else {
-            return 'ID ' . $request->get('id') . ' not found';
-        }
+        $gasto = Gasto::find($id);
+        if(!$gasto) return response("No se encontro un gasto con el id especificado");
+
+        $user = User::find(Auth::user()->getAuthIdentifier());
+        if($user->isOperator() && ($gasto->consorcio_id != $user->administra_consorcio)) return response("No tenes permisos para ejecutar acciones sobre este gasto porque corresponde a un consorcio que no administras", 401);
+
+        Gasto::destroy($id);
+
+        return response("Se elimino correctamente el gasto");
     }
 
     public function gastosMensual(Request $request)
