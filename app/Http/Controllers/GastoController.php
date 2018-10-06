@@ -57,9 +57,7 @@ class GastoController extends Controller
             'anio' => $fecha->year
         ]);
 
-        return response([
-            'gasto' => $gasto
-        ]);
+        return $gasto;
     }
 
     public function delete(Request $request)
@@ -87,27 +85,13 @@ class GastoController extends Controller
     {
         //Busco el gasto correspondiente
         $gasto = Gasto::find($request->get('id'));
+        if(!$gasto) return response("No se encontro un gasto con el id especificado", 404);
 
-        //Pregunto si encontro un gasto con ese id
-        if ($gasto) {
-            //Actualizo los atributos del gasto encontrado
-            $gasto->nombre = $request->get('nombre');
-            $gasto->valor = $request->get('valor');
-            $gasto->mes = $request->get('mes');
-            $gasto->anio = $request->get('anio');
-            $gasto->fecha = $request->get('fecha');
-            $gasto->proveedor_id = $request->get('proveedor_id');
-            $gasto->consorcio_id = $request->get('consorcio_id');
-           
-            //Guardo los cambios
-            $gasto->save();
+        $user = User::find(Auth::user()->getAuthIdentifier());
+        if($user->isOperator() && ($gasto->consorcio_id != $user->administra_consorcio)) return response("No tenes permisos para ejecutar acciones sobre este gasto porque corresponde a un consorcio que no administras", 401);
 
-            return response([
-                'gastoActualizado' => $gasto
-            ]);
-        } else {
-            //Si no lo encuentra respondo un codigo 404 (not found)
-            return response(['No se encontro el pago que se quiere actualizar'], 404);
-        }
+        $gasto->update($request->all());
+
+        return $gasto;
     }
 }
