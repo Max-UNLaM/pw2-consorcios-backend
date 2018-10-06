@@ -122,4 +122,25 @@ class Factura extends Model
 
         return sizeof($facturas);
     }
+
+    public static function list(){
+        return DB::table('facturas')
+            ->join('users', 'users.id', '=', 'facturas.usuario_id')
+            ->join('consorcios', 'consorcios.id', '=', 'facturas.consorcio_id')
+            ->addSelect([
+                'facturas.id as id',
+                'facturas.mes as mes',
+                'facturas.anio as anio',
+                'facturas.emision as emision',
+                'facturas.vencimiento as vencimiento',
+                'facturas.total as total',
+                'facturas.pago_parcial as pago_parcial',
+                'facturas.adeuda as adeuda',
+                'consorcios.id as consorcio_id',
+                'consorcios.nombre as consorcio_nombre',
+                'users.id as usuario_id',
+                'users.name as usuario_nombre'
+            ])
+            ->orderByDesc('facturas.id');
+    }
 }

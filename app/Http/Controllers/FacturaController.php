@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Consorcio;
 use App\Factura;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -12,12 +13,16 @@ class FacturaController extends Controller
 
     public function index(Request $request)
     {
-        if ($request->get('page')) {
-            return $this->paginate($request);
-        } else if ($request->get('id')) {
-            return Factura::obtenerDetalleDeFacturas(array(Factura::find($request->get('id'))));
+        $id = $request->get('id');
+        if($id) return Factura::find($id);
+
+        $size = $request->get('size') ? $request->get('size') : 5;
+        $user = User::find(Auth::user()->getAuthIdentifier());
+
+        if($user->isOperator()){
+            return Factura::filterByConsorcio($user->administra_consorcio)->paginate($size);
         } else {
-            return Factura::obtenerDetalleDeFacturas(Factura::all());
+            return Factura::list()->paginate($size);
         }
     }
 
