@@ -66,7 +66,7 @@ class GastoController extends Controller
         if(!$id) return response("Campo id es obligatorio", 400);
 
         $gasto = Gasto::find($id);
-        if(!$gasto) return response("No se encontro un gasto con el id especificado");
+        if(!$gasto) return response("No se encontro un gasto con el id especificado", 404);
 
         $user = User::find(Auth::user()->getAuthIdentifier());
         if($user->isOperator() && ($gasto->consorcio_id != $user->administra_consorcio)) return response("No tenes permisos para ejecutar acciones sobre este gasto porque corresponde a un consorcio que no administras", 401);
