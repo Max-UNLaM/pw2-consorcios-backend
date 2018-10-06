@@ -27,7 +27,8 @@ class Liquidacion extends Model
                 'liquidacions.mes as mes',
                 'liquidacions.anio as anio',
                 'liquidacions.valor as valor'
-            ]);
+            ])
+            ->orderByDesc('liquidacions.id');
     }
 
     public static function filterByConsorcio($consorcioId){

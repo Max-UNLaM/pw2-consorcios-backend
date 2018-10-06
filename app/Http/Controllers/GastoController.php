@@ -13,6 +13,9 @@ class GastoController extends Controller
 {
     public function index(Request $request)
     {
+        $id = $request->get('id');
+        if($id) return Gasto::find($id);
+
         $user = User::find(Auth::user()->getAuthIdentifier());
         $size = $request->get('size') ? $request->get('size') : 5;
 

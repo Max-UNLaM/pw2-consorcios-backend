@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Consorcio;
 use App\Expensa;
 use App\Unidad;
+use App\User;
+use http\Env\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Pagination\Paginator;
@@ -13,14 +15,18 @@ class ExpensaController extends Controller
 {
     public function index(Request $request)
     {
-        if ($request->get('id')) {
-            return $this->show($request->get('id'));
-        } else if ($request->get('page')) {
-            $size = $request->get('size') ? $request->get('size') : 5;
-            return Expensa::list()->paginate($size);
+        $id = $request->get('id');
+        if($id) return Expensa::find($id);
+
+        $size = $request->get('size') ? $request->get('size') : 5;
+        $user = User::find(Auth::user()->getAuthIdentifier());
+
+        if($user->isOperator()){
+            return Expensa::filterByConsorcio($user->administra_consorcio)->paginate($size);
         } else {
-            return Expensa::list()->paginate(5);
+            return Expensa::list()->paginate($size);
         }
+
     }
 
 

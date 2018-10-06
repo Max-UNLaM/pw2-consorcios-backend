@@ -76,7 +76,13 @@ class Expensa extends Model
                 'expensas.vencimiento as vencimiento',
                 'expensas.importe as importe',
                 'expensas.pago as pago'
-            ]);
+            ])
+            ->orderByDesc('expensas.id');
+    }
+
+    public static function filterByConsorcio($consorcioId){
+        return Expensa::list()
+            ->where('consorcios.id', $consorcioId);
     }
 
     public static function listByUnidad($unidadId)

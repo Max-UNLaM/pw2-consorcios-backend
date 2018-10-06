@@ -59,7 +59,8 @@ class Gasto extends Model
                 'gastos.fecha as fecha',
                 'gastos.proveedor_id as proveedor_id',
                 'gastos.consorcio_id as consorcio_id'
-            ]);
+            ])
+            ->orderByDesc('gastos.id');
 
     }
 

@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Auth;
 class LiquidacionController extends Controller
 {
     public function index(Request $request){
+        $id = $request->get('id');
+        if($id) return Liquidacion::find($id);
 
         $size = $request->get('size') ? $request->get('size') : 5;
         $user = User::find(Auth::user()->getAuthIdentifier());
