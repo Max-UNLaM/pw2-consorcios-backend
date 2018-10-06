@@ -12,7 +12,7 @@ class Pago extends Model
         'usuario_id', 'factura_id', 'fecha', 'monto'
     ];
 
-    public static function pagoParcial($factura_id, $monto, $fecha){
+    public static function realizarPago($factura_id, $monto, $fecha){
         $factura = Factura::find($factura_id);
 
         if($factura->adeuda == 0) return response(['Esta factura ya esta paga'], 400);

@@ -20,19 +20,21 @@ class PagosTableSeeder extends Seeder
 
         $arrayRandom = array(0, 0, 1);
 
+        $mesAnterior = '09';
+
         foreach ($facturas as $factura){
             $mes = ($factura->mes < 10) ? '0'.$factura->mes : $factura->mes;
             $dia = $faker->numberBetween(11, 28);
 
             $pagoTotal = $faker->randomElement($arrayRandom);
 
-            if($pagoTotal == 1){
-                Pago::pagoParcial($factura->id, $factura->adeuda, "2018-$mes-$dia");
+            if($pagoTotal == 1 || $mes != $mesAnterior){
+                Pago::realizarPago($factura->id, $factura->adeuda, "2018-$mes-$dia");
             } else {
                 $pagoParcial = $faker->randomElement($arrayRandom);
                 if($pagoParcial == 1){
                     $montoAPagar = $faker->numberBetween(($factura->adeuda / 10), $factura->adeuda);
-                    Pago::pagoParcial($factura->id, $montoAPagar, "2018-$mes-$dia");
+                    Pago::realizarPago($factura->id, $montoAPagar, "2018-$mes-$dia");
                 }
             }
 
