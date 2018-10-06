@@ -93,6 +93,9 @@ Route::group(['middleware' => ['api', 'cors']], function () {
     Route::delete('/admin/gasto', 'GastoController@delete')->middleware('auth:api', 'scope:operator,admin');
     Route::put('/admin/gasto', 'GastoController@update')->middleware('auth:api', 'scope:operator,admin');
 
+    //Liquidacion
+    Route::get('/admin/liquidacion', 'LiquidacionController@index')->middleware('auth:api', 'scope:operator,admin');
+
     // Estadística
     // Admin
     Route::get('/admin/estadistica', 'EstadisticaController@index')->middleware('auth:api', 'scope:operator,admin');
