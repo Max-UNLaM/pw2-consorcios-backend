@@ -14,6 +14,8 @@ class LiquidacionesTableSeeder extends Seeder
      */
     public function run()
     {
+        $coeficiente = 1.2;
+
         $mesDesdeElQueSeVaALiquidar = 6;
         $mesHastaElQueSeVaALiquidar = 9;
         $anio = 2018;
@@ -28,7 +30,7 @@ class LiquidacionesTableSeeder extends Seeder
                     'mes' => $mes,
                     'anio' => $anio,
                     'consorcio_id' => $consorcio->id,
-                    'valor' => $gastosMensuales * 1.2
+                    'valor' => $gastosMensuales * $coeficiente
                 ]);
             }
         }

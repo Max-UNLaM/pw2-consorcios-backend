@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 class Expensa extends Model
 {
-    protected $fillable = ['unidad_id', 'anio', 'mes', 'pago', 'emision', 'vencimiento', 'importe', 'factura_id'];
+    protected $fillable = ['unidad_id', 'anio', 'mes', 'pago', 'emision', 'vencimiento', 'importe'/*, 'factura_id'*/];
 
     public static function userGetAllUsersExpensas(string $userId)
     {
@@ -128,12 +128,14 @@ class Expensa extends Model
 
     public static function generarExpensasDelMes($anio, $mes, $consorcioId)
     {
-        $importeGastosMensualesConsorcio = Gasto::importeGastosMensualConsorcio($anio, $mes, $consorcioId);
+        if(Expensa::cantiadadDeExpensasEnElPeriodo($consorcioId, $mes, $anio) != 0) return response("Las expensas para este periodo en este consorcio ya fueron emitidas previamente", 204);
+
+        $liquidacionMensualDeGastos = Liquidacion::obtenerTotalPorMesAnioConsorcio($mes, $anio, $consorcioId);
         $unidadesDelConsorcio = Unidad::obtenerIdUnidadesPorIdConsorcio($consorcioId);
+
         foreach ($unidadesDelConsorcio as $unidad) {
             $coeficienteDeLaUnidad = Unidad::calcularCoeficiente($consorcioId);
-            $coeficienteGanancia = 1.2;
-            $importe = $importeGastosMensualesConsorcio * $coeficienteGanancia * $coeficienteDeLaUnidad;
+            $importe = $liquidacionMensualDeGastos * $coeficienteDeLaUnidad;
 
             if ($importe != 0) {
                 $expensa = Expensa::create([
@@ -145,10 +147,10 @@ class Expensa extends Model
                     'vencimiento' => "$anio-$mes-20",
                     'importe' => $importe
                 ]);
-                $gastosDelPeriodo = Gasto::gastosMensualesPorConsorcio($anio, $mes, $consorcioId);
+                /*$gastosDelPeriodo = Gasto::gastosMensualesPorConsorcio($anio, $mes, $consorcioId);
                 foreach ($gastosDelPeriodo as $gasto) {
                     $gasto->expensas->save($expensa);
-                }
+                }*/
             }
         }
     }
