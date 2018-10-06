@@ -66,5 +66,13 @@ class Gasto extends Model
     public static function filterByConsorcio($consorcioId){
         return Gasto::list()->where('gastos.consorcio_id', $consorcioId);
     }
+
+    public static function gastosMesAnioConsorcio($mes, $anio, $consorcioId){
+        return DB::table('gastos')
+            ->where('mes', $mes)
+            ->where('anio', $anio)
+            ->where('consorcio_id', $consorcioId)
+            ->sum('valor');
+    }
    
 }
