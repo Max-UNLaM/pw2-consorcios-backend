@@ -63,7 +63,7 @@ Route::group(['middleware' => ['api', 'cors']], function () {
     // Factura
     // Admin
     Route::get('/admin/factura', 'FacturaController@index')->middleware('auth:api', 'scope:operator,admin');
-    Route::post('/admin/factura', 'FacturaController@facturarPeriodo')->middleware('auth:api', 'scope:operator,admin');
+    Route::post('/admin/factura', 'FacturaController@store')->middleware('auth:api', 'scope:operator,admin');
     // User
     Route::get('/user/factura', 'FacturaController@user')->middleware('auth:api', 'scope:user,operator,admin');
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Consorcio;
+use App\Expensa;
 use App\Factura;
 use App\User;
 use Illuminate\Http\Request;
@@ -46,32 +47,21 @@ class FacturaController extends Controller
         return Factura::paginate($request->get('size'));
     }
 
-    public function facturarPeriodo(Request $request)
+    public function store(Request $request)
     {
-        $consorcioId = $request->get('consorcio_id');
+        $user = User::find(Auth::user()->getAuthIdentifier());
+
+        $consorcioId = $user->isOperator() ? $user->administra_consorcio : $request->get('consorcio_id');
         $mes = $request->get('mes');
         $anio = $request->get('anio');
-        $facturaciones = 0;
 
-        if (!$mes) return response(['Parametro mes requerido'], 400);
-        if (!$anio) return response(['Parametro anio requerido'], 400);
+        if(!$consorcioId) return response("El parametro consorcio_id es obligatorio", 400);
+        if(!$mes) return response("El parametro mes es obligatorio", 400);
+        if(!$anio) return response("El parametro anio es obligatorio",400);
 
-        if ($consorcioId) {
-            $consorcios = array(Consorcio::find($consorcioId));
-        } else {
-            $consorcios = Consorcio::all();
-        }
+        if(Expensa::cantiadadDeExpensasEnElPeriodo($consorcioId, $mes, $anio) == 0) return response("No se encontraron expensas en el periodo indicado. Generelas e intentelo nuevamente", 400);
+        if(Factura::cantidadDeFacturasEnElPeriodo($consorcioId, $mes, $anio) > 0) return response("Ya se generaron las facturas para el periodo indicado", 400);
 
-        foreach ($consorcios as $consorcio) {
-            # TODO mover a Expensas!
-            #    if(Expensa::cantiadadDeExpensasEnElPeriodo($consorcio->id, $mes, $anio) == 0){
-            #        Expensa::generarExpensasDelMes($anio, $mes, $consorcio->id);
-            #    }
-
-            if (Factura::cantidadDeFacturasEnElPeriodo($consorcio->id, $mes, $anio) == 0) {
-                $facturaciones += Factura::facturarPeriodo($consorcio->id, $mes, $anio);
-            }
-        }
-        return response('Creadas ' . $facturaciones . ' facturas', 201);
+        return Factura::facturarPeriodo($consorcioId, $mes, $anio);
     }
 }

@@ -92,12 +92,13 @@ class Factura extends Model
     public static function facturarPeriodo($consorcioId, $mes, $anio)
     {
         $expensas = Expensa::expensasEnElPeriodo($consorcioId, $mes, $anio);
+        $facturas = array();
 
         foreach ($expensas as $expensa){
             $unidad = Unidad::find($expensa->unidad_id);
             $usuarioId = $unidad->propietarioId();
 
-            Factura::create([
+            $factura = Factura::create([
                 'consorcio_id' => $consorcioId,
                 'usuario_id' => $usuarioId,
                 'expensa_id' => $expensa->id,
@@ -110,7 +111,11 @@ class Factura extends Model
                 'adeuda' => $expensa->importe,
                 'pago' => 'IMPAGO'
             ]);
+
+            $facturas[] = $factura;
         }
+
+        return $facturas;
     }
 
     public static function cantidadDeFacturasEnElPeriodo($consorcioId, $mes, $anio)
