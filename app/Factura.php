@@ -91,29 +91,24 @@ class Factura extends Model
 
     public static function facturarPeriodo($consorcioId, $mes, $anio)
     {
-        $propietarios = Consorcio::obtenerPropietarios($consorcioId);
-        $facturaciones = 0;
-        foreach ($propietarios as $propietario) {
-            $idUnidades = Unidad::obtenerIdDeUnidadesPorUsuarioYConsorcio($propietario->id, $consorcioId);
+        $expensas = Expensa::expensasEnElPeriodo($consorcioId, $mes, $anio);
 
-            $total = Expensa::obtenerImporteMensualPorMesAnioUnidades($mes, $anio, $idUnidades);
+        foreach ($expensas as $expensa){
+            $unidad = Unidad::find($expensa->unidad_id);
+            $usuarioId = $unidad->propietarioId();
 
-            if ($total != 0) {
-                Factura::create([
-                    'consorcio_id' => $consorcioId,
-                    'usuario_id' => $propietario->id,
-                    'mes' => $mes,
-                    'anio' => $anio,
-                    'emision' => "$anio-$mes-10",
-                    'vencimiento' => "$anio-$mes-20",
-                    'total' => $total,
-                    'pago_parcial' => 0,
-                    'adeuda' => $total
-                ]);
-                $facturaciones++;
-            }
+            Factura::create([
+                'consorcio_id' => $consorcioId,
+                'usuario_id' => $usuarioId,
+                'mes' => $mes,
+                'anio' => $anio,
+                'emision' => "$anio-$mes-10",
+                'vencimiento' => "$anio-$mes-20",
+                'total' => $expensa->importe,
+                'pago_parcial' => 0,
+                'adeuda' => $expensa->importe
+            ]);
         }
-        return $facturaciones;
     }
 
     public static function cantidadDeFacturasEnElPeriodo($consorcioId, $mes, $anio)

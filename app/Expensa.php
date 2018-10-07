@@ -161,18 +161,21 @@ class Expensa extends Model
         }
     }
 
-    public static function cantiadadDeExpensasEnElPeriodo($consorcioId, $mes, $anio)
+    public static function expensasEnElPeriodo($consorcioId, $mes, $anio)
     {
         $mes = (strlen($mes) == 1) ? '0' . $mes : $mes;
 
-        $expensas = DB::table('expensas')
+        return DB::table('expensas')
             ->join('unidads', 'unidads.id', '=', 'expensas.unidad_id')
             ->join('consorcios', 'consorcios.id', '=', 'unidads.consorcio_id')
             ->where('mes', $mes)
             ->where('anio', $anio)
             ->where('consorcios.id', $consorcioId)
             ->get();
+    }
 
-        return sizeof($expensas);
+    public static function cantiadadDeExpensasEnElPeriodo($consorcioId, $mes, $anio)
+    {
+        return sizeof(Expensa::expensasEnElPeriodo($consorcioId, $mes, $anio));
     }
 }
