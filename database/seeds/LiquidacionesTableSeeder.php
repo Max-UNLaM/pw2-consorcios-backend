@@ -24,14 +24,7 @@ class LiquidacionesTableSeeder extends Seeder
             $consorcios = Consorcio::all();
 
             foreach ($consorcios as $consorcio){
-                $gastosMensuales = Gasto::gastosMesAnioConsorcio($mes, $anio, $consorcio->id);
-
-                Liquidacion::create([
-                    'mes' => $mes,
-                    'anio' => $anio,
-                    'consorcio_id' => $consorcio->id,
-                    'valor' => $gastosMensuales * $coeficiente
-                ]);
+                Liquidacion::liquidarMesAnioConsorcio($mes, $anio, $consorcio->id);
             }
         }
     }

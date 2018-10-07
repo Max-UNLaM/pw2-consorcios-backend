@@ -77,6 +77,7 @@ class Expensa extends Model
                 'expensas.importe as importe',
                 'expensas.pago as pago'
             ])
+            ->orderByDesc('expensas.emision')
             ->orderByDesc('expensas.id');
     }
 

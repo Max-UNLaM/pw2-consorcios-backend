@@ -133,11 +133,13 @@ class Factura extends Model
                 'facturas.total as total',
                 'facturas.pago_parcial as pago_parcial',
                 'facturas.adeuda as adeuda',
+                'facturas.pago as pago',
                 'consorcios.id as consorcio_id',
                 'consorcios.nombre as consorcio_nombre',
                 'users.id as usuario_id',
                 'users.name as usuario_nombre'
             ])
+            ->orderByDesc('facturas.emision')
             ->orderByDesc('facturas.id');
     }
 

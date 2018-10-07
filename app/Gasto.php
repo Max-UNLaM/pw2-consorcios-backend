@@ -60,12 +60,19 @@ class Gasto extends Model
                 'gastos.proveedor_id as proveedor_id',
                 'gastos.consorcio_id as consorcio_id'
             ])
-            ->orderByDesc('gastos.id');
+            ->orderByDesc('gastos.fecha');
 
     }
 
     public static function filterByConsorcio($consorcioId){
         return Gasto::list()->where('gastos.consorcio_id', $consorcioId);
+    }
+
+    public static function filterByMesAnioConsorcio($mes, $anio, $consorcioId){
+        return Gasto::list()
+            ->where('gastos.mes', $mes)
+            ->where('gastos.anio', $anio)
+            ->where('gastos.consorcio_id', $consorcioId);
     }
 
     public static function gastosMesAnioConsorcio($mes, $anio, $consorcioId){

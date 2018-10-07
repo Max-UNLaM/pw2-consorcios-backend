@@ -35,4 +35,28 @@ class Liquidacion extends Model
         return Liquidacion::list()
             ->where('consorcios.id', $consorcioId);
     }
+
+    public static function existeParaMesAnioConsorcio($mes, $anio, $consorcioId){
+        $liquidaciones = Liquidacion::list()
+            ->where('liquidacions.mes', $mes)
+            ->where('liquidacions.anio', $anio)
+            ->where('consorcios.id', $consorcioId)
+            ->get();
+
+        return sizeof($liquidaciones);
+    }
+
+    public static function liquidarMesAnioConsorcio($mes, $anio, $consorcioId){
+        $coeficiente = 1.2;
+        $gastosMensuales = Gasto::gastosMesAnioConsorcio($mes, $anio, $consorcioId);
+
+        if($gastosMensuales == 0) return response("No hay gastos en el periodo seleccionado", 202);
+
+        return Liquidacion::create([
+            'mes' => $mes,
+            'anio' => $anio,
+            'consorcio_id' => $consorcioId,
+            'valor' => $gastosMensuales * $coeficiente
+        ]);
+    }
 }
