@@ -75,16 +75,17 @@ class PagoController extends Controller
 
         $adeuda = $factura->adeuda;
 
-        if($monto > $adeuda) return response("No se realizo el pago porque el monto indicado supera el monto adeudado", 400);
+        if($monto > $adeuda) return response("No se realizo el pago porque el monto indicado supera el monto adeudado (".$adeuda.")", 400);
 
         $fecha = Carbon::now();
         $pago = Pago::realizarPago($facturaId, $monto, $fecha->toDateString());
         $factura = Factura::find($pago->factura_id);
-        $expensa = Expensa::find($factura)
+        $expensa = Expensa::find($factura->expensa_id);
 
         return [
             'pago' => $pago,
-            'factura' =>
+            'factura' => $factura,
+            'expensa' => $expensa
         ];
     }
 

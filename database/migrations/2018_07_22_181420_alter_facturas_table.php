@@ -16,6 +16,7 @@ class AlterFacturasTable extends Migration
         Schema::table('facturas', function (Blueprint $table) {
             $table->foreign('consorcio_id')->references('id')->on('consorcios');
             $table->foreign('usuario_id')->references('id')->on('users');
+            $table->foreign('expensa_id')->references('id')->on('expensas');
         });
     }
 

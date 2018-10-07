@@ -20,6 +20,7 @@ class Pago extends Model
 
         $factura->pago_parcial+=$monto;
         $factura->adeuda-=$monto;
+        if($factura->adeuda == 0) $factura->pago = 'PAGO';
         $factura->update();
 
         if($factura->adeuda == 0){

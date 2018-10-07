@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 class Factura extends Model
 {
-    protected $fillable = ['consorcio_id', 'usuario_id', 'mes', 'anio', 'emision', 'vencimiento', 'total', 'pago_parcial', 'adeuda'];
+    protected $fillable = ['consorcio_id', 'usuario_id', 'expensa_id', 'mes', 'anio', 'emision', 'vencimiento', 'total', 'pago_parcial', 'adeuda', 'pago'];
 
     public static function obtenerDetalleDeFacturas($facturasSinDetalle)
     {
@@ -100,13 +100,15 @@ class Factura extends Model
             Factura::create([
                 'consorcio_id' => $consorcioId,
                 'usuario_id' => $usuarioId,
+                'expensa_id' => $expensa->id,
                 'mes' => $mes,
                 'anio' => $anio,
                 'emision' => "$anio-$mes-10",
                 'vencimiento' => "$anio-$mes-20",
                 'total' => $expensa->importe,
                 'pago_parcial' => 0,
-                'adeuda' => $expensa->importe
+                'adeuda' => $expensa->importe,
+                'pago' => 'IMPAGO'
             ]);
         }
     }
