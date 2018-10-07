@@ -11,11 +11,15 @@ use Illuminate\Support\Facades\Auth;
 class LiquidacionController extends Controller
 {
     public function index(Request $request){
+        $size = $request->get('size') ? $request->get('size') : 5;
+        $user = User::find(Auth::user()->getAuthIdentifier());
+
         $id = $request->get('id');
         if($id) return Liquidacion::find($id);
 
-        $size = $request->get('size') ? $request->get('size') : 5;
-        $user = User::find(Auth::user()->getAuthIdentifier());
+        $mes = $request->get('mes');
+        $anio = $request->get('anio');
+        if($mes && $anio) return Liquidacion::filterByMesAnio($mes, $anio)->paginate($size);
 
         if($user->isOperator()){
             return Liquidacion::filterByConsorcio($user->administra_consorcio)->paginate($size);

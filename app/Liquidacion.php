@@ -36,6 +36,12 @@ class Liquidacion extends Model
             ->where('consorcios.id', $consorcioId);
     }
 
+    public static function filterByMesAnio($mes, $anio){
+        return Liquidacion::list()
+            ->where('liquidacions.mes', $mes)
+            ->where('liquidacions.anio', $anio);
+    }
+
     public static function existeParaMesAnioConsorcio($mes, $anio, $consorcioId){
         $liquidaciones = Liquidacion::list()
             ->where('liquidacions.mes', $mes)

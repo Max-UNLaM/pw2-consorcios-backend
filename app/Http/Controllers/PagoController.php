@@ -14,11 +14,15 @@ class PagoController extends Controller
 {
     public function index(Request $request)
     {
+        $size = $request->get('size') ? $request->get('size') : 5;
+        $user = User::find(Auth::user()->getAuthIdentifier());
+
         $id = $request->get('id');
         if($id) return Pago::find($id);
 
-        $size = $request->get('size') ? $request->get('size') : 5;
-        $user = User::find(Auth::user()->getAuthIdentifier());
+        $mes = $request->get('mes');
+        $anio = $request->get('anio');
+        if($mes && $anio) return Pago::filterByMesAnio($mes, $anio)->paginate($size);
 
         if($user->isOperator()){
             return Pago::filterByConsorcio($user->administra_consorcio)->paginate($size);

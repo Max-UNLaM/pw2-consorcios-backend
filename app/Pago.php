@@ -65,6 +65,12 @@ class Pago extends Model
             ->where('consorcios.id', $consorcioId);
     }
 
+    public static function filterByMesAnio($mes, $anio){
+        return Pago::list()
+            ->where('facturas.mes', $mes)
+            ->where('facturas.anio', $anio);
+    }
+
     public static function obtenerPagosPorUsuarioYFactura($usuario_id, $factura_id){
         return Pago::list()
             ->where('usuario_id', $usuario_id)

@@ -86,6 +86,12 @@ class Expensa extends Model
             ->where('consorcios.id', $consorcioId);
     }
 
+    public static function filterByMesAnio($mes, $anio){
+        return Expensa::list()
+            ->where('expensas.mes', $mes)
+            ->where('expensas.anio', $anio);
+    }
+
     public static function listByUnidad($unidadId)
     {
         return Expensa::list()->where('unidad_id', $unidadId);

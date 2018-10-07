@@ -14,11 +14,15 @@ class FacturaController extends Controller
 
     public function index(Request $request)
     {
+        $size = $request->get('size') ? $request->get('size') : 5;
+        $user = User::find(Auth::user()->getAuthIdentifier());
+
         $id = $request->get('id');
         if($id) return Factura::find($id);
 
-        $size = $request->get('size') ? $request->get('size') : 5;
-        $user = User::find(Auth::user()->getAuthIdentifier());
+        $mes = $request->get('mes');
+        $anio = $request->get('anio');
+        if($mes && $anio) return Factura::filterByMesAnio($mes, $anio)->paginate($size);
 
         if($user->isOperator()){
             return Factura::filterByConsorcio($user->administra_consorcio)->paginate($size);

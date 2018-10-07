@@ -152,4 +152,10 @@ class Factura extends Model
         return Factura::list()
             ->where('consorcios.id', $consorcioId);
     }
+
+    public static function filterByMesAnio($mes, $anio){
+        return Factura::list()
+            ->where('facturas.mes', $mes)
+            ->where('facturas.anio', $anio);
+    }
 }
