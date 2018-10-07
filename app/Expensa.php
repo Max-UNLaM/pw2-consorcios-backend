@@ -139,6 +139,7 @@ class Expensa extends Model
 
         $liquidacionMensualDeGastos = Liquidacion::obtenerTotalPorMesAnioConsorcio($mes, $anio, $consorcioId);
         $unidadesDelConsorcio = Unidad::obtenerIdUnidadesPorIdConsorcio($consorcioId);
+        $expensas = array();
 
         foreach ($unidadesDelConsorcio as $unidad) {
             $coeficienteDeLaUnidad = Unidad::calcularCoeficiente($consorcioId);
@@ -148,18 +149,18 @@ class Expensa extends Model
                 $expensa = Expensa::create([
                     'unidad_id' => $unidad->id,
                     'anio' => $anio,
-                    'mes' => (strlen($mes) < 10) ? '0' . $mes : $mes,
+                    'mes' => (strlen($mes) < 2) ? '0' . $mes : $mes,
                     'pago' => 'IMPAGO',
                     'emision' => "$anio-$mes-10",
                     'vencimiento' => "$anio-$mes-20",
                     'importe' => $importe
                 ]);
-                /*$gastosDelPeriodo = Gasto::gastosMensualesPorConsorcio($anio, $mes, $consorcioId);
-                foreach ($gastosDelPeriodo as $gasto) {
-                    $gasto->expensas->save($expensa);
-                }*/
+
+                $expensas[] = $expensa;
             }
         }
+
+        return $expensas;
     }
 
     public static function expensasEnElPeriodo($consorcioId, $mes, $anio)

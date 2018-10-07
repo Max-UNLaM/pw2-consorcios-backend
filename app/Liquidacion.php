@@ -50,7 +50,7 @@ class Liquidacion extends Model
         $coeficiente = 1.2;
         $gastosMensuales = Gasto::gastosMesAnioConsorcio($mes, $anio, $consorcioId);
 
-        if($gastosMensuales == 0) return response("No hay gastos en el periodo seleccionado", 202);
+        if($gastosMensuales == 0) return response("No hay gastos en el periodo seleccionado", 400);
 
         return Liquidacion::create([
             'mes' => $mes,

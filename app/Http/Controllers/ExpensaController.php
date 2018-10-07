@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Consorcio;
 use App\Expensa;
+use App\Liquidacion;
 use App\Unidad;
 use App\User;
 use http\Env\Response;
@@ -87,19 +88,20 @@ class ExpensaController extends Controller
 
     public function store(Request $request)
     {
-        $expensaSinImporte = new Expensa();
+        $user = User::find(Auth::user()->getAuthIdentifier());
 
-        $expensaSinImporte->unidad_id = $request->get('unidad_id');
-        $expensaSinImporte->anio = $request->get('anio');
-        $expensaSinImporte->mes = $request->get('mes');
-        $expensaSinImporte->estado = $request->get('estado');
-        $expensaSinImporte->emision = $request->get('emision');
-        $expensaSinImporte->vencimiento = $request->get('vencimiento');
+        $consorcioId = $user->isOperator() ? $user->administra_consorcio : $request->get('consorcio_id');
+        $mes = $request->get('mes');
+        $anio = $request->get('anio');
 
-        $expensaConImporte = Expensa::crearExpensaConImporte($expensaSinImporte);
-        return response([
-            'expensa' => $expensaConImporte
-        ]);
+        if(!$consorcioId) return response("El parametro consorcio_id es obligatorio", 400);
+        if(!$mes) return response("El parametro mes es obligatorio", 400);
+        if(!$anio) return response("El parametro anio es obligatorio",400);
+
+        if(!Liquidacion::existeParaMesAnioConsorcio($mes, $anio, $consorcioId)) return response("No se encontro una liquidacion de gastos para el periodo solicitado. Generela e intentelo nuevamente.", 400);
+        if(Expensa::cantiadadDeExpensasEnElPeriodo($consorcioId, $mes, $anio) > 0) return response("Las expensas del periodo indicado fueron generadas anteriormente", 202);
+
+        return Expensa::generarExpensasDelMes($anio, $mes, $consorcioId);
     }
 
     public function update(Request $request)
