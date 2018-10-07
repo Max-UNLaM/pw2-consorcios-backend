@@ -20,7 +20,7 @@ class GastosTableSeeder extends Seeder
 
         $mesDesdeElQueSeCreanGastos = 6;
         $mesHastaElQueSeCreanGastos = 10;
-        $cantidadDeGastosMensuales = 1;
+        $cantidadDeGastosMensuales = 10;
 
         for($j = $mesDesdeElQueSeCreanGastos; $j <= $mesHastaElQueSeCreanGastos; $j++){
 
