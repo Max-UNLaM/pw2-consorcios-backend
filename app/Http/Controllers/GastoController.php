@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Liquidacion;
 use App\Proveedor;
 use App\User;
 use Illuminate\Http\Request;
@@ -45,10 +46,13 @@ class GastoController extends Controller
         $valor = $request->get('valor');
         $consorcioId = ($user->isOperator()) ? $user->administra_consorcio : $request->get('consorcio_id');
         $fecha = Carbon::now();
+        $mes = $fecha->month;
+        $anio = $fecha->year;
 
         if(!$consorcioId) return response("El campo consorcio_id es obligatorio", 400);
         if(!$proveedorId) return response("El campo proveedor_id es obligatorio", 400);
         if(!$valor) return response("El campo gasto es obligatorio", 400);
+        if(Liquidacion::existeParaMesAnioConsorcio($mes, $anio, $consorcioId)) return response("No se puede cargar un gasto a un periodo que ya fue liquidado", 400);
 
         $gasto = Gasto::create([
             'nombre' => Proveedor::find($proveedorId)->rubro,
@@ -56,8 +60,8 @@ class GastoController extends Controller
             'fecha' => $fecha->toDateString(),
             'proveedor_id' => $proveedorId,
             'consorcio_id' => $consorcioId,
-            'mes' => $fecha->month,
-            'anio' => $fecha->year
+            'mes' => $mes,
+            'anio' => $anio
         ]);
 
         return $gasto;
