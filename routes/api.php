@@ -75,6 +75,7 @@ Route::group(['middleware' => ['api', 'cors']], function () {
     Route::put('/admin/pago', 'PagoController@update')->middleware('auth:api', 'scope:operator,admin');
     // User
     Route::get('/user/pago', 'PagoController@user')->middleware('auth:api', 'scope:user,operator,admin');
+    Route::post('/user/pago', 'PagoController@store')->middleware('auth:api', 'scope:user,operator,admin');
 
     // Reclamo
     // Admin

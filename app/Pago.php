@@ -46,6 +46,8 @@ class Pago extends Model
     public static function list(){
         return DB::table('pagos')
             ->join('users', 'users.id', '=', 'pagos.usuario_id')
+            ->join('facturas', 'pagos.factura_id', '=', 'facturas.id')
+            ->join('consorcios', 'facturas.consorcio_id', '=', 'consorcios.id')
             ->addSelect([
                 'pagos.id as id',
                 'users.id as usuario_id',
@@ -53,7 +55,13 @@ class Pago extends Model
                 'pagos.factura_id as factura_id',
                 'pagos.fecha as fecha',
                 'pagos.monto as monto'
-            ]);
+            ])
+            ->orderByDesc('pagos.id');
+    }
+
+    public static function filterByConsorcio($consorcioId){
+        return Pago::list()
+            ->where('consorcios.id', $consorcioId);
     }
 
     public static function obtenerPagosPorUsuarioYFactura($usuario_id, $factura_id){

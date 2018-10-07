@@ -138,4 +138,9 @@ class Factura extends Model
             ])
             ->orderByDesc('facturas.id');
     }
+
+    public static function filterByConsorcio($consorcioId){
+        return Factura::list()
+            ->where('consorcios.id', $consorcioId);
+    }
 }

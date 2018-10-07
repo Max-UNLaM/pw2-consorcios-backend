@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Expensa;
 use App\Factura;
 use App\Pago;
+use App\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -11,12 +14,16 @@ class PagoController extends Controller
 {
     public function index(Request $request)
     {
-        if ($request->get('page')) {
-            return $this->paginate($request);
-        } else if ($request->get('id')) {
-            return Pago::find($request->get('id'));
+        $id = $request->get('id');
+        if($id) return Pago::find($id);
+
+        $size = $request->get('size') ? $request->get('size') : 5;
+        $user = User::find(Auth::user()->getAuthIdentifier());
+
+        if($user->isOperator()){
+            return Pago::filterByConsorcio($user->administra_consorcio)->paginate($size);
         } else {
-            return Pago::all();
+            return Pago::list()->paginate($size);
         }
     }
 
@@ -57,12 +64,28 @@ class PagoController extends Controller
 
     public function store(Request $request)
     {
-        if (Pago::find($request->get('id')) != null) $this->delete($request);
+        $facturaId = $request->get('factura_id');
+        $monto = $request->get('monto');
 
-        Pago::create($request->all());
-        return response([
-            'pago' => $request->all()
-        ]);
+        if(!$facturaId) return response("El campo factura_id es obligatorio", 400);
+        if(!$monto) return response("El campo monto es obligatorio");
+
+        $factura = Factura::find($facturaId);
+        if(!$factura) return response("No se encontro una factura con el id indicado", 404);
+
+        $adeuda = $factura->adeuda;
+
+        if($monto > $adeuda) return response("No se realizo el pago porque el monto indicado supera el monto adeudado", 400);
+
+        $fecha = Carbon::now();
+        $pago = Pago::realizarPago($facturaId, $monto, $fecha->toDateString());
+        $factura = Factura::find($pago->factura_id);
+        $expensa = Expensa::find($factura)
+
+        return [
+            'pago' => $pago,
+            'factura' =>
+        ];
     }
 
     public function update(Request $request)
