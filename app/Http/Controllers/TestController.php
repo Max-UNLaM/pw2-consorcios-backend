@@ -14,6 +14,7 @@ use App\User;
 class TestController extends Controller
 {
     public function index(){
-        return Expensa::expensasEnElPeriodo(1, 6, 2018);
+        $a = 'asd';
+        return strlen($a);
     }
 }

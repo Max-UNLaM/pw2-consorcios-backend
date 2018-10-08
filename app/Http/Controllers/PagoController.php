@@ -63,11 +63,23 @@ class PagoController extends Controller
 
     public function store(Request $request)
     {
+        $user = User::find(Auth::user()->getAuthIdentifier());
         $facturaId = $request->get('factura_id');
         $monto = $request->get('monto');
+        $medioDePago = $request->get('medio_de_pago');
+        $codigoComprobante = null;
 
         if(!$facturaId) return response("El campo factura_id es obligatorio", 400);
-        if(!$monto) return response("El campo monto es obligatorio");
+        if(!$monto) return response("El campo monto es obligatorio", 400);
+        if(!$medioDePago) return response("El campo medio_de_pago es obligatorio", 400);
+        if($user->isAdmin() == 0 && $user->isOperator() == 0){
+            $codigo = $request->get('codigo_comprobante');
+            if(!$codigo) return response("El codigo codigo_comprobante es obligatorio para usuarios que no son adminsitradores ni operadores",400);
+            if(strlen($codigo) < 4) return response("El codigo_comprobante debe tener un minimo de 4 caracteres", 400);
+            if(Pago::elCodigoYaFueRegistrado($codigo) > 0) return response("El codigo_comprobante entregado esta asociado a un pago existente", 400);
+
+            $codigoComprobante = $codigo;
+        }
 
         $factura = Factura::find($facturaId);
         if(!$factura) return response("No se encontro una factura con el id indicado", 404);
@@ -77,7 +89,7 @@ class PagoController extends Controller
         if($monto > $adeuda) return response("No se realizo el pago porque el monto indicado supera el monto adeudado (".$adeuda.")", 400);
 
         $fecha = Carbon::now();
-        $pago = Pago::realizarPago($facturaId, $monto, $fecha->toDateString());
+        $pago = Pago::realizarPago($facturaId, $monto, $fecha->toDateString(), $user, $medioDePago, $codigoComprobante);
         $factura = Factura::find($pago->factura_id);
         $expensa = Expensa::find($factura->expensa_id);
 

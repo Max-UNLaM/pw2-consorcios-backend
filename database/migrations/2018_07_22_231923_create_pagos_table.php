@@ -19,6 +19,9 @@ class CreatePagosTable extends Migration
             $table->unsignedInteger('factura_id');
             $table->date('fecha');
             $table->float('monto');
+            $table->string('estado');
+            $table->string('medio_de_pago');
+            $table->string('codigo_comprobante')->nullable();
             $table->timestamps();
         });
     }

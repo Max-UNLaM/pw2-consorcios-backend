@@ -43,6 +43,10 @@ class User extends Authenticatable
 
     }
 
+    public function isAdmin(){
+        return ($this->rol_id == 1) ? 1 : 0; //1 es el id del rol admin
+    }
+
     public function isOperator(){
         return ($this->rol_id == 2) ? 1 : 0; //2 es el id del rol operator
     }
