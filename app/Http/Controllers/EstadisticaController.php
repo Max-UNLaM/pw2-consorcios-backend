@@ -62,6 +62,8 @@ class EstadisticaController extends Controller
             if($reclamo->estado_de_reclamo_id == 4) $reclamosEsperandoRespuesta++;
         }
 
+        $montoAdeudadoDeFacturas = Factura::obtenerDeudaPorConsorcio($consorcioId);
+
         return ([
             'consorcio_id' => $consorcioId,
             'consorcio_nombre' =>$consorcio->nombre,
@@ -70,12 +72,12 @@ class EstadisticaController extends Controller
             'facturas_pagas' => $facturasPagas,
             'facturas_con_pago_parcial' => $facturasConPagoParcial,
             'facturas_impagas' => $facturasImpagas,
+            "monto_adeudado_de_facturas" => $montoAdeudadoDeFacturas,
             'total_reclamos' => sizeof($reclamosDelConsorcio),
             'reclamos_resueltos' => $reclamosResueltos,
             'reclamos_no_resueltos' => $reclamosNoResueltos,
             'reclamos_rechazados' => $reclamosRechazados,
             'reclamos_esperando_respuesta' => $reclamosEsperandoRespuesta,
-            "monto_adeudado" => $montoAdeudado
         ]);
     }  
 }

@@ -160,8 +160,11 @@ class Factura extends Model
     }
 
     public static function obtenerDeudaPorConsorcio($consorcioId){
-        return Factura::table('facturas')
+        $deuda = DB::table('facturas')
             ->join('consorcios', 'consorcios.id', '=', 'facturas.consorcio_id')
-            ->sum('adeuda');
+            ->where('consorcios.id', $consorcioId)
+            ->sum('facturas.adeuda');
+
+        return round($deuda, 2);
     }
 }
