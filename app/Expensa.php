@@ -25,9 +25,10 @@ class Expensa extends Model
             ->join('consorcios', 'consorcios.id', '=', 'unidads.consorcio_id')
             ->addSelect([
                 'expensas.id as id',
+                'consorcios.id as consorcio_id',
                 'consorcios.nombre as consorcio_nombre',
-                'unidads.nombre as unidad_nombre',
                 'unidads.id as unidad_id',
+                'unidads.nombre as unidad_nombre',
                 'expensas.anio as anio',
                 'expensas.mes as mes',
                 'expensas.pago as estado',

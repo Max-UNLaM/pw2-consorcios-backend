@@ -71,6 +71,11 @@ class Pago extends Model
             ->where('facturas.anio', $anio);
     }
 
+    public static function filterByUsuario($userId){
+        return Pago::list()
+            ->where('users.id', $userId);
+    }
+
     public static function obtenerPagosPorUsuarioYFactura($usuario_id, $factura_id){
         return Pago::list()
             ->where('usuario_id', $usuario_id)

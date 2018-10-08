@@ -14,6 +14,6 @@ class Validaciones
     public $validacionesValidas = [];
 
     static function notNull($valor) {
-        return 
+
     }
 }
