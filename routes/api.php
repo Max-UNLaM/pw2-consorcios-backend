@@ -70,6 +70,7 @@ Route::group(['middleware' => ['api', 'cors']], function () {
     // Pago
     // Admin
     Route::get('/admin/pago', 'PagoController@index')->middleware('auth:api', 'scope:operator,admin');
+    Route::get('/admin/pago/filtro-por-estado', 'PagoController@filterByStatus')->middleware('auth:api', 'scope:operator,admin');
     Route::delete('/admin/pago', 'PagoController@delete')->middleware('auth:api', 'scope:operator,admin');
     Route::post('/admin/pago', 'PagoController@store')->middleware('auth:api', 'scope:operator,admin');
     Route::put('/admin/pago', 'PagoController@update')->middleware('auth:api', 'scope:operator,admin');

@@ -74,7 +74,7 @@ class Pago extends Model
                 'pagos.medio_de_pago as medio_de_pago',
                 'pagos.codigo_comprobante as codigo_comprobante'
             ])
-            ->orderByDesc('pagos.fecha');
+            ->orderByDesc('pagos.id');
     }
 
     public static function filterByConsorcio($consorcioId){
@@ -91,6 +91,11 @@ class Pago extends Model
     public static function filterByUsuario($userId){
         return Pago::list()
             ->where('users.id', $userId);
+    }
+
+    public static function filterByStatus($status){
+        return Pago::list()
+            ->where('estado', $status);
     }
 
     public static function obtenerPagosPorUsuarioYFactura($usuario_id, $factura_id){

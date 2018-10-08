@@ -124,4 +124,13 @@ class PagoController extends Controller
             return response(['No se encontro el pago que se quiere actualizar'], 404);
         }
     }
+
+    public function filterByStatus(Request $request){
+        $status = $request->get('status');
+        if(!$status) return response("El parametro status es obligatorio", 400);
+        if($status != 'APROBADO' && $status != 'APROBACION_PENDIENTE' && $status != 'RECHAZADO') return response("Los posibles valores del campo status son: APROBADO, APROBACION_PENDIENTE o RECHAZADO", 400);
+
+        $size = $request->get('size') ? $request->get('size') : 5;
+        return Pago::filterByStatus($status)->paginate($size);
+    }
 }
