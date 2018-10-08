@@ -74,7 +74,8 @@ class EstadisticaController extends Controller
             'reclamos_resueltos' => $reclamosResueltos,
             'reclamos_no_resueltos' => $reclamosNoResueltos,
             'reclamos_rechazados' => $reclamosRechazados,
-            'reclamos_esperando_respuesta' => $reclamosEsperandoRespuesta
+            'reclamos_esperando_respuesta' => $reclamosEsperandoRespuesta,
+            "monto_adeudado" => $montoAdeudado
         ]);
-    }
+    }  
 }

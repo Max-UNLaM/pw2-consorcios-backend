@@ -120,8 +120,8 @@ class Factura extends Model
 
     public static function cantidadDeFacturasEnElPeriodo($consorcioId, $mes, $anio)
     {
+        
         $facturas = Factura::obtenerFacturasPorConsorcioMesAnio($consorcioId, $mes, $anio);
-
         return sizeof($facturas);
     }
 
@@ -157,5 +157,11 @@ class Factura extends Model
         return Factura::list()
             ->where('facturas.mes', $mes)
             ->where('facturas.anio', $anio);
+    }
+
+    public static function obtenerDeudaPorConsorcio($consorcioId){
+        return Factura::table('facturas')
+            ->join('consorcios', 'consorcios.id', '=', 'facturas.consorcio_id')
+            ->sum('adeuda');
     }
 }
