@@ -129,8 +129,17 @@ class Factura extends Model
         return DB::table('facturas')
             ->join('users', 'users.id', '=', 'facturas.usuario_id')
             ->join('consorcios', 'consorcios.id', '=', 'facturas.consorcio_id')
+            ->join('expensas', 'expensas.id', '=', 'facturas.expensa_id')
+            ->join('unidads', 'unidads.id', '=', 'expensas.unidad_id')
             ->addSelect([
                 'facturas.id as id',
+                'users.id as usuario_id',
+                'users.name as usuario_nombre',
+                'consorcios.id as consorcio_id',
+                'consorcios.nombre as consorcio_nombre',
+                'unidads.id as unidad_id',
+                'unidads.nombre as unidad_nombre',
+                'expensas.id as expensa_id',
                 'facturas.mes as mes',
                 'facturas.anio as anio',
                 'facturas.emision as emision',
@@ -138,11 +147,7 @@ class Factura extends Model
                 'facturas.total as total',
                 'facturas.pago_parcial as pago_parcial',
                 'facturas.adeuda as adeuda',
-                'facturas.pago as pago',
-                'consorcios.id as consorcio_id',
-                'consorcios.nombre as consorcio_nombre',
-                'users.id as usuario_id',
-                'users.name as usuario_nombre'
+                'facturas.pago as pago'
             ])
             ->orderByDesc('facturas.emision')
             ->orderByDesc('facturas.id');
@@ -157,5 +162,10 @@ class Factura extends Model
         return Factura::list()
             ->where('facturas.mes', $mes)
             ->where('facturas.anio', $anio);
+    }
+
+    public static function filterByUsuario($userId){
+        return Factura::list()
+            ->where('users.id', $userId);
     }
 }

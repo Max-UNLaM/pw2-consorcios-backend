@@ -33,17 +33,12 @@ class FacturaController extends Controller
 
     public function user(Request $request)
     {
-        if ($request->get('puerta')) {
-            return "PATOVA";
-        } else if ($request->get('page') && !$request->get('consorcio_id')) {
-            return Factura::obtenerFacturasDetalladasPorUsuario(Auth::user()->getAuthIdentifier(), $request->get('size'));
-        } else if ($request->get('consorcio_id')) {
-            return Factura::obtenerFacturasDetalladasPorUsuarioYConsorcio(Auth::user()->getAuthIdentifier(), $request->get('consorcio_id'), $request->get('size'));
-        } else if ($request->get('id')) {
-            return Factura::abrirFacturaDetallada((string)$request->get('id'))->get();
-        } else {
-            return Factura::obtenerFacturasDetalladasPorUsuario(Auth::user()->getAuthIdentifier(), $request->get('size'));
-        }
+        if ($request->get('puerta')) return "PATOVA";
+
+        $size = $request->get('size') ? $request->get('size') : 5;
+        $user = User::find(Auth::user()->getAuthIdentifier());
+
+        return Factura::filterByUsuario($user->id)->paginate($size);
     }
 
     public function paginate(Request $request)

@@ -14,6 +14,6 @@ use App\User;
 class TestController extends Controller
 {
     public function index(){
-        return Liquidacion::obtenerTotalPorMesAnioConsorcio(6, 2018, 1);
+        return Expensa::expensasEnElPeriodo(1, 6, 2018);
     }
 }

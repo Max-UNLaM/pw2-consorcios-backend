@@ -176,8 +176,18 @@ class Expensa extends Model
         return DB::table('expensas')
             ->join('unidads', 'unidads.id', '=', 'expensas.unidad_id')
             ->join('consorcios', 'consorcios.id', '=', 'unidads.consorcio_id')
-            ->where('mes', $mes)
-            ->where('anio', $anio)
+            ->addSelect([
+                'expensas.id as id',
+                'expensas.unidad_id as unidad_id',
+                'expensas.mes as mes',
+                'expensas.anio as anio',
+                'expensas.pago as pago',
+                'expensas.emision as emision',
+                'expensas.vencimiento as vencimiento',
+                'expensas.importe as importe'
+            ])
+            ->where('expensas.mes', $mes)
+            ->where('expensas.anio', $anio)
             ->where('consorcios.id', $consorcioId)
             ->get();
     }
