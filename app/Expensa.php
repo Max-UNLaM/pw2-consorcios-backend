@@ -35,11 +35,8 @@ class Expensa extends Model
                 'expensas.emision as emision',
                 'expensas.importe as importe'
             ])
+            ->orderByDesc('expensas.vencimiento')
             ->where('unidads.usuario_id', '=', $usuario_id);
-        $unidadesDelUsuario = Unidad::getAllUnidadIdOfUser($usuario_id);
-
-        return DB::table('expensas')
-            ->whereIn('unidad_id', $unidadesDelUsuario);
     }
 
     public static function crearExpensaConImporte(Expensa $expensaNueva)
