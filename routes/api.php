@@ -73,8 +73,8 @@ Route::group(['middleware' => ['api', 'cors']], function () {
     Route::get('/admin/pago/filtro-por-estado', 'PagoController@filterByStatus')->middleware('auth:api', 'scope:operator,admin');
     Route::delete('/admin/pago', 'PagoController@delete')->middleware('auth:api', 'scope:operator,admin');
     Route::post('/admin/pago', 'PagoController@store')->middleware('auth:api', 'scope:operator,admin');
-    Route::post('/admin/pago/aprobar', 'PagoController@approve')->middleware('auth:api', 'scope:operator,admin');
-    Route::post('/admin/pago/rechazar', 'PagoController@refuse')->middleware('auth:api', 'scope:operator,admin');
+    Route::put('/admin/pago/aprobar', 'PagoController@approve')->middleware('auth:api', 'scope:operator,admin');
+    Route::put('/admin/pago/rechazar', 'PagoController@refuse')->middleware('auth:api', 'scope:operator,admin');
     Route::put('/admin/pago', 'PagoController@update')->middleware('auth:api', 'scope:operator,admin');
     // User
     Route::get('/user/pago', 'PagoController@user')->middleware('auth:api', 'scope:user,operator,admin');

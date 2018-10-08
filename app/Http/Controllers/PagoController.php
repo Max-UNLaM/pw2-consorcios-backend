@@ -139,6 +139,7 @@ class PagoController extends Controller
         if(!$id) return response("El campo id es obligatorio", 400);
 
         $pago = Pago::find($id);
+        if($pago->estado != 'APROBACION_PENDIENTE') return response("La factura seleccionada no tiene el estado APROBACION_PENDIENTE", 400);
         $pago->aprobarPago();
         $pago->update();
 
@@ -150,6 +151,7 @@ class PagoController extends Controller
         if(!$id) return response("El campo id es obligatorio", 400);
 
         $pago = Pago::find($id);
+        if($pago->estado != 'APROBACION_PENDIENTE') return response("La factura seleccionada no tiene el estado APROBACION_PENDIENTE", 400);
         $pago->estado = 'RECHAZADO';
         $pago->update();
 
