@@ -37,13 +37,15 @@ class ExpensaController extends Controller
 
     public function user(Request $request)
     {
+        if($request->get('puerta')) return response(["entra" => "PATOVA"]);
+
+        $id = $request->get('id');
+        if($id) return Expensa::find($id);
+
         $size = $request->get('size') ? $request->get('size') : 5;
         $user = User::find(Auth::user()->getAuthIdentifier());
 
-        if($request->get('puerta')) return response(["entra" => "PATOVA"]);
-
         return Expensa::expensasPorUsuario($user->id)->paginate($size);
-
     }
 
     /*protected function userGetAllExpensasPaginate(Request $request)

@@ -35,6 +35,9 @@ class FacturaController extends Controller
     {
         if ($request->get('puerta')) return "PATOVA";
 
+        $id = $request->get('id');
+        if($id) return Factura::find($id);
+
         $size = $request->get('size') ? $request->get('size') : 5;
         $user = User::find(Auth::user()->getAuthIdentifier());
 
