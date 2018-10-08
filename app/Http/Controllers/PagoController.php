@@ -133,4 +133,26 @@ class PagoController extends Controller
         $size = $request->get('size') ? $request->get('size') : 5;
         return Pago::filterByStatus($status)->paginate($size);
     }
+
+    public function approve(Request $request){
+        $id = $request->get('id');
+        if(!$id) return response("El campo id es obligatorio", 400);
+
+        $pago = Pago::find($id);
+        $pago->aprobarPago();
+        $pago->update();
+
+        return $pago;
+    }
+
+    public function refuse(Request $request){
+        $id = $request->get('id');
+        if(!$id) return response("El campo id es obligatorio", 400);
+
+        $pago = Pago::find($id);
+        $pago->estado = 'RECHAZADO';
+        $pago->update();
+
+        return $pago;
+    }
 }
