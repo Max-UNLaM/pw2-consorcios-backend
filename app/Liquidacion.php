@@ -54,6 +54,9 @@ class Liquidacion extends Model
 
     public static function liquidarMesAnioConsorcio($mes, $anio, $consorcioId){
         $coeficiente = 1.2;
+
+        Gasto::generarGastosFijosMensuales($mes, $anio, $consorcioId);
+
         $gastosMensuales = Gasto::gastosMesAnioConsorcio($mes, $anio, $consorcioId);
 
         if($gastosMensuales == 0) return response("No hay gastos en el periodo seleccionado", 400);

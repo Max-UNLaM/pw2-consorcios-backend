@@ -20,6 +20,7 @@ class CreateGastosTable extends Migration
             $table->unsignedInteger('mes');
             $table->unsignedInteger('anio');
             $table->date('fecha');
+            $table->unsignedInteger('es_gasto_fijo');
             $table->unsignedInteger('proveedor_id');
             $table->unsignedInteger('consorcio_id');
             $table->timestamps();

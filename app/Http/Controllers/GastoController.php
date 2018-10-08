@@ -60,6 +60,7 @@ class GastoController extends Controller
             'fecha' => $fecha->toDateString(),
             'proveedor_id' => $proveedorId,
             'consorcio_id' => $consorcioId,
+            'es_gasto_fijo' => 0,
             'mes' => $mes,
             'anio' => $anio
         ]);

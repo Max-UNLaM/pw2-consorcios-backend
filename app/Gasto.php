@@ -2,12 +2,13 @@
 
 namespace App;
 
+use Faker\Factory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
 class Gasto extends Model
 {
-    protected $fillable = ['nombre', 'valor', 'mes', 'anio', 'fecha', 'proveedor_id', 'consorcio_id'];
+    protected $fillable = ['nombre', 'valor', 'mes', 'anio', 'fecha', 'es_gasto_fijo', 'proveedor_id', 'consorcio_id'];
 
     protected function gastosMensual(string $anio, string $mes)
     {
@@ -81,6 +82,24 @@ class Gasto extends Model
             ->where('anio', $anio)
             ->where('consorcio_id', $consorcioId)
             ->sum('valor');
+    }
+
+    public static function generarGastosFijosMensuales($mes, $anio, $consorcioId){
+        $proveedor = Proveedor::find(1);
+        $faker = Factory::create();
+        $mesString = $mes < 10 ? '0'.$mes : $mes;
+        $dia = 10;
+
+        Gasto::create([
+            'nombre' => $proveedor->rubro,
+            'valor' => 1200,
+            'mes' => $mes,
+            'anio' => $anio,
+            'fecha' => "$anio-$mesString-$dia",
+            'es_gasto_fijo' => 1,
+            'proveedor_id' => $proveedor->id,
+            'consorcio_id' => $consorcioId
+        ]);
     }
    
 }
