@@ -17,7 +17,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'administra_consorcio', 'dni', 'estado'
     ];
 
     /**
@@ -120,7 +120,9 @@ class User extends Authenticatable
             'name' => $nombre.' '.$apellido,
             'email' => strtolower($nombre).$separador.strtolower($apellido).$extra.$correo,
             'password' => bcrypt('changeme'),
-            'rol_id' =>  $usuario->id
+            'rol_id' =>  $usuario->id,
+            'dni' => $faker->numberBetween(8000000, 38000000),
+            'estado' => 'ACTIVO'
         ]);
     }
 }

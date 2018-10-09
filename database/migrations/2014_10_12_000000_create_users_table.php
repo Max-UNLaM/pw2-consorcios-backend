@@ -20,6 +20,8 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->unsignedInteger('rol_id');
             $table->unsignedInteger('administra_consorcio')->nullable();
+            $table->unsignedInteger('dni')->unique();
+            $table->string('estado');
             $table->rememberToken();
             $table->timestamps();
         });

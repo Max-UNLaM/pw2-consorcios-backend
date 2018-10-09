@@ -13,6 +13,7 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
+        $faker = \Faker\Factory::create();
         $cantidadDeUsuariosACrear = 15;
 
         $rol = new Rol();
@@ -24,32 +25,42 @@ class UsersTableSeeder extends Seeder
             'name'     => 'Maximiliano De Pietro',
             'email'    => 'maximiliano.depietro@gmail.com',
             'password' => bcrypt('changeme'),
-            'rol_id' => $admin->id
+            'rol_id' => $admin->id,
+            'dni' => $faker->numberBetween(8000000, 38000000),
+            'estado' => 'ACTIVO'
         ]);
         $dani     = User::create([
             'name'     => 'Daniel Marconi',
             'email'    => 'marconidaniel@outlook.com',
             'password' => bcrypt('changeme'),
-            'rol_id' => $admin->id
+            'rol_id' => $admin->id,
+            'dni' => $faker->numberBetween(8000000, 38000000),
+            'estado' => 'ACTIVO'
         ]);
         $esteban  = User::create([
             'name'     => 'Esteban',
             'email'    => 'estebanmg_27@yahoo.com.ar',
             'password' => bcrypt('changeme'),
-            'rol_id' => $admin->id
+            'rol_id' => $admin->id,
+            'dni' => $faker->numberBetween(8000000, 38000000),
+            'estado' => 'ACTIVO'
         ]);
         $user     = User::create([
             'name'     => 'Miles Davis',
             'email'    => 'user@consorcio.com',
             'password' => bcrypt('changeme'),
-            'rol_id' => $usuario->id
+            'rol_id' => $usuario->id,
+            'dni' => $faker->numberBetween(8000000, 38000000),
+            'estado' => 'ACTIVO'
         ]);
         $operator = User::create([
             'name'     => 'Smooth Operator',
             'email'    => 'operator@consorcio.com',
             'password' => bcrypt('changeme'),
             'rol_id' => $operator->id,
-            'administra_consorcio'=> 1
+            'administra_consorcio'=> 1,
+            'dni' => $faker->numberBetween(8000000, 38000000),
+            'estado' => 'ACTIVO'
         ]);
         $maxi->withAccessToken($maxi->createToken('ConsorcioLoco', ['user', 'operator', 'admin']));
         $maxi->withAccessToken($dani->createToken('ConsorcioLoco', ['user', 'operator', 'admin']));
