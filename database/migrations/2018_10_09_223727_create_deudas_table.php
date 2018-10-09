@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateInformesTable extends Migration
+class CreateDeudasTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,16 @@ class CreateInformesTable extends Migration
      */
     public function up()
     {
-        Schema::create('informes', function (Blueprint $table) {
+        Schema::create('deudas', function (Blueprint $table) {
             $table->increments('id');
+            $table->unsignedInteger('informe_id');
             $table->unsignedInteger('mes');
             $table->unsignedInteger('anio');
-            $table->unsignedInteger('consorcio_id');
-            $table->unsignedInteger('liquidacion_id');
+            $table->unsignedInteger('usuario_id');
+            $table->float('total_factura');
+            $table->float('pago_parcial');
+            $table->float('adeuda');
+            $table->date('vencimiento');
             $table->timestamps();
         });
     }
@@ -30,6 +34,6 @@ class CreateInformesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('informes');
+        Schema::dropIfExists('deudas');
     }
 }

@@ -23,5 +23,6 @@ class DatabaseSeeder extends Seeder
         $this->call(ReclamosTableSeeder::class);
         $this->call(FacturasTableSeeder::class);
         $this->call(PagosTableSeeder::class);
+        $this->call(DeudasTableSeeder::class);
     }
 }

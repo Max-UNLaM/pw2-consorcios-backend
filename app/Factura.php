@@ -164,6 +164,21 @@ class Factura extends Model
             ->where('facturas.anio', $anio);
     }
 
+    public static function filterByMesAnioConsorcio($mes, $anio, $consorcioId){
+        return Factura::list()
+            ->where('facturas.mes', $mes)
+            ->where('facturas.anio', $anio)
+            ->where('consorcios.id', $consorcioId);
+    }
+
+    public static function filterByMesAnioConsorcioConDeuda($mes, $anio, $consorcioId){
+        return Factura::list()
+            ->where('facturas.mes', $mes)
+            ->where('facturas.anio', $anio)
+            ->where('consorcios.id', $consorcioId)
+            ->where('facturas.adeuda', '!=', 0);
+    }
+
     public static function filterByUsuario($userId){
         return Factura::list()
             ->where('users.id', $userId);

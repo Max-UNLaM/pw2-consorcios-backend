@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Consorcio;
+use App\Deuda;
 use App\Expensa;
 use App\Factura;
 use App\Gasto;
@@ -17,6 +18,7 @@ use Illuminate\Support\Facades\DB;
 class TestController extends Controller
 {
     public function index(Request $request){
-        return Liquidacion::find(1)->toJson();
+
+        return $facturasConDeuda = (array) Informe::filterByMesAnioConsorcio(6, 2018, 1)->get()[0];
     }
 }
