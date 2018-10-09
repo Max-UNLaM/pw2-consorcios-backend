@@ -58,6 +58,10 @@ class Rol extends Model
         return sizeof($rol);
     }
 
+    public static function list(){
+        return DB::table('rols');
+    }
+
 }
 
 

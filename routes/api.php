@@ -37,9 +37,12 @@ Route::group(['middleware' => ['api', 'cors']], function () {
     route::get('/admin/user', 'UserController@index')->middleware('auth:api', 'scope:admin');
     route::put('/admin/user', 'UserController@update')->middleware('auth:api', 'scope:admin');
 
+    //Administracion de roles
+    route::get('/admin/rol', 'RolController@index')->middleware('auth:api', 'scope:admin');
+
     // Consorcio
     // Admin
-    Route::get('/admin/consorcio', 'ConsorcioController@index')->middleware('auth:api', 'scope:operator,admin');
+    Route   ::get('/admin/consorcio', 'ConsorcioController@index')->middleware('auth:api', 'scope:operator,admin');
     Route::post('/admin/consorcio', 'ConsorcioController@store')->middleware('auth:api', 'scope:operator,admin');
     Route::delete('/admin/consorcio', 'ConsorcioController@delete')->middleware('auth:api', 'scope:operator,admin');
     Route::put('/admin/consorcio', 'ConsorcioController@update')->middleware('auth:api', 'scope:operator,admin');
