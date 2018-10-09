@@ -51,6 +51,15 @@ class User extends Authenticatable
         return ($this->rol_id == 2) ? 1 : 0; //2 es el id del rol operator
     }
 
+    public static function list(){
+        return DB::table('users');
+    }
+
+    public static function filterByStatus($status){
+        return User::list()
+            ->where('estado', $status);
+    }
+
     public static function createRandomUser(){
         $faker = \Faker\Factory::create();
         $rol = new Rol();

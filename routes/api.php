@@ -24,6 +24,8 @@ Route::group(['middleware' => ['api', 'cors']], function () {
     Route::middleware('auth:api')->get('/user', function (Request $request) {
         return $request->user();
     });
+
+    //Register, login y users
     Route::post('auth/admin/token/create', 'Auth\AdminController@addRoles')->middleware(['auth:api', 'scope:admin']);
     Route::post('auth/register', 'Auth\ApiRegisterController@register');
     Route::post('oauth/login', 'Auth\PassportController@login');
@@ -31,6 +33,10 @@ Route::group(['middleware' => ['api', 'cors']], function () {
     Route::group(['middleware' => 'auth:api'], function () {
         Route::post('get-details', 'Auth\PassportController@getDetails');
     });
+    //Administracion de usuarios
+    route::get('/admin/user', 'UserController@index')->middleware('auth:api', 'scope:admin');
+    route::put('/admin/user', 'UserController@update')->middleware('auth:api', 'scope:admin');
+
     // Consorcio
     // Admin
     Route::get('/admin/consorcio', 'ConsorcioController@index')->middleware('auth:api', 'scope:operator,admin');
@@ -103,7 +109,7 @@ Route::group(['middleware' => ['api', 'cors']], function () {
 
     // Estadística
     // Admin
-    Route::get('/admin/estadistica', 'EstadisticaController@index')->middleware('auth:api', 'scope:operator,admin');
+    Route::get('/admin/estadistica', 'EstadisticaController@index')->middleware('auth:api', 'scope:admin');
 
     //Proveedores
     Route::get('/admin/proveedor', 'ProveedorController@index')->middleware('auth:api', 'scope:operator,admin');

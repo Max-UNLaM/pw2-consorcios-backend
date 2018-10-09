@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Rol extends Model
 {
@@ -47,6 +48,14 @@ class Rol extends Model
         } else {
             return null;
         }
+    }
+
+    public static function exists($rolId){
+        $rol = DB::table('rols')
+            ->where('id', $rolId)
+            ->get();
+
+        return sizeof($rol);
     }
 
 }
