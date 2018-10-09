@@ -32,14 +32,24 @@ class PassportController extends Controller
         if (Auth::attempt(['email' => request('email'), 'password' => request('password')])) {
 
             $user = Auth::user();
-            $rol = Rol::find($user->rol_id);
-            $success['token'] = $user->createToken('ConsorcioLoco', [$rol->scope])->accessToken;
 
-            return response()->json(['success' => $success,'user' => json_encode($user)], $this->successStatus);
+            if($user->estado == 'ACTIVO'){
+                $rol = Rol::find($user->rol_id);
+                $success['token'] = $user->createToken('ConsorcioLoco', [$rol->scope])->accessToken;
+
+                return response()->json([
+                    'success' => $success,
+                    'user' => json_encode($user)
+                ],
+                    $this->successStatus
+                );
+            } else {
+                return response("El usuario ingresado no se encuentra activo. Pongase en contacto con el administrador del consorcio.", 401);
+            }
 
         } else {
 
-            return response()->json(['error' => 'Unauthorised'], 401);
+            return response()->json(['error' => 'unauthorized'], 401);
 
         }
 
