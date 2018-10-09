@@ -15,6 +15,13 @@ use Illuminate\Http\Request;
 class TestController extends Controller
 {
     public function index(Request $request){
-
+        $users = User::all();
+        $userIds = array();
+        foreach ($users as $user){
+            $userIds[] = $user->id;
+        }
+        shuffle($userIds);
+        array_pop($userIds);
+        return sizeof($userIds);
     }
 }

@@ -4,6 +4,7 @@ use App\Consorcio;
 use Illuminate\Database\Seeder;
 use \Faker\Factory;
 use \App\Unidad;
+use \App\User;
 
 class UnidadesTableSeeder extends Seeder
 {
@@ -16,8 +17,21 @@ class UnidadesTableSeeder extends Seeder
     {
         $faker = Factory::create();
 
-        $cantidadDeUsuarios = sizeof(\App\User::all());
-        $cantidadDeConsorcios = sizeof(\App\Consorcio::all());
+        $cantidadDeUsuarios = sizeof(User::all());
+        $consorcios = \App\Consorcio::all();
+        $cantidadDeConsorcios = sizeof($consorcios);
+        $cantidadDeUnidadesQueSeVanACrear = Consorcio::cantidadTotalDeUnidades();
+        $cantidadDeUsuariosFaltante = $cantidadDeUnidadesQueSeVanACrear - $cantidadDeUsuarios;
+
+        for($i = 0; $i < $cantidadDeUsuariosFaltante; $i++){
+            User::createRandomUser();
+        }
+
+        $userIds=array();
+        $users = User::all();
+        foreach ($users as $user){
+            $userIds[] = $user->id;
+        }
 
         //Nota: el numero de cantidad de departamentos por piso del seeder de consorcios no puede superar la cantidad de elementos de este array
         $letrasDeUnidades = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J');
@@ -31,9 +45,12 @@ class UnidadesTableSeeder extends Seeder
 
             for($j = 0; $j < $cantidadDePisos; $j++){
                 for($k = 0; $k < $cantidadDeDepartamentosPorPiso; $k++){
+                    shuffle($userIds);
+                    $usuarioActual = array_pop($userIds);
+
                     Unidad::create([
                         'nombre' => ($j==0) ? 'PB '.$letrasDeUnidades[$k] : $j.'° '.$letrasDeUnidades[$k],
-                        'usuario_id' => $faker->numberBetween(1, $cantidadDeUsuarios),
+                        'usuario_id' => $usuarioActual,
                         'consorcio_id' => $i
                     ]);
                 }

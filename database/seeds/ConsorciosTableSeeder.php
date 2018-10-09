@@ -24,8 +24,8 @@ class ConsorciosTableSeeder extends Seeder
                 'email' => 'torre.de.mayo@gmail.com',
                 'codigo_postal' => 1704,
                 'cuit' => '20-'.$faker->randomNumber(8, true).'-'.$faker->randomDigitNotNull,
-                'cantidad_de_pisos' => $faker->numberBetween(2, 8),
-                'departamentos_por_piso' => $faker->numberBetween(4, 8)
+                'cantidad_de_pisos' => $faker->numberBetween(2, 4),
+                'departamentos_por_piso' => $faker->numberBetween(2, 4)
             ]);
 
             Consorcio::create([
@@ -37,8 +37,8 @@ class ConsorciosTableSeeder extends Seeder
                 'email' => 'edificiorivadavia@yahoo.com.ar',
                 'codigo_postal' => 1827,
                 'cuit' => '20-'.$faker->randomNumber(8, true).'-'.$faker->randomDigitNotNull,
-                'cantidad_de_pisos' => $faker->numberBetween(2, 8),
-                'departamentos_por_piso' => $faker->numberBetween(4, 8)
+                'cantidad_de_pisos' => $faker->numberBetween(2, 4),
+                'departamentos_por_piso' => $faker->numberBetween(2, 4)
             ]);
 
             Consorcio::create([
@@ -50,8 +50,8 @@ class ConsorciosTableSeeder extends Seeder
                 'email' => 'gran_ciudadela@hotmail.com',
                 'codigo_postal' => 1702,
                 'cuit' => '20-'.$faker->randomNumber(8, true).'-'.$faker->randomDigitNotNull,
-                'cantidad_de_pisos' => $faker->numberBetween(2, 8),
-                'departamentos_por_piso' => $faker->numberBetween(4, 8)
+                'cantidad_de_pisos' => $faker->numberBetween(2, 4),
+                'departamentos_por_piso' => $faker->numberBetween(2, 4)
             ]);
 
             Consorcio::create([
@@ -63,8 +63,8 @@ class ConsorciosTableSeeder extends Seeder
                 'email' => 'complejo9dejulio@gmail.com',
                 'codigo_postal' => 1755,
                 'cuit' => '20-'.$faker->randomNumber(8, true).'-'.$faker->randomDigitNotNull,
-                'cantidad_de_pisos' => $faker->numberBetween(2, 8),
-                'departamentos_por_piso' => $faker->numberBetween(4, 8)
+                'cantidad_de_pisos' => $faker->numberBetween(2, 4),
+                'departamentos_por_piso' => $faker->numberBetween(2, 4)
             ]);
 
             Consorcio::create([
@@ -76,8 +76,8 @@ class ConsorciosTableSeeder extends Seeder
                 'email' => 'altosdesanjusto@gmail.com',
                 'codigo_postal' => 1754,
                 'cuit' => '20-'.$faker->randomNumber(8, true).'-'.$faker->randomDigitNotNull,
-                'cantidad_de_pisos' => $faker->numberBetween(2, 8),
-                'departamentos_por_piso' => $faker->numberBetween(4, 8)
+                'cantidad_de_pisos' => $faker->numberBetween(2, 4),
+                'departamentos_por_piso' => $faker->numberBetween(2, 4)
             ]);
     }
 }
