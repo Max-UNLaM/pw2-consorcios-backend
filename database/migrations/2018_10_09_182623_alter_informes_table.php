@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AlterPagosTable extends Migration
+class AlterInformesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,9 @@ class AlterPagosTable extends Migration
      */
     public function up()
     {
-        Schema::table('pagos', function (Blueprint $table) {
-            $table->foreign('propietario_id')->references('id')->on('users');
-            $table->foreign('usuario_que_genera_el_pago_id')->references('id')->on('users');
-            $table->foreign('factura_id')->references('id')->on('facturas');
+        Schema::table('informes', function (Blueprint $table) {
+            $table->foreign('consorcio_id')->references('id')->on('consorcios');
+            $table->foreign('liquidacion_id')->references('id')->on('liquidacions');
         });
     }
 

@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 class Liquidacion extends Model
 {
-    protected $fillable = ['mes', 'anio', 'consorcio_id', 'valor'];
+    protected $fillable = ['mes', 'anio', 'consorcio_id', 'valor', 'valor_sin_coeficiente'];
 
     public static function obtenerTotalPorMesAnioConsorcio($mes, $anio, $consorcioId){
         return DB::table('liquidacions')
@@ -61,11 +61,16 @@ class Liquidacion extends Model
 
         if($gastosMensuales == 0) return response("No hay gastos en el periodo seleccionado", 400);
 
-        return Liquidacion::create([
+        $liquidacion = Liquidacion::create([
             'mes' => $mes,
             'anio' => $anio,
             'consorcio_id' => $consorcioId,
-            'valor' => $gastosMensuales * $coeficiente
+            'valor' => $gastosMensuales * $coeficiente,
+            'valor_sin_coeficiente' => $gastosMensuales
         ]);
+
+        Informe::generarInformeMesAnioConsorcio($mes, $anio, $consorcioId, $liquidacion);
+
+        return $liquidacion;
     }
 }

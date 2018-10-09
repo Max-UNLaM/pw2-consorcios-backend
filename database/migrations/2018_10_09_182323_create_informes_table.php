@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateLiquidacionsTable extends Migration
+class CreateInformesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,15 @@ class CreateLiquidacionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('liquidacions', function (Blueprint $table) {
+        Schema::create('informes', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('mes');
             $table->unsignedInteger('anio');
             $table->unsignedInteger('consorcio_id');
-            $table->float('valor');
-            $table->float('valor_sin_coeficiente');
+            $table->unsignedInteger('liquidacion_id');
+            $table->json('liquidacion')->nullable();
+            $table->json('gastos_del_periodo')->nullable();
+            $table->json('pagos_del_periodo')->nullable();
             $table->timestamps();
         });
     }
@@ -31,6 +33,6 @@ class CreateLiquidacionsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('liquidacions');
+        Schema::dropIfExists('informes');
     }
 }

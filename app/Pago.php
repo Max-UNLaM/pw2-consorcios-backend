@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 class Pago extends Model
 {
     protected $fillable = [
-        'usuario_id', 'factura_id', 'fecha', 'monto', 'medio_de_pago', 'estado', 'codigo_comprobante'
+        'propietario_id', 'usuario_que_genera_el_pago_id', 'factura_id', 'fecha', 'monto', 'medio_de_pago', 'estado', 'codigo_comprobante'
     ];
 
     public static function realizarPago($factura_id, $monto, $fecha, $user, $medioDePago, $codigoComprobante){
@@ -20,7 +20,8 @@ class Pago extends Model
 
 
         $pago = Pago::create([
-            'usuario_id' => $user->id,
+            'propietario_id' => $factura->usuario_id,
+            'usuario_que_genera_el_pago_id' => $user->id,
             'factura_id' => $factura_id,
             'monto' => $monto,
             'fecha' => $fecha,
@@ -60,13 +61,16 @@ class Pago extends Model
 
     public static function list(){
         return DB::table('pagos')
-            ->join('users', 'users.id', '=', 'pagos.usuario_id')
+            ->join('users as u1', 'u1.id', '=', 'pagos.propietario_id')
+            ->join('users as u2', 'u2.id', '=', 'pagos.usuario_que_genera_el_pago_id')
             ->join('facturas', 'pagos.factura_id', '=', 'facturas.id')
             ->join('consorcios', 'facturas.consorcio_id', '=', 'consorcios.id')
             ->addSelect([
                 'pagos.id as id',
-                'users.id as usuario_id',
-                'users.name as usuario_nombre',
+                'pagos.propietario_id as propietario_id',
+                'u1.name as propietario_nombre',
+                'pagos.usuario_que_genera_el_pago_id as usuario_que_genera_el_pago_id',
+                'u2.name as usuario_que_genera_el_pago_nombre',
                 'pagos.factura_id as factura_id',
                 'pagos.fecha as fecha',
                 'pagos.monto as monto',
@@ -74,7 +78,7 @@ class Pago extends Model
                 'pagos.medio_de_pago as medio_de_pago',
                 'pagos.codigo_comprobante as codigo_comprobante'
             ])
-            ->orderByDesc('pagos.id');
+            ->orderByDesc('pagos.fecha');
     }
 
     public static function filterByConsorcio($consorcioId){
@@ -86,6 +90,13 @@ class Pago extends Model
         return Pago::list()
             ->where('facturas.mes', $mes)
             ->where('facturas.anio', $anio);
+    }
+
+    public static function filterByMesAnioConsorcio($mes, $anio, $consorcioId){
+        return Pago::list()
+            ->where('facturas.mes', $mes)
+            ->where('facturas.anio', $anio)
+            ->where('consorcios.id', $consorcioId);
     }
 
     public static function filterByUsuario($userId){

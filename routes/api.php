@@ -39,6 +39,7 @@ Route::group(['middleware' => ['api', 'cors']], function () {
 
     //Administracion de roles
     route::get('/admin/rol', 'RolController@index')->middleware('auth:api', 'scope:admin');
+    route::post('/admin/rol', 'RolController@store')->middleware('auth:api', 'scope:admin');
 
     // Consorcio
     // Admin
@@ -109,6 +110,9 @@ Route::group(['middleware' => ['api', 'cors']], function () {
     //Liquidacion
     Route::get('/admin/liquidacion', 'LiquidacionController@index')->middleware('auth:api', 'scope:operator,admin');
     Route::post('/admin/liquidacion', 'LiquidacionController@store')->middleware('auth:api', 'scope:operator,admin');
+
+    //Informe
+    Route::get('/admin/informe', 'InformeController@index');//->middleware('auth:api', 'scope:operator,admin');
 
     // Estadística
     // Admin
