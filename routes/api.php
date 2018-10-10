@@ -122,6 +122,7 @@ Route::group(['middleware' => ['api', 'cors']], function () {
     Route::get('/admin/estadistica', 'EstadisticaController@index')->middleware('auth:api', 'scope:admin');
 
     //Proveedores
+    Route::get('/user/proveedor', 'ProveedorController@user')->middleware('auth:api', 'scope:user,operator,admin');
     Route::get('/admin/proveedor', 'ProveedorController@index')->middleware('auth:api', 'scope:operator,admin');
     Route::post('/admin/proveedor', 'ProveedorController@store')->middleware('auth:api', 'scope:operator,admin');
     Route::put('/admin/proveedor', 'ProveedorController@update')->middleware('auth:api', 'scope:operator,admin');

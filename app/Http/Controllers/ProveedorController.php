@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Proveedor;
+use App\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
@@ -10,12 +11,16 @@ class ProveedorController extends Controller
 {
     public function index(Request $request)
     {
-        if ($request->get('page')) {
-            return $this->paginate($request);
-        } else if ($request->get('id')) {
-            return Proveedor::find($request->get('id'));
+         $id = $request->get('id');
+        if($id) return Proveedor::find($id);
+
+        $user = User::find(Auth::user()->getAuthIdentifier());
+        $size = $request->get('size') ? $request->get('size') : 5;
+
+        if($user->isOperator()){
+            return Proveedor::filterByConsorcio($user->administra_consorcio)->paginate($size);
         } else {
-            return Proveedor::all();
+            return Proveedor::list()->paginate($size);
         }
     }
 
@@ -24,14 +29,44 @@ class ProveedorController extends Controller
         return Proveedor::paginate($request->get('size'));
     }
 
+    public function user(Request $request){
+       
+        $id = $request->get('id');
+        
+        $user = User::find(Auth::user()->getAuthIdentifier());
+        $size = $request->get('size') ? $request->get('size') : 5;
+
+        if($id) {
+            return Proveedor::find($id);
+        } else {
+            return Proveedor::all();
+        }
+    }
+
     public function store(Request $request)
     {
-        if (Proveedor::find($request->get('id')) != null) $this->delete($request);
+        $user = User::find(Auth::user()->getAuthIdentifier());
 
-        Proveedor::create($request->all());
-        return response([
-            'proveedor' => $request->all()
+        $nombre = $request->get('nombre');
+        $tel = $request->get('tel');
+        $email = $request->get('email');
+        $rubro = $request->get('rubro');
+        
+
+        if(!$nombre) return response("El campo nombre es obligatorio", 400);
+        if(!$tel) return response("El campo telefono es obligatorio", 400);
+        if(!$email) return response("El campo email es obligatorio", 400);
+        if(!$rubro) return response("El rubro rubro es obligatorio", 400);
+        
+
+        $proveedor = Proveedor::create([
+            'nombre' => $nombre,
+            'tel' => $tel,
+            'email' => $email,
+            'rubro' => $rubro
         ]);
+
+        return $proveedor;
     }
 
     public function delete(Request $request)
