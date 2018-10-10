@@ -15,28 +15,36 @@ class GastoController extends Controller
     public function index(Request $request)
     {
         $id = $request->get('id');
-        if($id) return Gasto::find($id);
+        if($id) return Gasto::agregarInformacion(Gasto::find($id));
 
         $user = User::find(Auth::user()->getAuthIdentifier());
         $size = $request->get('size') ? $request->get('size') : 5;
 
         if($user->isOperator()){
-            return Gasto::filterByConsorcio($user->administra_consorcio)->paginate($size);
+            $response = Gasto::filterByConsorcio($user->administra_consorcio)->paginate($size);
         } else {
-            return Gasto::list()->paginate($size);
+            $response = Gasto::list()->paginate($size);
         }
+
+        foreach ($response->items() as $item) Gasto::agregarInformacion($item);
+
+        return $response;
     }
 
     public function user(Request $request){
         $id = $request->get('id');
-        if($id) return Gasto::find($id);
+        if($id) return Gasto::agregarInformacion(Gasto::find($id));
 
         $user = User::find(Auth::user()->getAuthIdentifier());
         $size = $request->get('size') ? $request->get('size') : 5;
 
         $consorcioId = User::getConsorcioIdForUser($user->id);
 
-        return Gasto::filterByConsorcio($consorcioId)->paginate($size);
+        $response = Gasto::filterByConsorcio($consorcioId)->paginate($size);
+
+        foreach ($response->items() as $item) Gasto::agregarInformacion($item);
+
+        return $response;
     }
 
 
