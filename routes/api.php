@@ -113,6 +113,7 @@ Route::group(['middleware' => ['api', 'cors']], function () {
 
     //Informe
     Route::get('/admin/informe', 'InformeController@index')->middleware('auth:api', 'scope:operator,admin');
+    Route::get('/user/informe', 'InformeController@user')->middleware('auth:api', 'scope:user,operator,admin');
 
     // Estadística
     // Admin

@@ -131,10 +131,14 @@ class Unidad extends Model
     }
 
     public static function unidadsByUser($usuarioId){
-        return Unidad::list()->where('usuario_id', $usuarioId);
+        return Unidad::list()->where('users.id', $usuarioId);
     }
 
     public function propietarioId(){
         return $this->usuario_id;
+    }
+
+    public function consorcioId(){
+        return $this->consorcio_id;
     }
 }

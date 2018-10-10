@@ -19,6 +19,6 @@ class TestController extends Controller
 {
     public function index(Request $request){
 
-        return $facturasConDeuda = (array) Informe::filterByMesAnioConsorcio(6, 2018, 1)->get()[0];
+        return Informe::filterByUser(1);
     }
 }

@@ -60,4 +60,17 @@ class Informe extends Model
             ->where('anio', $anio)
             ->where('consorcio_id', $consorcioId);
     }
+
+    public static function filterByUser($userId){
+        $unidades = Unidad::unidadsByUser($userId)->get();
+        foreach ($unidades as $u){
+            $unidadId = $u->id;
+        }
+
+        $unidad = Unidad::find($unidadId);
+        $consorcioId = $unidad->consorcioId();
+
+        return Informe::list()
+            ->where('consorcio_id', $consorcioId);
+    }
 }
