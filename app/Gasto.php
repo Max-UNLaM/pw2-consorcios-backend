@@ -49,20 +49,32 @@ class Gasto extends Model
         return DB::table('gastos')
             ->join('proveedors', 'proveedors.id', '=', 'gastos.proveedor_id')
             ->join('consorcios', 'consorcios.id', '=', 'gastos.consorcio_id')
-            ->addSelect([
-                'gastos.id as id',
-                'gastos.nombre as nombre',
-                'consorcios.nombre as consorcio_nombre',
+            ->select([
+                'gastos.id as gasto_id',
+                'gastos.nombre as gasto_nombre',
+                'gastos.valor as gasto_valor',
+                'gastos.mes as gasto-mes',
+                'gastos.anio as gasto_anio',
+                'gastos.fecha as gasto_fecha',
+                'gastos.es_gasto_fijo as gasto.es_gasto_fijo',
+                'proveedors.id as proveedor_id',
                 'proveedors.nombre as proveedor_nombre',
-                'gastos.valor as valor',
-                'gastos.mes as mes',
-                'gastos.anio as anio',
-                'gastos.fecha as fecha',
-                'gastos.proveedor_id as proveedor_id',
-                'gastos.consorcio_id as consorcio_id'
+                'proveedors.email as proveedor_email',
+                'proveedors.tel as proveedor_tel',
+                'proveedors.rubro as proveedor_rubro',
+                'consorcios.id as consorcio_id',
+                'consorcios.nombre as consorcio_nombre',
+                'consorcios.direccion as consorcio_direccion',
+                'consorcios.localidad as consorcio_localidad',
+                'consorcios.provincia as consorcio_provincia',
+                'consorcios.telefono as consorcio_telefono',
+                'consorcios.email as consorcio_email',
+                'consorcios.codigo_postal as consorcio_codigo_postal',
+                'consorcios.cuit as consorcio_cuit',
+                'consorcios.cantidad_de_pisos as consorcio_cantidad_de_pisos',
+                'consorcios.departamentos_por_piso as consorcio_departamentos_por_piso'
             ])
             ->orderByDesc('gastos.fecha');
-
     }
 
     public static function filterByConsorcio($consorcioId){
