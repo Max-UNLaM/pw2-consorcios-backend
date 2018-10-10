@@ -19,7 +19,10 @@ class Informe extends Model
             'liquidacion_id' => $liquidacion->id
         ]);
 
-        $facturasConDeuda = Factura::filterByMesAnioConsorcioConDeuda($mes, $anio, $consorcioId)->get();
+        $mesAnterior = $mes == 1 ? 12 : $mes-1;
+        $anioDelMesAnterior = $mes == 1 ? $anio - 1 : $anio;
+
+        $facturasConDeuda = Factura::filterByMesAnioConsorcioConDeuda($mesAnterior, $anioDelMesAnterior, $consorcioId)->get();
 
         foreach ($facturasConDeuda as $factura){
             Deuda::create([
