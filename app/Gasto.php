@@ -52,14 +52,14 @@ class Gasto extends Model
             ->addSelect([
                 'gastos.id as id',
                 'gastos.nombre as nombre',
+                'gastos.consorcio_id as consorcio_id',
                 'consorcios.nombre as consorcio_nombre',
+                'gastos.proveedor_id as proveedor_id',
                 'proveedors.nombre as proveedor_nombre',
                 'gastos.valor as valor',
                 'gastos.mes as mes',
                 'gastos.anio as anio',
-                'gastos.fecha as fecha',
-                'gastos.proveedor_id as proveedor_id',
-                'gastos.consorcio_id as consorcio_id'
+                'gastos.fecha as fecha'
             ])
             ->orderByDesc('gastos.fecha');
 
@@ -100,6 +100,12 @@ class Gasto extends Model
             'proveedor_id' => $proveedor->id,
             'consorcio_id' => $consorcioId
         ]);
+    }
+
+    public static function agregarInformacion($gasto){
+        $gasto->consorcio = Consorcio::find($gasto->consorcio_id);
+        $gasto->proveedor = Proveedor::find($gasto->proveedor_id);
+        return $gasto;
     }
    
 }
