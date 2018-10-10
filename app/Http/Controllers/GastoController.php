@@ -27,6 +27,18 @@ class GastoController extends Controller
         }
     }
 
+    public function user(Request $request){
+        $id = $request->get('id');
+        if($id) return Gasto::find($id);
+
+        $user = User::find(Auth::user()->getAuthIdentifier());
+        $size = $request->get('size') ? $request->get('size') : 5;
+
+        $consorcioId = User::getConsorcioIdForUser($user->id);
+
+        return Gasto::filterByConsorcio($consorcioId)->paginate($size);
+    }
+
 
     public function paginate(Request $request)
     {

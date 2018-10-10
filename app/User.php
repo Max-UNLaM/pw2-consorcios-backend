@@ -60,6 +60,16 @@ class User extends Authenticatable
             ->where('estado', $status);
     }
 
+    public static function getConsorcioIdForUser($userId){
+        $unidades = Unidad::unidadsByUser($userId)->get();
+        foreach ($unidades as $u){
+            $unidadId = $u->id;
+        }
+
+        $unidad = Unidad::find($unidadId);
+        return $unidad->consorcioId();
+    }
+
     public static function createRandomUser(){
         $faker = \Faker\Factory::create();
         $rol = new Rol();
