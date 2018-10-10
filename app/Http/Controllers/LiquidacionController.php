@@ -28,6 +28,18 @@ class LiquidacionController extends Controller
         }
     }
 
+    public function user(Request $request){
+        $id = $request->get('id');
+        if($id) return Liquidacion::find($id);
+
+        $user = User::find(Auth::user()->getAuthIdentifier());
+        $size = $request->get('size') ? $request->get('size') : 5;
+
+        $consorcioId = User::getConsorcioIdForUser($user->id);
+
+        return Liquidacion::filterByConsorcio($consorcioId)->paginate($size);
+    }
+
     public function store(Request $request){
         $user = User::find(Auth::user()->getAuthIdentifier());
 
