@@ -16,7 +16,7 @@ class UserController extends Controller
         $size = $request->get('size') ? $request->get('size') : 5;
 
         $status = $request->get('status');
-        if($status != 'ACTIVO' && $status != 'INACTIVO' && $status != 'APROBACION_PENDIENTE') return response("Los posibles valores del parametro status son ACTIVO, INACTIVO y APROBACION_PENDIENTE", 400);
+        if($status && $status != 'ACTIVO' && $status != 'INACTIVO' && $status != 'APROBACION_PENDIENTE') return response("Los posibles valores del parametro status son ACTIVO, INACTIVO y APROBACION_PENDIENTE", 400);
         if($status) return User::filterByStatus($status)->paginate($size);
 
         return User::list()->paginate($size);
