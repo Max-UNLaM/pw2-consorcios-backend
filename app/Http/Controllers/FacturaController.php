@@ -8,6 +8,8 @@ use App\Factura;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Resources\Factura as FacturaResource;
+use App\Http\Resources\FacturaCollection;
 
 class FacturaController extends Controller
 {
@@ -18,17 +20,22 @@ class FacturaController extends Controller
         $user = User::find(Auth::user()->getAuthIdentifier());
 
         $id = $request->get('id');
-        if($id) return Factura::find($id);
+        if($id) return new FacturaResource(Factura::find($id));
 
         $mes = $request->get('mes');
         $anio = $request->get('anio');
-        if($mes && $anio) return Factura::filterByMesAnio($mes, $anio)->paginate($size);
+        if($mes && $anio){
+            $facturas = Factura::where('mes', $mes)->where('anio', $anio)->paginate($size);
+            return new FacturaCollection($facturas);
+        }
 
         if($user->isOperator()){
-            return Factura::filterByConsorcio($user->administra_consorcio)->paginate($size);
+            $facturas = Factura::where('consorcio_id', $user->administra_consorcio)->paginate($size);
         } else {
-            return Factura::list()->paginate($size);
+            $facturas = Factura::paginate($size);
         }
+
+        return new FacturaCollection($facturas);
     }
 
     public function user(Request $request)
@@ -36,12 +43,14 @@ class FacturaController extends Controller
         if ($request->get('puerta')) return "PATOVA";
 
         $id = $request->get('id');
-        if($id) return Factura::find($id);
+        if($id) return new FacturaResource(Factura::find($id));
 
         $size = $request->get('size') ? $request->get('size') : 5;
         $user = User::find(Auth::user()->getAuthIdentifier());
 
-        return Factura::filterByUsuario($user->id)->paginate($size);
+        $facturas = Factura::where('usuario_id', $user->id)->paginate($size);
+
+        return new FacturaCollection($facturas);
     }
 
     public function paginate(Request $request)
