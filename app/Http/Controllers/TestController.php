@@ -20,6 +20,9 @@ class TestController extends Controller
 {
     public function index(Request $request){
 
-        return new LiquidacionCollection(Liquidacion::where('mes', 6)->where('anio', 2018)->paginate(5));
+        return sizeof(DB::table('expensas')
+            ->join('unidads', 'expensas.unidad_id', '=', 'unidads.id')
+            //->where('unidads.consorcio_id', 1)
+            ->get());
     }
 }

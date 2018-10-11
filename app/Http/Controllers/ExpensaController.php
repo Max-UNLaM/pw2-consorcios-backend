@@ -11,6 +11,9 @@ use http\Env\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Pagination\Paginator;
+use App\Http\Resources\Expensa as ExpensaResource;
+use App\Http\Resources\ExpensaCollection;
+use Illuminate\Support\Facades\DB;
 
 class ExpensaController extends Controller
 {
@@ -20,17 +23,26 @@ class ExpensaController extends Controller
         $user = User::find(Auth::user()->getAuthIdentifier());
 
         $id = $request->get('id');
-        if($id) return Expensa::find($id);
+        if($id) return new ExpensaResource(Expensa::find($id));
 
         $mes = $request->get('mes');
         $anio = $request->get('anio');
-        if($mes && $anio) return Expensa::filterByMesAnio($mes, $anio)->paginate($size);
+        if($mes && $anio){
+            $expensas = Expensa::where('mes', $mes)->where('anio', $anio)->orderByDesc('vencimiento')->paginate($size);
+            return new ExpensaCollection($expensas);
+        }
 
         if($user->isOperator()){
-            return Expensa::filterByConsorcio($user->administra_consorcio)->paginate($size);
+            $expensas = DB::table('expensas')
+                ->join('unidads', 'expensas.unidad_id', '=', 'unidads.id')
+                ->where('unidads.consorcio_id', $user->administra_consorcio)
+                ->orderByDesc('vencimiento')
+                ->paginate($size);
         } else {
-            return Expensa::list()->paginate($size);
+            $expensas = Expensa::orderByDesc('vencimiento')->paginate($size);
         }
+
+        return new ExpensaCollection($expensas);
 
     }
 
@@ -40,12 +52,18 @@ class ExpensaController extends Controller
         if($request->get('puerta')) return response(["entra" => "PATOVA"]);
 
         $id = $request->get('id');
-        if($id) return Expensa::find($id);
+        if($id) return new ExpensaResource(Expensa::find($id));
 
         $size = $request->get('size') ? $request->get('size') : 5;
         $user = User::find(Auth::user()->getAuthIdentifier());
 
-        return Expensa::expensasPorUsuario($user->id)->paginate($size);
+        $expensas = DB::table('expensas')
+            ->join('unidads', 'expensas.unidad_id', '=', 'unidads.id')
+            ->where('unidads.usuario_id', $user->id)
+            ->orderByDesc('vencimiento')
+            ->paginate($size);
+
+        return new ExpensaCollection($expensas);
     }
 
     /*protected function userGetAllExpensasPaginate(Request $request)
