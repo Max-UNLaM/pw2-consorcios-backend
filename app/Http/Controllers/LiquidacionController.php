@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Liquidacion;
+use App\Http\Resources\Liquidacion as LiquidacionResource;
+use App\Http\Resources\LiquidacionCollection;
 use App\User;
-use http\Env\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -15,29 +16,37 @@ class LiquidacionController extends Controller
         $user = User::find(Auth::user()->getAuthIdentifier());
 
         $id = $request->get('id');
-        if($id) return Liquidacion::find($id);
+        if($id) return new LiquidacionResource(Liquidacion::find($id));
+
 
         $mes = $request->get('mes');
         $anio = $request->get('anio');
-        if($mes && $anio) return Liquidacion::filterByMesAnio($mes, $anio)->paginate($size);
+        if($mes && $anio){
+            $liquidaciones = Liquidacion::where('mes', $mes)->where('anio', $anio)->paginate($size);
+            return new LiquidacionCollection($liquidaciones);
+        }
 
         if($user->isOperator()){
-            return Liquidacion::filterByConsorcio($user->administra_consorcio)->paginate($size);
+            $liquidaciones = Liquidacion::where('consorcio_id', $user->administra_consorcio)->paginate($size);
         } else {
-            return Liquidacion::list()->paginate($size);
+            $liquidaciones = Liquidacion::paginate($size);
         }
+
+        return new LiquidacionCollection($liquidaciones);
     }
 
     public function user(Request $request){
         $id = $request->get('id');
-        if($id) return Liquidacion::find($id);
+        if($id) return new LiquidacionResource(Liquidacion::find($id));
 
         $user = User::find(Auth::user()->getAuthIdentifier());
         $size = $request->get('size') ? $request->get('size') : 5;
 
         $consorcioId = User::getConsorcioIdForUser($user->id);
 
-        return Liquidacion::filterByConsorcio($consorcioId)->paginate($size);
+        $liquidaciones = Liquidacion::where('consorcio_id', $consorcioId)->paginate($size);
+
+        return new LiquidacionCollection($liquidaciones);
     }
 
     public function store(Request $request){

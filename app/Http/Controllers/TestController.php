@@ -7,6 +7,7 @@ use App\Deuda;
 use App\Expensa;
 use App\Factura;
 use App\Gasto;
+use App\Http\Resources\LiquidacionCollection;
 use App\Informe;
 use App\Liquidacion;
 use App\Pago;
@@ -19,6 +20,6 @@ class TestController extends Controller
 {
     public function index(Request $request){
 
-        return Informe::filterByUser(1);
+        return new LiquidacionCollection(Liquidacion::where('mes', 6)->where('anio', 2018)->paginate(5));
     }
 }
