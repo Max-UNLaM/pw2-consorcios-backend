@@ -9,34 +9,39 @@ use Illuminate\Http\Request;
 use App\Gasto;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Resources\Gasto as GastoResource;
+use App\Http\Resources\GastoCollection;
 
 class GastoController extends Controller
 {
     public function index(Request $request)
     {
         $id = $request->get('id');
-        if($id) return Gasto::find($id);
+        if($id) return new GastoResource(Gasto::find($id));
 
         $user = User::find(Auth::user()->getAuthIdentifier());
         $size = $request->get('size') ? $request->get('size') : 5;
 
         if($user->isOperator()){
-            return Gasto::filterByConsorcio($user->administra_consorcio)->paginate($size);
+            $gastos = Gasto::where('consorcio_id', $user->administra_consorcio)->paginate($size);
         } else {
-            return Gasto::list()->paginate($size);
+            $gastos = Gasto::paginate($size);
         }
+
+        return new GastoCollection($gastos);
     }
 
     public function user(Request $request){
         $id = $request->get('id');
-        if($id) return Gasto::find($id);
+        if($id) return new GastoResource(Gasto::find($id));
 
         $user = User::find(Auth::user()->getAuthIdentifier());
         $size = $request->get('size') ? $request->get('size') : 5;
 
         $consorcioId = User::getConsorcioIdForUser($user->id);
 
-        return Gasto::filterByConsorcio($consorcioId)->paginate($size);
+        $gastos = Gasto::where('consorcio_id', $consorcioId)->paginate($size);
+        return new GastoCollection($gastos);
     }
 
 

@@ -9,6 +9,9 @@ use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Resources\Pago as PagoResource;
+use App\Http\Resources\PagoCollection;
+use Illuminate\Support\Facades\DB;
 
 class PagoController extends Controller
 {
@@ -18,27 +21,45 @@ class PagoController extends Controller
         $user = User::find(Auth::user()->getAuthIdentifier());
 
         $id = $request->get('id');
-        if($id) return Pago::find($id);
+        if($id) return new PagoResource(Pago::find($id));
 
         $mes = $request->get('mes');
         $anio = $request->get('anio');
-        if($mes && $anio) return Pago::filterByMesAnio($mes, $anio)->paginate($size);
+        if($mes && $anio){
+            $pagos = Pago::where('mes', $mes)->where('anio', $anio)->paginate($size);
+            return new PagoCollection($pagos);
+        }
 
         if($user->isOperator()){
-            return Pago::filterByConsorcio($user->administra_consorcio)->paginate($size);
+            $pagos = DB::table('pagos')
+                ->join('facturas', 'facturas.id', '=', 'pagos.factura_id')
+                ->where('facturas.consorcio_id', $user->administra_consorcio)
+                ->orderByDesc('pagos.fecha')
+                ->paginate($size);
         } else {
-            return Pago::list()->paginate($size);
+            $pagos = Pago::paginate($size);
         }
+
+        return new PagoCollection($pagos);
     }
 
     public function user(Request $request)
     {
+        $id = $request->get('id');
+        if($id) return new PagoResource(Pago::find($id));
+
         $size = $request->get('size') ? $request->get('size') : 5;
         $user = User::find(Auth::user()->getAuthIdentifier());
 
         if ($request->get('puerta')) return "PATOVA";
 
-        return Pago::filterByUsuario($user->id)->paginate($size);
+        $pagos = DB::table('pagos')
+            ->join('facturas', 'facturas.id', '=', 'pagos.factura_id')
+            ->where('facturas.usuario_id', $user->id)
+            ->orderByDesc('pagos.fecha')
+            ->paginate($size);
+
+        return new PagoCollection($pagos);
     }
 
     public function paginate(Request $request){

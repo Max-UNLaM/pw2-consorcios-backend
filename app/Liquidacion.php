@@ -20,13 +20,23 @@ class Liquidacion extends Model
     public static function list(){
         return DB::table('liquidacions')
             ->join('consorcios', 'consorcios.id', '=', 'liquidacions.consorcio_id')
-            ->addSelect([
-                'liquidacions.id as id',
+            ->select([
+                'liquidacions.id as liquidacion_id',
+                'liquidacions.mes as liquidacion_mes',
+                'liquidacions.anio as liquidacion_anio',
+                'liquidacions.valor_sin_coeficiente as liquidacion_valor_sin_coeficiente',
+                'liquidacions.valor as liquidacion_valor',
                 'consorcios.id as consorcio_id',
                 'consorcios.nombre as consorcio_nombre',
-                'liquidacions.mes as mes',
-                'liquidacions.anio as anio',
-                'liquidacions.valor as valor'
+                'consorcios.direccion as consorcio_direccion',
+                'consorcios.localidad as consorcio_localidad',
+                'consorcios.provincia as consorcio_provincia',
+                'consorcios.telefono as consorcio_telefono',
+                'consorcios.email as consorcio_email',
+                'consorcios.codigo_postal as consorcio_codigo_postal',
+                'consorcios.cuit as consorcio_cuit',
+                'consorcios.cantidad_de_pisos as consorcio_cantidad_de_pisos',
+                'consorcios.departamentos_por_piso as consorcio_departamentos_por_piso'
             ])
             ->orderByDesc('liquidacions.id');
     }

@@ -113,6 +113,8 @@ Route::group(['middleware' => ['api', 'cors']], function () {
     Route::get('/admin/liquidacion', 'LiquidacionController@index')->middleware('auth:api', 'scope:operator,admin');
     Route::post('/admin/liquidacion', 'LiquidacionController@store')->middleware('auth:api', 'scope:operator,admin');
 
+    Route::get('/user/liquidacion', 'LiquidacionController@user')->middleware('auth:api', 'scope:user,operator,admin');
+
     //Informe
     Route::get('/admin/informe', 'InformeController@index')->middleware('auth:api', 'scope:operator,admin');
     Route::get('/user/informe', 'InformeController@user')->middleware('auth:api', 'scope:user,operator,admin');

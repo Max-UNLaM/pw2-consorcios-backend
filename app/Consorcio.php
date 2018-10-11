@@ -44,4 +44,10 @@ class Consorcio extends Model
 
         return $cantidadDeUnidades;
     }
+
+    public static function obtenerConsorcioIdDesdePagoId($pagoId){
+        $pago = Pago::find($pagoId);
+        $factura = Factura::find($pago->factura_id);
+        return $factura->consorcio_id;
+    }
 }

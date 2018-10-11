@@ -7,6 +7,7 @@ use App\Deuda;
 use App\Expensa;
 use App\Factura;
 use App\Gasto;
+use App\Http\Resources\LiquidacionCollection;
 use App\Informe;
 use App\Liquidacion;
 use App\Pago;
@@ -18,7 +19,12 @@ use Illuminate\Support\Facades\DB;
 class TestController extends Controller
 {
     public function index(Request $request){
+        $pago = Pago::find(1);
 
-        return Informe::filterByUser(1);
+        $mes = (int) explode("-", $pago->fecha)[1];
+        $anio = (int) explode("-", $pago->fecha)[0];
+
+        return $anio;
+
     }
 }
