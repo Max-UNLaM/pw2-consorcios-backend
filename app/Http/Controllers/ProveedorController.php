@@ -11,17 +11,11 @@ class ProveedorController extends Controller
 {
     public function index(Request $request)
     {
-         $id = $request->get('id');
+        $id = $request->get('id');
         if($id) return Proveedor::find($id);
 
-        $user = User::find(Auth::user()->getAuthIdentifier());
         $size = $request->get('size') ? $request->get('size') : 5;
-
-        if($user->isOperator()){
-            return Proveedor::filterByConsorcio($user->administra_consorcio)->paginate($size);
-        } else {
-            return Proveedor::list()->paginate($size);
-        }
+        return Proveedor::paginate($size);
     }
 
     public function paginate(Request $request)
@@ -30,23 +24,16 @@ class ProveedorController extends Controller
     }
 
     public function user(Request $request){
-       
-        $id = $request->get('id');
-        
-        $user = User::find(Auth::user()->getAuthIdentifier());
-        $size = $request->get('size') ? $request->get('size') : 5;
 
-        if($id) {
-            return Proveedor::find($id);
-        } else {
-            return Proveedor::all();
-        }
+        $id = $request->get('id');
+        if($id) return Proveedor::find($id);
+
+        $size = $request->get('size') ? $request->get('size') : 5;
+        return Proveedor::paginate($size);
     }
 
     public function store(Request $request)
     {
-        $user = User::find(Auth::user()->getAuthIdentifier());
-
         $nombre = $request->get('nombre');
         $tel = $request->get('tel');
         $email = $request->get('email');
@@ -54,7 +41,7 @@ class ProveedorController extends Controller
         
 
         if(!$nombre) return response("El campo nombre es obligatorio", 400);
-        if(!$tel) return response("El campo telefono es obligatorio", 400);
+        if(!$tel) return response("El campo tel es obligatorio", 400);
         if(!$email) return response("El campo email es obligatorio", 400);
         if(!$rubro) return response("El rubro rubro es obligatorio", 400);
         
