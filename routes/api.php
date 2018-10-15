@@ -37,6 +37,9 @@ Route::group(['middleware' => ['api', 'cors']], function () {
     route::get('/admin/user', 'UserController@index')->middleware('auth:api', 'scope:admin');
     route::put('/admin/user', 'UserController@update')->middleware('auth:api', 'scope:admin');
 
+    //Creacion de usuarios
+    Route::post('/user/create', 'UserController@userCreate');
+
     //Administracion de roles
     route::get('/admin/rol', 'RolController@index')->middleware('auth:api', 'scope:admin');
     route::post('/admin/rol', 'RolController@store')->middleware('auth:api', 'scope:admin');
@@ -98,8 +101,7 @@ Route::group(['middleware' => ['api', 'cors']], function () {
     // User
     Route::get('/user/reclamo', 'ReclamoController@user')->middleware('auth:api', 'scope:user,operator,admin');
     Route::post('/user/reclamo', 'ReclamoController@store')->middleware('auth:api', 'scope:user,operator,admin');
-
-
+  
     // Gasto
     Route::get('/admin/gasto/mensual', 'GastoController@gastosMensual')->middleware('auth:api', 'scope:operator,admin');
     Route::get('/admin/gasto', 'GastoController@index')->middleware('auth:api', 'scope:operator,admin');

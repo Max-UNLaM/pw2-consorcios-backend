@@ -55,4 +55,28 @@ class UserController extends Controller
         $user->update();
         return $user;
     }
+
+    public function userCreate(Request $request){
+
+        $nombre = $request->get('name');
+        $email = $request->get('email');
+        $password = $request->get('password');
+        $dni = $request->get('dni');
+
+        if(!$nombre) return response("El campo nombre es obligatorio", 400);
+        if(!$email) return response("El campo email es obligatorio", 400);
+        if(!$password) return response("El campo password es obligatorio", 400);
+        if(!$dni) return response("El campo dni es obligatorio", 400);
+
+        $user = User::create([
+            'name' => $nombre,
+            'email' => $email,
+            'password' => bcrypt($password),
+            'dni' => $dni,
+            'estado' => "APROBACION_PENDIENTE",
+            'rol_id' => 3
+        ]);
+
+        return $user;
+    }
 }

@@ -5,29 +5,27 @@ namespace App\Http\Controllers;
 use App\Reclamo;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 
 class ReclamoController extends Controller
 {
     public function index(Request $request)
     {
-        if ($request->get('page')) {
-            return $this->paginate($request);
-        } else if ($request->get('id')) {
-            return $this->show($request->get('id'));
-        } else {
-            return Reclamo::all();
-        }
+        $id = $request->get('id');
+        if($id) return Reclamo::find($id);
+
+        $size = $request->get('size') ? $request->get('size') : 5;
+        return Reclamo::paginate($size);
     }
 
     public function user(Request $request)
     {
-        if ($request->get('puerta')) {
-            return "PATOVA";
-        } elseif ($request->get('page')) {
+        $page = $request->get('page');
+        if($page){
             return $this->getAllReclamosOfUserPaginada($request, Auth::user()->getAuthIdentifier());
         } else {
             return $this->getAllReclamosOfUser(Auth::user()->getAuthIdentifier())
-                ->get(['*']);
+                ->get(['*']); 
         }
     }
 
@@ -54,15 +52,23 @@ class ReclamoController extends Controller
 
     public function store(Request $request)
     {
-        $carga = [
-            'usuario_id' => Auth::user()->getAuthIdentifier(),
-            'unidad_id' => $request->get('unidad_id'),
-            'motivo' => $request->get('motivo'),
-            'fecha_reclamo' => $request->get('fecha_reclamo'),
+        $usuario_id = Auth::user()->getAuthIdentifier();
+        $unidad_id = $request->get('unidad_id');
+        $motivo = $request->get('motivo');
+        $fecha_reclamo =  Carbon::now();
+
+        if(!$unidad_id) return response("El campo unidad_id es obligatorio", 400);
+        if(!$motivo) return response("El campo motivo es obligatorio", 400);
+    
+        $reclamo = Reclamo::create([
+            'usuario_id' => $usuario_id,
+            'unidad_id' => $unidad_id,
+            'motivo' => $motivo,
+            'fecha_reclamo' => $fecha_reclamo,
             'estado_de_reclamo_id' => 4
-        ];
-        Reclamo::create($carga);
-        return $carga;
+        ]);
+
+        return $reclamo;
     }
 
     public function delete(Request $request)
