@@ -25,14 +25,14 @@ class FacturaController extends Controller
         $mes = $request->get('mes');
         $anio = $request->get('anio');
         if($mes && $anio){
-            $facturas = Factura::where('mes', $mes)->where('anio', $anio)->paginate($size);
+            $facturas = Factura::where('mes', $mes)->where('anio', $anio)->orderByDesc('vencimiento')->paginate($size);
             return new FacturaCollection($facturas);
         }
 
         if($user->isOperator()){
-            $facturas = Factura::where('consorcio_id', $user->administra_consorcio)->paginate($size);
+            $facturas = Factura::where('consorcio_id', $user->administra_consorcio)->orderByDesc('vencimiento')->paginate($size);
         } else {
-            $facturas = Factura::paginate($size);
+            $facturas = Factura::orderByDesc('vencimiento')->paginate($size);
         }
 
         return new FacturaCollection($facturas);

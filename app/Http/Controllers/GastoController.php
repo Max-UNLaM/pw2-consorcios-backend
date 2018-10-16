@@ -23,9 +23,9 @@ class GastoController extends Controller
         $size = $request->get('size') ? $request->get('size') : 5;
 
         if($user->isOperator()){
-            $gastos = Gasto::where('consorcio_id', $user->administra_consorcio)->paginate($size);
+            $gastos = Gasto::where('consorcio_id', $user->administra_consorcio)->orderByDesc('fecha')->paginate($size);
         } else {
-            $gastos = Gasto::paginate($size);
+            $gastos = Gasto::orderByDesc('fecha')->paginate($size);
         }
 
         return new GastoCollection($gastos);
