@@ -63,7 +63,7 @@ class UserController extends Controller
         $password = $request->get('password');
         $dni = $request->get('dni');
 
-        if(!$nombre) return response("El campo nombre es obligatorio", 400);
+        if(!$nombre) return response("El campo name es obligatorio", 400);
         if(!$email) return response("El campo email es obligatorio", 400);
         if(!$password) return response("El campo password es obligatorio", 400);
         if(!$dni) return response("El campo dni es obligatorio", 400);
