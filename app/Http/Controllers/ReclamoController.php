@@ -20,6 +20,8 @@ class ReclamoController extends Controller
 
     public function user(Request $request)
     {
+        if($request->get('puerta')) return response(["entra" => "PATOVA"]);
+
         $page = $request->get('page');
         if($page){
             return $this->getAllReclamosOfUserPaginada($request, Auth::user()->getAuthIdentifier());
