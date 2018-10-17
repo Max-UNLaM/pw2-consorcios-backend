@@ -48,7 +48,7 @@ class FacturaController extends Controller
         $size = $request->get('size') ? $request->get('size') : 5;
         $user = User::find(Auth::user()->getAuthIdentifier());
 
-        $facturas = Factura::where('usuario_id', $user->id)->paginate($size);
+        $facturas = Factura::where('usuario_id', $user->id)->orderByDesc('vencimiento')->paginate($size);
 
         return new FacturaCollection($facturas);
     }
