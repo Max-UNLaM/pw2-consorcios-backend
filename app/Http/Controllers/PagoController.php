@@ -152,7 +152,9 @@ class PagoController extends Controller
         if($status != 'APROBADO' && $status != 'APROBACION_PENDIENTE' && $status != 'RECHAZADO') return response("Los posibles valores del campo status son: APROBADO, APROBACION_PENDIENTE o RECHAZADO", 400);
 
         $size = $request->get('size') ? $request->get('size') : 5;
-        return Pago::filterByStatus($status)->paginate($size);
+        $pagos = Pago::where('estado', $status)->orderByDesc('fecha')->paginate($size);
+
+        return new PagoCollection($pagos);
     }
 
     public function approve(Request $request){
