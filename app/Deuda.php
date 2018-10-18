@@ -10,7 +10,9 @@ class Deuda extends Model
     protected $fillable = ['informe_id', 'mes', 'anio', 'usuario_id', 'total_factura', 'pago_parcial', 'adeuda', 'vencimiento'];
 
     public static function list(){
-        return DB::table('deudas');
+        return DB::table('deudas')
+            ->join('users', 'deudas.usuario_id', '=', 'users.id')
+            ->join('unidads', 'unidads.usuario_id', '=', 'users.id');
     }
 
     public static function filterByInforme($informeId){
