@@ -33,25 +33,31 @@ Route::group(['middleware' => ['api', 'cors']], function () {
     Route::group(['middleware' => 'auth:api'], function () {
         Route::post('get-details', 'Auth\PassportController@getDetails');
     });
+
     //Administracion de usuarios
-    route::get('/admin/user', 'UserController@index')->middleware('auth:api', 'scope:admin');
-    route::put('/admin/user', 'UserController@update')->middleware('auth:api', 'scope:admin');
+    Route::get('/admin/user', 'UserController@index')->middleware('auth:api', 'scope:admin');
+    Route::put('/admin/user', 'UserController@update')->middleware('auth:api', 'scope:admin');
 
     //Creacion de usuarios
     Route::post('/user/create', 'UserController@userCreate');
 
+    // Lectura de usuario
+    // User
+    Route::get('/user/user', 'UserController@read')->middleware('auth:api', 'scope:user,operator,admin');;
+
+    Route::get('/admin/user', 'UserController@adminRead')->middleware('auth:api', 'scope:operator,admin');
+
     //Administracion de roles
-    route::get('/admin/rol', 'RolController@index')->middleware('auth:api', 'scope:admin');
-    route::post('/admin/rol', 'RolController@store')->middleware('auth:api', 'scope:admin');
+    Route::get('/admin/rol', 'RolController@index')->middleware('auth:api', 'scope:admin');
+    Route::post('/admin/rol', 'RolController@store')->middleware('auth:api', 'scope:admin');
 
     // Consorcio
     // Admin
-    Route   ::get('/admin/consorcio', 'ConsorcioController@index')->middleware('auth:api', 'scope:operator,admin');
+    Route::get('/admin/consorcio', 'ConsorcioController@index')->middleware('auth:api', 'scope:operator,admin');
     Route::post('/admin/consorcio', 'ConsorcioController@store')->middleware('auth:api', 'scope:operator,admin');
     Route::delete('/admin/consorcio', 'ConsorcioController@delete')->middleware('auth:api', 'scope:operator,admin');
     Route::put('/admin/consorcio', 'ConsorcioController@update')->middleware('auth:api', 'scope:operator,admin');
     Route::get('/user/consorcio', 'ConsorcioController@user')->middleware('auth:api', 'scope:user,operator,admin');
-
 
     // Unidad
     // Admin

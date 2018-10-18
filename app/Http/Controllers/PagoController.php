@@ -19,17 +19,14 @@ class PagoController extends Controller
     {
         $size = $request->get('size') ? $request->get('size') : 5;
         $user = User::find(Auth::user()->getAuthIdentifier());
-
         $id = $request->get('id');
         if($id) return new PagoResource(Pago::find($id));
-
         $mes = $request->get('mes');
         $anio = $request->get('anio');
         if($mes && $anio){
             $pagos = Pago::where('mes', $mes)->where('anio', $anio)->paginate($size);
             return new PagoCollection($pagos);
         }
-
         if($user->isOperator()){
             $pagos = DB::table('pagos')
                 ->join('facturas', 'facturas.id', '=', 'pagos.factura_id')
@@ -47,18 +44,14 @@ class PagoController extends Controller
     {
         $id = $request->get('id');
         if($id) return new PagoResource(Pago::find($id));
-
         $size = $request->get('size') ? $request->get('size') : 5;
         $user = User::find(Auth::user()->getAuthIdentifier());
-
         if ($request->get('puerta')) return "PATOVA";
-
         $pagos = DB::table('pagos')
             ->join('facturas', 'facturas.id', '=', 'pagos.factura_id')
             ->where('facturas.usuario_id', $user->id)
             ->orderByDesc('pagos.fecha')
             ->paginate($size);
-
         return new PagoCollection($pagos);
     }
 
