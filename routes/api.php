@@ -42,7 +42,10 @@ Route::group(['middleware' => ['api', 'cors']], function () {
     Route::post('/user/create', 'UserController@userCreate');
 
     // Lectura de usuario
+    // User
     Route::get('/user/user', 'UserController@read')->middleware('auth:api', 'scope:user,operator,admin');;
+
+    Route::get('/admin/user', 'UserController@adminRead')->middleware('auth:api', 'scope:operator,admin');
 
     //Administracion de roles
     Route::get('/admin/rol', 'RolController@index')->middleware('auth:api', 'scope:admin');

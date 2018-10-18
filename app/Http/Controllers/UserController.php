@@ -77,8 +77,12 @@ class UserController extends Controller
         return $user;
     }
 
-    public function read(Request $request)
+    public function read()
     {
+        return User::find(Auth::user()->getAuthIdentifier());
+    }
+
+    public function adminRead(Request $request) {
         $id = $request->get('id');
         $user = User::find(Auth::user()->getAuthIdentifier());
         if ($user->rol_id == 3 && $id != $user->id) {
@@ -90,4 +94,5 @@ class UserController extends Controller
             return $user;
         }
     }
+
 }
