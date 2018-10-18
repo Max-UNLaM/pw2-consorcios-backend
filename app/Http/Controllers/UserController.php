@@ -79,6 +79,15 @@ class UserController extends Controller
 
     public function read(Request $request)
     {
-        return User::find(Auth::user()->getAuthIdentifier());
+        $id = $request->get('id');
+        $user = User::find(Auth::user()->getAuthIdentifier());
+        if ($user->rol_id == 3 && $id != $user->id) {
+            return response('Forbidden', 403);
+        }
+        if ($id) {
+            return User::find($id);
+        } else {
+            return $user;
+        }
     }
 }
