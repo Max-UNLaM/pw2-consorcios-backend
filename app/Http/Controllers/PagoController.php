@@ -104,7 +104,7 @@ class PagoController extends Controller
         if($monto > $adeuda) return response("No se realizo el pago porque el monto indicado supera el monto adeudado (".$adeuda.")", 400);
 
         $fecha = Carbon::now();
-        $pago = Pago::realizarPago($facturaId, $monto, $fecha->toDateString(), $user, $medioDePago, $codigoComprobante, $banco);
+        $pago = Pago::realizarPago($facturaId, $monto, $fecha->toDateString(), $fecha->month, $fecha->year, $user, $medioDePago, $codigoComprobante, $banco);
         $factura = Factura::find($pago->factura_id);
         $expensa = Expensa::find($factura->expensa_id);
         $mensaje = ($pago->estado == 'APROBADO') ? 'El pago ha sido ingresado y aprobado' : 'El pago ha sido ingresado y queda pendiente a la aprobación de un administrador';

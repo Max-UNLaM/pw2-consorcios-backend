@@ -9,10 +9,10 @@ use Illuminate\Support\Facades\DB;
 class Pago extends Model
 {
     protected $fillable = [
-        'propietario_id', 'usuario_que_genera_el_pago_id', 'factura_id', 'fecha', 'monto', 'medio_de_pago', 'estado', 'codigo_comprobante', 'banco'
+        'propietario_id', 'usuario_que_genera_el_pago_id', 'factura_id', 'fecha', 'mes', 'anio', 'monto', 'medio_de_pago', 'estado', 'codigo_comprobante', 'banco'
     ];
 
-    public static function realizarPago($factura_id, $monto, $fecha, $user, $medioDePago, $codigoComprobante, $banco){
+    public static function realizarPago($factura_id, $monto, $fecha, $mes, $anio, $user, $medioDePago, $codigoComprobante, $banco){
         $factura = Factura::find($factura_id);
 
         if($factura->adeuda == 0) return response(['Esta factura ya esta paga'], 400);
@@ -25,6 +25,8 @@ class Pago extends Model
             'factura_id' => $factura_id,
             'monto' => $monto,
             'fecha' => $fecha,
+            'mes' => $mes,
+            'anio' => $anio,
             'estado' => 'APROBACION_PENDIENTE',
             'codigo_comprobante' => $codigoComprobante,
             'banco' => $banco,
@@ -95,8 +97,8 @@ class Pago extends Model
 
     public static function filterByMesAnioConsorcio($mes, $anio, $consorcioId){
         return Pago::list()
-            ->where('facturas.mes', $mes)
-            ->where('facturas.anio', $anio)
+            ->where('pagos.mes', $mes)
+            ->where('pagos.anio', $anio)
             ->where('consorcios.id', $consorcioId);
     }
 

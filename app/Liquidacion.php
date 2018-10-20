@@ -69,7 +69,7 @@ class Liquidacion extends Model
 
         $gastosMensuales = Gasto::gastosMesAnioConsorcio($mes, $anio, $consorcioId);
 
-        if($gastosMensuales == 0) return response("No hay gastos en el periodo seleccionado", 400);
+        if($gastosMensuales == 0) return response("No hay gastos en el mes anterior al periodo seleccionado", 400);
 
         $liquidacion = Liquidacion::create([
             'mes' => $mes,

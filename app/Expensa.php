@@ -155,8 +155,8 @@ class Expensa extends Model
                     'anio' => $anio,
                     'mes' => (strlen($mes) < 2) ? '0' . $mes : $mes,
                     'pago' => 'IMPAGO',
-                    'emision' => "$anio-$mes-10",
-                    'vencimiento' => "$anio-$mes-20",
+                    'emision' => "$anio-$mes-01",
+                    'vencimiento' => "$anio-$mes-10",
                     'importe' => $importe
                 ]);
 
