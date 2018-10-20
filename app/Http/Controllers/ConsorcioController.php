@@ -14,6 +14,9 @@ class ConsorcioController extends Controller
 	    $size = $request->get('size') ? $request->get('size') : 5;
 	    $id = $request->get('id');
 
+        $paginado = $request->get('sin_paginar') ? 0 : 1;
+        if(!$paginado) return Consorcio::all();
+
 	    if($id) return Consorcio::find($id);
 
 	    return Consorcio::paginate($size);

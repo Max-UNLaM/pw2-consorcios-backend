@@ -14,6 +14,9 @@ class ProveedorController extends Controller
         $id = $request->get('id');
         if($id) return Proveedor::find($id);
 
+        $paginado = $request->get('sin_paginar') ? 0 : 1;
+        if(!$paginado) return Proveedor::all();
+
         $size = $request->get('size') ? $request->get('size') : 5;
         return Proveedor::paginate($size);
     }
