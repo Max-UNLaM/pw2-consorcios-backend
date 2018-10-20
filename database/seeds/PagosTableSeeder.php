@@ -40,16 +40,17 @@ class PagosTableSeeder extends Seeder
             $pagoTotal = $faker->randomElement($arrayRandom);
             $medioDePago = $faker->randomElement($mediosDePago);
 
-            if($pagoTotal == 1 || $mes != $mesAnterior){
-                Pago::realizarPago($factura->id, $factura->adeuda, "2018-$mes-$dia", $user, $medioDePago, null);
-            } else {
-                $pagoParcial = $faker->randomElement($arrayRandom);
-                if($pagoParcial == 1){
-                    $montoAPagar = $faker->numberBetween(($factura->adeuda / 10), $factura->adeuda);
-                    Pago::realizarPago($factura->id, $montoAPagar, "2018-$mes-$dia", $user, $medioDePago, null);
+            if($mes != $mesAnterior){
+                if($pagoTotal == 1){
+                    Pago::realizarPago($factura->id, $factura->adeuda, "2018-$mes-$dia", $user, $medioDePago, null);
+                } else {
+                    $pagoParcial = $faker->randomElement($arrayRandom);
+                    if($pagoParcial == 1){
+                        $montoAPagar = $faker->numberBetween(($factura->adeuda / 10), $factura->adeuda);
+                        Pago::realizarPago($factura->id, $montoAPagar, "2018-$mes-$dia", $user, $medioDePago, null);
+                    }
                 }
             }
-
         }
     }
 }
