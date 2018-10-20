@@ -106,11 +106,13 @@ class PagoController extends Controller
         $pago = Pago::realizarPago($facturaId, $monto, $fecha->toDateString(), $user, $medioDePago, $codigoComprobante);
         $factura = Factura::find($pago->factura_id);
         $expensa = Expensa::find($factura->expensa_id);
+        $mensaje = ($pago->estado == 'APROBADO') ? 'El pago ha sido ingresado y aprobado' : 'El pago ha sido ingresado y queda pendiente a la aprobación de un administrador';
 
         return [
             'pago' => $pago,
             'factura' => $factura,
-            'expensa' => $expensa
+            'expensa' => $expensa,
+            'mensaje' => $mensaje
         ];
     }
 
