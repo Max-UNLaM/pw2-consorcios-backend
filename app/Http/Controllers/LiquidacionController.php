@@ -60,7 +60,7 @@ class LiquidacionController extends Controller
         if(!$mes) return response("El parametro mes es obligatorio", 400);
         if(!$anio) return response("El parametro anio es obligatorio",400);
 
-        if(Liquidacion::existeParaMesAnioConsorcio($mes, $anio, $consorcioId)) return response("El periodo indicado fue liquidado previamente en el consorcio solicitado", 202);
+        if(Liquidacion::existeParaMesAnioConsorcio($mes, $anio, $consorcioId)) return response("El periodo indicado fue liquidado previamente en el consorcio solicitado", 204);
 
         return Liquidacion::liquidarMesAnioConsorcio($mes, $anio, $consorcioId);
     }

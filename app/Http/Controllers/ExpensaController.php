@@ -185,7 +185,7 @@ class ExpensaController extends Controller
             $expensaSinImporte->vencimiento = $anio . '-' . $mes . '-10';
 
             if (sizeof(Expensa::obtenerExpensaPorUnidadMesAnio($unidad_id, $mes, $anio))) {
-                return response(['Las expensas de esa unidad en ese periodo ya fueron calculadas'], 400);
+                return response(['Las expensas de esa unidad en ese periodo ya fueron calculadas'], 204);
             } else {
                 Expensa::crearExpensaConImporte($expensaSinImporte);
             }
