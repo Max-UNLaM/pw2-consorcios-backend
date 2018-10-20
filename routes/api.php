@@ -104,6 +104,7 @@ Route::group(['middleware' => ['api', 'cors']], function () {
     Route::get('/admin/reclamo', 'ReclamoController@index')->middleware('auth:api', 'scope:operator,admin');
     Route::put('/admin/reclamo', 'ReclamoController@update')->middleware('auth:api', 'scope:operator,admin');
     Route::delete('/admin/reclamo', 'ReclamoController@delete')->middleware('auth:api', 'scope:operator,admin');
+    Route::put('/admin/reclamo/estado', 'ReclamoController@estadoReclamo')->middleware('auth:api', 'scope:admin');
     // User
     Route::get('/user/reclamo', 'ReclamoController@user')->middleware('auth:api', 'scope:user,operator,admin');
     Route::post('/user/reclamo', 'ReclamoController@store')->middleware('auth:api', 'scope:user,operator,admin');

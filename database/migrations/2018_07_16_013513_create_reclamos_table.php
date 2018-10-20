@@ -20,6 +20,8 @@ class CreateReclamosTable extends Migration
             $table->unsignedInteger('estado_de_reclamo_id');
             $table->string('motivo');
             $table->date('fecha_reclamo');
+            $table->string('comentario_user')->nullable();
+            $table->string('comentario_admin')->nullable();
             $table->timestamps();
         });
     }

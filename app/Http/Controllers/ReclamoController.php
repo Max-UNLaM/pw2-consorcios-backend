@@ -109,4 +109,27 @@ class ReclamoController extends Controller
             return response(['No se encontro el reclamo que se quiere actualizar'], 404);
         }
     }
+
+    public function estadoReclamo(Request $request)
+    {
+        $id = $request->get('id');
+        if(!$id) return response ("El parametro id es obligatorio", 400);
+
+        $estadoDeReclamoId = $request->get('estado_de_reclamo_id');
+        if(!$estadoDeReclamoId) return response ("El parametro estado_de_reclamo_id es obligatorio (1 = resuelto, 2 = no resuelto, 3 = rechazado)", 400);
+
+        $reclamo = Reclamo::find($id);
+
+        if($reclamo){
+            $reclamo->estado_de_reclamo_id = $estadoDeReclamoId;
+            $reclamo->comentario_admin = $request->get('comentario_admin');
+
+            $reclamo->save();
+            return response([
+                'reclamoGuardado' => $reclamo
+            ]);
+        } else {
+            return response(['No se encontro el reclamo que se quiere actualizar'], 404);
+        }
+    }
 }
