@@ -3,32 +3,45 @@
 namespace App\Http\Controllers;
 
 use App\Reclamo;
+use App\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use App\Http\Resources\Reclamo as ReclamoResource;
+use App\Http\Resources\ReclamoCollection;
+use Illuminate\Support\Facades\DB;
 
 class ReclamoController extends Controller
 {
     public function index(Request $request)
     {
         $id = $request->get('id');
-        if($id) return Reclamo::find($id);
+        if($id) return new ReclamoResource(Reclamo::find($id));
 
         $size = $request->get('size') ? $request->get('size') : 5;
-        return Reclamo::paginate($size);
+        $reclamos = Reclamo::paginate($size);
+
+        return new ReclamoCollection($reclamos);
     }
 
     public function user(Request $request)
     {
         if($request->get('puerta')) return response(["entra" => "PATOVA"]);
 
-        $page = $request->get('page');
-        if($page){
-            return $this->getAllReclamosOfUserPaginada($request, Auth::user()->getAuthIdentifier());
-        } else {
-            return $this->getAllReclamosOfUser(Auth::user()->getAuthIdentifier())
-                ->get(['*']); 
-        }
+        $id = $request->get('id');
+        if($id) return new ReclamoResource(Reclamo::find($id));
+
+        $size = $request->get('size') ? $request->get('size') : 5;
+
+        $user = User::find(Auth::user()->getAuthIdentifier());
+        $consorcioId = User::getConsorcioIdForUser($user->id);
+
+        $reclamos = DB::table('reclamos')
+            ->join('unidads', 'reclamos.unidad_id', '=', 'unidads.id')
+            ->where('unidads.consorcio_id', $consorcioId)
+            ->paginate($size);
+
+        return new ReclamoCollection($reclamos);
     }
 
     protected function getAllReclamosOfUserPaginada(Request $request, $userId)
