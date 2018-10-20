@@ -33,6 +33,7 @@ class Pago extends JsonResource
             "estado" => $this->estado,
             "medio_de_pago" => $this->medio_de_pago,
             "codigo_comprobante" => $this->codigo_comprobante,
+            'banco' => $this->banco,
             "propietario" => $propietario,
             "usuario_que_genera_el_pago" => $usuarioQueGeneraElPago,
             "factura" => $factura,
