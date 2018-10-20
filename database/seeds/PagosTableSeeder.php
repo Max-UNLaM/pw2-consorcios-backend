@@ -42,7 +42,7 @@ class PagosTableSeeder extends Seeder
 
         foreach ($facturas as $factura){
             $mes = ($factura->mes < 10) ? '0'.$factura->mes : $factura->mes;
-            $dia = $faker->numberBetween(11, 28);
+            $dia = $faker->numberBetween(11, 22);
 
             $pagoTotal = $faker->randomElement($arrayRandom);
             $medioDePago = $faker->randomElement($mediosDePago);

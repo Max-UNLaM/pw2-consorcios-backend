@@ -31,7 +31,7 @@ class GastosTableSeeder extends Seeder
                 for ($i = 0; $i < $cantidadDeGastosMensuales; $i++) {
                     $proveedorId = $faker->numberBetween(2, $cantidadDeProveedores);
                     $proveedor = Proveedor::find($proveedorId);
-                    $dia = $faker->numberBetween(1, 28);
+                    $dia = $faker->numberBetween(1, 22);
 
                     Gasto::create([
                         'nombre' => $proveedor->rubro,
