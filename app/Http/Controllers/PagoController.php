@@ -90,7 +90,6 @@ class PagoController extends Controller
             $codigo = $request->get('codigo_comprobante');
             if(!$codigo) return response("El codigo codigo_comprobante es obligatorio para usuarios que no son adminsitradores ni operadores",400);
             if(strlen($codigo) < 4) return response("El codigo_comprobante debe tener un minimo de 4 caracteres", 400);
-            if(Pago::elCodigoYaFueRegistrado($codigo) > 0) return response("El codigo_comprobante entregado esta asociado a un pago existente", 400);
 
             $codigoComprobante = $codigo;
         }
