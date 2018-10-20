@@ -17,6 +17,8 @@ class DeudasTableSeeder extends Seeder
 
         $arrayRandom = array(0, 0, 0, 1);
 
+        $ultimoMes = 9;
+
         foreach ($facturas as $factura){
             $tieneDeuda = $faker->randomElement($arrayRandom);
 
@@ -25,7 +27,7 @@ class DeudasTableSeeder extends Seeder
                 foreach ($informes as $item){
                     $informe = $item;
                 }
-                $adeuda = $faker->numberBetween($factura->total/10, $factura->total);
+                $adeuda = $ultimoMes != $factura->mes ? $faker->numberBetween($factura->total/10, $factura->total) : $factura->adeuda;
                 $pagoParcial = $factura->total - $adeuda;
 
                 \App\Deuda::create([
