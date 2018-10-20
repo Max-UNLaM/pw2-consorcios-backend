@@ -57,8 +57,6 @@ class ExpensaController extends Controller
         $size = $request->get('size') ? $request->get('size') : 5;
         $user = User::find(Auth::user()->getAuthIdentifier());
 
-        if($user->isAdmin()) return new ExpensaCollection(Expensa::orderByDesc('vencimiento')->paginate($size));
-
         $expensas = DB::table('expensas')
             ->join('unidads', 'expensas.unidad_id', '=', 'unidads.id')
             ->where('unidads.usuario_id', $user->id)
