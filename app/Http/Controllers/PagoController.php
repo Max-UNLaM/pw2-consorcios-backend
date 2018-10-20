@@ -83,6 +83,7 @@ class PagoController extends Controller
         $monto = $request->get('monto');
         $medioDePago = $request->get('medio_de_pago');
         $codigoComprobante = null;
+        $banco = ($request->get('banco')) ? $request->get('banco') : null;
         if (!$facturaId) $errores['factura'] = 'El campo factura_id es obligatorio';
         if (!$monto) $errores['monto'] = "El campo monto es obligatorio";
         if (!$medioDePago) $errores['medioDePago'] = "El campo medio de pago es obligatorio";
@@ -103,7 +104,7 @@ class PagoController extends Controller
         if($monto > $adeuda) return response("No se realizo el pago porque el monto indicado supera el monto adeudado (".$adeuda.")", 400);
 
         $fecha = Carbon::now();
-        $pago = Pago::realizarPago($facturaId, $monto, $fecha->toDateString(), $user, $medioDePago, $codigoComprobante);
+        $pago = Pago::realizarPago($facturaId, $monto, $fecha->toDateString(), $user, $medioDePago, $codigoComprobante, $banco);
         $factura = Factura::find($pago->factura_id);
         $expensa = Expensa::find($factura->expensa_id);
         $mensaje = ($pago->estado == 'APROBADO') ? 'El pago ha sido ingresado y aprobado' : 'El pago ha sido ingresado y queda pendiente a la aprobación de un administrador';

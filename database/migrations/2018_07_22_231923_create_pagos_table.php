@@ -23,6 +23,7 @@ class CreatePagosTable extends Migration
             $table->string('estado');
             $table->string('medio_de_pago');
             $table->string('codigo_comprobante')->nullable();
+            $table->string('banco')->nullable();
             $table->timestamps();
         });
     }

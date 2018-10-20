@@ -33,21 +33,29 @@ class PagosTableSeeder extends Seeder
             'PagoFacil'
         );
 
+        $bancos = array(
+            'Santander Rio',
+            'ICBC',
+            'Galicia',
+            'Nacion'
+        );
+
         foreach ($facturas as $factura){
             $mes = ($factura->mes < 10) ? '0'.$factura->mes : $factura->mes;
             $dia = $faker->numberBetween(11, 28);
 
             $pagoTotal = $faker->randomElement($arrayRandom);
             $medioDePago = $faker->randomElement($mediosDePago);
+            $banco = ($medioDePago == 'Deposito' || $medioDePago == 'Transferencia') ? $faker->randomElement($bancos) : null;
 
             if($mes != $mesAnterior){
                 if($pagoTotal == 1){
-                    Pago::realizarPago($factura->id, $factura->adeuda, "2018-$mes-$dia", $user, $medioDePago, null);
+                    Pago::realizarPago($factura->id, $factura->adeuda, "2018-$mes-$dia", $user, $medioDePago, null, $banco);
                 } else {
                     $pagoParcial = $faker->randomElement($arrayRandom);
                     if($pagoParcial == 1){
                         $montoAPagar = $faker->numberBetween(($factura->adeuda / 10), $factura->adeuda);
-                        Pago::realizarPago($factura->id, $montoAPagar, "2018-$mes-$dia", $user, $medioDePago, null);
+                        Pago::realizarPago($factura->id, $montoAPagar, "2018-$mes-$dia", $user, $medioDePago, null, $banco);
                     }
                 }
             }

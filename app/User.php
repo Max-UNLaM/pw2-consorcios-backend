@@ -51,6 +51,10 @@ class User extends Authenticatable
         return ($this->rol_id == 2) ? 1 : 0; //2 es el id del rol operator
     }
 
+    public function isUser(){
+        return ($this->rol_id == 3) ? 1 : 0; //3 es el id del rol user
+    }
+
     public static function list(){
         return DB::table('users');
     }
