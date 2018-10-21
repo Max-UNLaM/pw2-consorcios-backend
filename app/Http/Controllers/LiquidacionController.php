@@ -6,6 +6,7 @@ use App\Liquidacion;
 use App\Http\Resources\Liquidacion as LiquidacionResource;
 use App\Http\Resources\LiquidacionCollection;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -50,15 +51,19 @@ class LiquidacionController extends Controller
     }
 
     public function store(Request $request){
+        $fecha = Carbon::now();
         $user = User::find(Auth::user()->getAuthIdentifier());
 
         $consorcioId = $user->isOperator() ? $user->administra_consorcio : $request->get('consorcio_id');
         $mes = $request->get('mes');
         $anio = $request->get('anio');
+        $saltarValidacionPeriodoActual = $request->get('liquidar_periodo_actual') ? 1 : 0;
 
         if(!$consorcioId) return response("El parametro consorcio_id es obligatorio", 400);
         if(!$mes) return response("El parametro mes es obligatorio", 400);
         if(!$anio) return response("El parametro anio es obligatorio",400);
+
+        if(!$saltarValidacionPeriodoActual && $mes == $fecha->month && $anio == $fecha->year) return response("No se puede liquidar el periodo actual", 400);
 
         if(Liquidacion::existeParaMesAnioConsorcio($mes, $anio, $consorcioId)) return response("El periodo indicado fue liquidado previamente en el consorcio solicitado", 204);
 

@@ -70,7 +70,7 @@ Route::group(['middleware' => ['api', 'cors']], function () {
     // Expensas
     // Admin
     Route::get('/admin/expensa', 'ExpensaController@index')->middleware('auth:api', 'scope:operator,admin');
-    Route::post('/admin/expensa', 'ExpensaController@store')->middleware('auth:api', 'scope:operator,admin');
+    Route::post('/admin/expensa', 'ExpensaController@store')->middleware('auth:api', 'scope:admin');
     Route::put('/admin/expensa', 'ExpensaController@update')->middleware('auth:api', 'scope:operator,admin');
     Route::delete('/admin/expensa', 'ExpensaController@delete')->middleware('auth:api', 'scope:operator,admin');
     Route::put('/admin/generar-expensas', 'ExpensaController@generarExpensas')->middleware('auth:api', 'scope:operator,admin');
@@ -82,7 +82,7 @@ Route::group(['middleware' => ['api', 'cors']], function () {
     // Factura
     // Admin
     Route::get('/admin/factura', 'FacturaController@index')->middleware('auth:api', 'scope:operator,admin');
-    Route::post('/admin/factura', 'FacturaController@store')->middleware('auth:api', 'scope:operator,admin');
+    Route::post('/admin/factura', 'FacturaController@store')->middleware('auth:api', 'scope:admin');
     // User
     Route::get('/user/factura', 'FacturaController@user')->middleware('auth:api', 'scope:user,operator,admin');
 
@@ -120,7 +120,7 @@ Route::group(['middleware' => ['api', 'cors']], function () {
 
     //Liquidacion
     Route::get('/admin/liquidacion', 'LiquidacionController@index')->middleware('auth:api', 'scope:operator,admin');
-    Route::post('/admin/liquidacion', 'LiquidacionController@store')->middleware('auth:api', 'scope:operator,admin');
+    Route::post('/admin/liquidacion', 'LiquidacionController@store')->middleware('auth:api', 'scope:admin');
 
     Route::get('/user/liquidacion', 'LiquidacionController@user')->middleware('auth:api', 'scope:user,operator,admin');
 
