@@ -116,7 +116,7 @@ class ExpensaController extends Controller
         if(!$anio) return response("El parametro anio es obligatorio",400);
 
         if(!Liquidacion::existeParaMesAnioConsorcio($mes, $anio, $consorcioId)) return response("No se encontro una liquidacion de gastos para el periodo solicitado. Generela e intentelo nuevamente.", 400);
-        if(Expensa::cantiadadDeExpensasEnElPeriodo($consorcioId, $mes, $anio) > 0) return response("Las expensas del periodo indicado fueron generadas anteriormente", 202);
+        if(Expensa::cantiadadDeExpensasEnElPeriodo($consorcioId, $mes, $anio) > 0) return response("Las expensas del periodo indicado fueron generadas anteriormente", 204);
 
         return Expensa::generarExpensasDelMes($anio, $mes, $consorcioId);
     }
