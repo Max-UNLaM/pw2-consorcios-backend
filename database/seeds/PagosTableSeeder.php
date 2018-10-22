@@ -49,10 +49,10 @@ class PagosTableSeeder extends Seeder
             $banco = ($medioDePago == 'Deposito' || $medioDePago == 'Transferencia') ? $faker->randomElement($bancos) : null;
 
 
-            if($pagoTotal == 1 || $mes != $mesAnterior){
+            if(($pagoTotal == 1 && $mes != $mesAnterior) || $mes != $mesAnterior){
                 Pago::realizarPago($factura->id, $factura->adeuda, "2018-$mes-$dia", $mes, 2018, $user, $medioDePago, null, $banco);
             } else {
-                $pagoParcial = ($mes == $mesAnterior) ? 1 : $faker->randomElement($arrayRandom);
+                $pagoParcial = ((int) $mes == (int) $mesAnterior) ? 1 : $faker->randomElement($arrayRandom);
                 if($pagoParcial == 1){
                     $montoAPagar = $faker->numberBetween(($factura->adeuda / 10), $factura->adeuda);
                     Pago::realizarPago($factura->id, $montoAPagar, "2018-$mes-$dia", $mes, 2018, $user, $medioDePago, null, $banco);

@@ -19,7 +19,7 @@ class ReclamoController extends Controller
         if($id) return new ReclamoResource(Reclamo::find($id));
 
         $size = $request->get('size') ? $request->get('size') : 5;
-        $reclamos = Reclamo::paginate($size);
+        $reclamos = Reclamo::orderByDesc('fecha_reclamo')->paginate($size);
 
         return new ReclamoCollection($reclamos);
     }
@@ -39,6 +39,7 @@ class ReclamoController extends Controller
         $reclamos = DB::table('reclamos')
             ->join('unidads', 'reclamos.unidad_id', '=', 'unidads.id')
             ->where('unidads.consorcio_id', $consorcioId)
+            ->orderByDesc('fecha_reclamo')
             ->paginate($size);
 
         return new ReclamoCollection($reclamos);
