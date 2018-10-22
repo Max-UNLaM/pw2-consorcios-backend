@@ -15,6 +15,7 @@ class AlterExpensasTable extends Migration
     {
         Schema::table('expensas', function (Blueprint $table) {
             $table->foreign('unidad_id')->references('id')->on('unidads');
+            //$table->foreign('factura_id')->references('id')->on('facturas');
         });
     }
 

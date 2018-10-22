@@ -4,29 +4,33 @@ namespace App\Http\Controllers;
 
 use App\Consorcio;
 use App\Unidad;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class ConsorcioController extends Controller
 {
 	public function index(Request $request) {
-        if ($request->get('page')) {
-            return $this->paginate($request);
-        } else if($request->get('id')) {
-            return $this->show($request->get('id'));
-        } else {
-            return Consorcio::all();
-        }
+	    $size = $request->get('size') ? $request->get('size') : 5;
+	    $id = $request->get('id');
+
+        $paginado = $request->get('sin_paginar') ? 0 : 1;
+        if(!$paginado) return Consorcio::all();
+
+	    if($id) return Consorcio::find($id);
+
+	    return Consorcio::paginate($size);
 	}
 
 	public function user(Request $request) {
-        if ($request->get('page')) {
-            return $this->getAllConsorciosofUserPaginada($request, Auth::user()->getAuthIdentifier());
-        } else if($request->get('id')) {
-            return $this->show($request->get('id'));
-        } else {
-            return $this->getAllConsorciosOfUser(Auth::user()->getAuthIdentifier());
-        }
+        $size = $request->get('size') ? $request->get('size') : 5;
+        $id = $request->get('id');
+        $user = User::find(Auth::user()->getAuthIdentifier());
+
+        if($id) return Consorcio::find($id);
+        if($user->isAdmin()) return Consorcio::paginate($size);
+        return $this->getAllConsorciosofUserPaginada($request, Auth::user()->getAuthIdentifier());
+
     }
 
     protected function getAllConsorciosofUserPaginada(Request $request, $userId)

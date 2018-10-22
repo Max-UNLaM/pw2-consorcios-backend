@@ -14,7 +14,8 @@ class AlterPagosTable extends Migration
     public function up()
     {
         Schema::table('pagos', function (Blueprint $table) {
-            $table->foreign('usuario_id')->references('id')->on('users');
+            $table->foreign('propietario_id')->references('id')->on('users');
+            $table->foreign('usuario_que_genera_el_pago_id')->references('id')->on('users');
             $table->foreign('factura_id')->references('id')->on('facturas');
         });
     }

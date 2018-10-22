@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Reclamo extends Model
 {
-    protected $fillable = ['usuario_id', 'unidad_id', 'estado_de_reclamo_id', 'motivo', 'fecha_reclamo'];
+    protected $fillable = ['usuario_id', 'unidad_id', 'estado_de_reclamo_id', 'motivo', 'fecha_reclamo', 'comentario_user', 'comentario_admin'];
 
     public static function getIdAllReclamosOfUser(int $userId) {
         return DB::table('reclamos')

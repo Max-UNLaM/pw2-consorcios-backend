@@ -17,6 +17,7 @@ class CreateFacturasTable extends Migration
             $table->increments('id');
 	        $table->unsignedInteger('consorcio_id');
 	        $table->unsignedInteger('usuario_id');
+            $table->unsignedInteger('expensa_id');
 	        $table->string('mes');
 	        $table->string('anio');
 	        $table->date('emision');
@@ -24,6 +25,7 @@ class CreateFacturasTable extends Migration
 	        $table->float('total');
             $table->float('pago_parcial');
             $table->float('adeuda');
+            $table->string('pago');
             $table->timestamps();
         });
     }

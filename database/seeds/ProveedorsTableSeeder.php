@@ -13,6 +13,14 @@ class ProveedorsTableSeeder extends Seeder
      */
     public function run()
     {
+        //Se crea un proveedor para los gastos fijos mensuales de los consorcios
+        Proveedor::create([
+            'nombre'    => 'Administracion de consorcios',
+            'tel' => '4348-9002',
+            'email' => 'admin@administraciondeconsorcios.com',
+            'rubro' => 'Gastos fijos del consorcio'
+        ]);
+
         $faker = Factory::create();
 
         $telefonosPrefijo = array('4653', '4656', '4657', '4488', '5237');

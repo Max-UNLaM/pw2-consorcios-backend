@@ -33,4 +33,21 @@ class Consorcio extends Model
             ->groupBy('consorcios.id')
             ->where('usuario_id', $userId);
     }
+
+    public static function cantidadTotalDeUnidades(){
+        $cantidadDeUnidades = 0;
+        $consorcios = Consorcio::all();
+
+        foreach ($consorcios as $consorcio){
+            $cantidadDeUnidades += $consorcio->cantidad_de_pisos * $consorcio->departamentos_por_piso;
+        }
+
+        return $cantidadDeUnidades;
+    }
+
+    public static function obtenerConsorcioIdDesdePagoId($pagoId){
+        $pago = Pago::find($pagoId);
+        $factura = Factura::find($pago->factura_id);
+        return $factura->consorcio_id;
+    }
 }

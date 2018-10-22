@@ -18,9 +18,9 @@ class GastosTableSeeder extends Seeder
         $consorcios = \App\Consorcio::all();
         $cantidadDeProveedores = sizeof(\App\Proveedor::all());
 
-        $mesDesdeElQueSeCreanGastos = 1;
-        $mesHastaElQueSeCreanGastos = 7;
-        $cantidadDeGastosMensuales = 8;
+        $mesDesdeElQueSeCreanGastos = 5;
+        $mesHastaElQueSeCreanGastos = 10;
+        $cantidadDeGastosMensuales = 10;
 
         for($j = $mesDesdeElQueSeCreanGastos; $j <= $mesHastaElQueSeCreanGastos; $j++){
 
@@ -29,9 +29,9 @@ class GastosTableSeeder extends Seeder
             foreach ($consorcios as $consorcio){
 
                 for ($i = 0; $i < $cantidadDeGastosMensuales; $i++) {
-                    $proveedorId = $faker->numberBetween(1, $cantidadDeProveedores);
+                    $proveedorId = $faker->numberBetween(2, $cantidadDeProveedores);
                     $proveedor = Proveedor::find($proveedorId);
-                    $dia = $faker->numberBetween(1, 28);
+                    $dia = $faker->numberBetween(1, 22);
 
                     Gasto::create([
                         'nombre' => $proveedor->rubro,
@@ -39,6 +39,7 @@ class GastosTableSeeder extends Seeder
                         'mes' => $mes,
                         'anio' => 2018,
                         'fecha' => "2018-$mes-$dia",
+                        'es_gasto_fijo' => 0,
                         'proveedor_id' => $proveedorId,
                         'consorcio_id' => $consorcio->id
                     ]);

@@ -16,6 +16,7 @@ class CreateExpensasTable extends Migration
         Schema::create('expensas', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('unidad_id');
+            //$table->unsignedInteger('factura_id');
             $table->string('anio');
             $table->string('mes');
             $table->string('pago');
@@ -35,6 +36,7 @@ class CreateExpensasTable extends Migration
     {
         Schema::table('expensas', function (Blueprint $table){
             $table->dropForeign(['unidad_id']);
+            $table->dropForeign(['factura_id']);
         });
         Schema::dropIfExists('expensas');
     }

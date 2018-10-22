@@ -2,6 +2,7 @@
 
 use App\Factura;
 use App\Pago;
+use App\User;
 use Faker\Factory;
 use Illuminate\Database\Seeder;
 
@@ -20,19 +21,41 @@ class PagosTableSeeder extends Seeder
 
         $arrayRandom = array(0, 0, 1);
 
+        $mesAnterior = 8;
+
+        $user = User::find(1);
+
+        $mediosDePago = array(
+            'Efectivo',
+            'Deposito',
+            'Transferencia',
+            'RapiPago',
+            'PagoFacil'
+        );
+
+        $bancos = array(
+            'Santander Rio',
+            'ICBC',
+            'Galicia',
+            'Nacion'
+        );
+
         foreach ($facturas as $factura){
             $mes = ($factura->mes < 10) ? '0'.$factura->mes : $factura->mes;
-            $dia = $faker->numberBetween(11, 28);
+            $dia = $faker->numberBetween(11, 22);
 
             $pagoTotal = $faker->randomElement($arrayRandom);
+            $medioDePago = $faker->randomElement($mediosDePago);
+            $banco = ($medioDePago == 'Deposito' || $medioDePago == 'Transferencia') ? $faker->randomElement($bancos) : null;
 
-            if($pagoTotal == 1){
-                Pago::pagoParcial($factura->id, $factura->adeuda, "2018-$mes-$dia");
+
+            if(($pagoTotal == 1 && $mes != $mesAnterior) || $mes != $mesAnterior){
+                Pago::realizarPago($factura->id, $factura->adeuda, "2018-$mes-$dia", $mes, 2018, $user, $medioDePago, null, $banco);
             } else {
-                $pagoParcial = $faker->randomElement($arrayRandom);
+                $pagoParcial = ((int) $mes == (int) $mesAnterior) ? 1 : $faker->randomElement($arrayRandom);
                 if($pagoParcial == 1){
                     $montoAPagar = $faker->numberBetween(($factura->adeuda / 10), $factura->adeuda);
-                    Pago::pagoParcial($factura->id, $montoAPagar, "2018-$mes-$dia");
+                    Pago::realizarPago($factura->id, $montoAPagar, "2018-$mes-$dia", $mes, 2018, $user, $medioDePago, null, $banco);
                 }
             }
 

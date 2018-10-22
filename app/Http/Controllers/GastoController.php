@@ -2,20 +2,46 @@
 
 namespace App\Http\Controllers;
 
+use App\Liquidacion;
 use App\Proveedor;
+use App\User;
 use Illuminate\Http\Request;
 use App\Gasto;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Resources\Gasto as GastoResource;
+use App\Http\Resources\GastoCollection;
 
 class GastoController extends Controller
 {
     public function index(Request $request)
     {
+        $id = $request->get('id');
+        if($id) return new GastoResource(Gasto::find($id));
+
+        $user = User::find(Auth::user()->getAuthIdentifier());
         $size = $request->get('size') ? $request->get('size') : 5;
-        if ($request->get('page')) {
-            return Gasto::list()->paginate($size);
+
+        if($user->isOperator()){
+            $gastos = Gasto::where('consorcio_id', $user->administra_consorcio)->orderByDesc('fecha')->paginate($size);
         } else {
-            return Gasto::list()->paginate(5);
+            $gastos = Gasto::orderByDesc('fecha')->paginate($size);
         }
+
+        return new GastoCollection($gastos);
+    }
+
+    public function user(Request $request){
+        $id = $request->get('id');
+        if($id) return new GastoResource(Gasto::find($id));
+
+        $user = User::find(Auth::user()->getAuthIdentifier());
+        $size = $request->get('size') ? $request->get('size') : 5;
+
+        $consorcioId = User::getConsorcioIdForUser($user->id);
+
+        $gastos = Gasto::where('consorcio_id', $consorcioId)->paginate($size);
+        return new GastoCollection($gastos);
     }
 
 
@@ -31,31 +57,48 @@ class GastoController extends Controller
 
     public function store(Request $request)
     {
+        $user = User::find(Auth::user()->getAuthIdentifier());
+
+        $proveedorId = $request->get('proveedor_id');
+        $valor = $request->get('valor');
+        $consorcioId = ($user->isOperator()) ? $user->administra_consorcio : $request->get('consorcio_id');
+        $fecha = Carbon::now();
+        $mes = $fecha->month;
+        $anio = $fecha->year;
+
+        if(!$consorcioId) return response("El campo consorcio_id es obligatorio", 400);
+        if(!$proveedorId) return response("El campo proveedor_id es obligatorio", 400);
+        if(!$valor) return response("El campo gasto es obligatorio", 400);
+        if(Liquidacion::existeParaMesAnioConsorcio($mes, $anio, $consorcioId)) return response("No se puede cargar un gasto a un periodo que ya fue liquidado", 400);
 
         $gasto = Gasto::create([
-            'nombre' => Proveedor::find($request->get('proveedor_id'))->rubro,
-            'valor' => $request->get('valor'),
-            'fecha' => $request->get('fecha'),
-            'proveedor_id' => $request->get('proveedor_id'),
-            'consorcio_id' => $request->get('consorcio_id'),
-            'mes' => $request->get('mes'),
-            'anio' => $request->get('anio')
+            'nombre' => Proveedor::find($proveedorId)->rubro,
+            'valor' => $valor,
+            'fecha' => $fecha->toDateString(),
+            'proveedor_id' => $proveedorId,
+            'consorcio_id' => $consorcioId,
+            'es_gasto_fijo' => 0,
+            'mes' => $mes,
+            'anio' => $anio
         ]);
 
-        return response([
-            'gasto' => $gasto
-        ]);
+        return $gasto;
     }
 
     public function delete(Request $request)
     {
-        $resp = Gasto::destroy($request->get('id'));
+        $id = $request->get('id');
+        if(!$id) return response("Campo id es obligatorio", 400);
 
-        if ($resp) {
-            return 'ID ' . $request->get('id') . ' deleted OK';
-        } else {
-            return 'ID ' . $request->get('id') . ' not found';
-        }
+        $gasto = Gasto::find($id);
+        if(!$gasto) return response("No se encontro un gasto con el id especificado", 404);
+
+        $user = User::find(Auth::user()->getAuthIdentifier());
+        if($user->isOperator() && ($gasto->consorcio_id != $user->administra_consorcio)) return response("No tenes permisos para ejecutar acciones sobre este gasto porque corresponde a un consorcio que no administras", 401);
+
+        Gasto::destroy($id);
+
+        return response("Se elimino correctamente el gasto");
     }
 
     public function gastosMensual(Request $request)
@@ -72,27 +115,13 @@ class GastoController extends Controller
     {
         //Busco el gasto correspondiente
         $gasto = Gasto::find($request->get('id'));
+        if(!$gasto) return response("No se encontro un gasto con el id especificado", 404);
 
-        //Pregunto si encontro un gasto con ese id
-        if ($gasto) {
-            //Actualizo los atributos del gasto encontrado
-            $gasto->nombre = $request->get('nombre');
-            $gasto->valor = $request->get('valor');
-            $gasto->mes = $request->get('mes');
-            $gasto->anio = $request->get('anio');
-            $gasto->fecha = $request->get('fecha');
-            $gasto->proveedor_id = $request->get('proveedor_id');
-            $gasto->consorcio_id = $request->get('consorcio_id');
-           
-            //Guardo los cambios
-            $gasto->save();
+        $user = User::find(Auth::user()->getAuthIdentifier());
+        if($user->isOperator() && ($gasto->consorcio_id != $user->administra_consorcio)) return response("No tenes permisos para ejecutar acciones sobre este gasto porque corresponde a un consorcio que no administras", 401);
 
-            return response([
-                'gastoActualizado' => $gasto
-            ]);
-        } else {
-            //Si no lo encuentra respondo un codigo 404 (not found)
-            return response(['No se encontro el pago que se quiere actualizar'], 404);
-        }
+        $gasto->update($request->all());
+
+        return $gasto;
     }
 }

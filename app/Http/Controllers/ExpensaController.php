@@ -4,42 +4,66 @@ namespace App\Http\Controllers;
 
 use App\Consorcio;
 use App\Expensa;
+use App\Liquidacion;
 use App\Unidad;
+use App\User;
+use http\Env\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Pagination\Paginator;
+use App\Http\Resources\Expensa as ExpensaResource;
+use App\Http\Resources\ExpensaCollection;
+use Illuminate\Support\Facades\DB;
 
 class ExpensaController extends Controller
 {
     public function index(Request $request)
     {
-        if ($request->get('id')) {
-            return $this->show($request->get('id'));
-        } else if ($request->get('page')) {
-            $size = $request->get('size') ? $request->get('size') : 5;
-            return Expensa::list()->paginate($size);
-        } else {
-            return Expensa::list()->paginate(5);
+        $size = $request->get('size') ? $request->get('size') : 5;
+        $user = User::find(Auth::user()->getAuthIdentifier());
+
+        $id = $request->get('id');
+        if($id) return new ExpensaResource(Expensa::find($id));
+
+        $mes = $request->get('mes');
+        $anio = $request->get('anio');
+        if($mes && $anio){
+            $expensas = Expensa::where('mes', $mes)->where('anio', $anio)->orderByDesc('vencimiento')->paginate($size);
+            return new ExpensaCollection($expensas);
         }
+
+        if($user->isOperator()){
+            $expensas = DB::table('expensas')
+                ->join('unidads', 'expensas.unidad_id', '=', 'unidads.id')
+                ->where('unidads.consorcio_id', $user->administra_consorcio)
+                ->orderByDesc('vencimiento')
+                ->paginate($size);
+        } else {
+            $expensas = Expensa::orderByDesc('vencimiento')->paginate($size);
+        }
+
+        return new ExpensaCollection($expensas);
+
     }
 
 
     public function user(Request $request)
     {
-        $userId = Auth::user()->getAuthIdentifier();
+        if($request->get('puerta')) return response(["entra" => "PATOVA"]);
 
-        if ($request->get('puerta')) {
-            return response(["entra" => "PATOVA"]);
-        } else if ($request->get('id')) {
-            return $this->show($request->get('id'));
-        } else if ($request->get('unidad_id')) {
-            return $this->listByUnidad($request);
-        } else if ($request->get('page')) {
-            $size = $request->get('size') ? $request->get('size') : 5;
-            return Expensa::expensasPorUsuario($userId)->paginate($size);
-        } else {
-            return Expensa::expensasPorUsuario($userId)->get();
-        }
+        $id = $request->get('id');
+        if($id) return new ExpensaResource(Expensa::find($id));
+
+        $size = $request->get('size') ? $request->get('size') : 5;
+        $user = User::find(Auth::user()->getAuthIdentifier());
+
+        $expensas = DB::table('expensas')
+            ->join('unidads', 'expensas.unidad_id', '=', 'unidads.id')
+            ->where('unidads.usuario_id', $user->id)
+            ->orderByDesc('vencimiento')
+            ->paginate($size);
+
+        return new ExpensaCollection($expensas);
     }
 
     /*protected function userGetAllExpensasPaginate(Request $request)
@@ -81,19 +105,20 @@ class ExpensaController extends Controller
 
     public function store(Request $request)
     {
-        $expensaSinImporte = new Expensa();
+        $user = User::find(Auth::user()->getAuthIdentifier());
 
-        $expensaSinImporte->unidad_id = $request->get('unidad_id');
-        $expensaSinImporte->anio = $request->get('anio');
-        $expensaSinImporte->mes = $request->get('mes');
-        $expensaSinImporte->estado = $request->get('estado');
-        $expensaSinImporte->emision = $request->get('emision');
-        $expensaSinImporte->vencimiento = $request->get('vencimiento');
+        $consorcioId = $user->isOperator() ? $user->administra_consorcio : $request->get('consorcio_id');
+        $mes = $request->get('mes');
+        $anio = $request->get('anio');
 
-        $expensaConImporte = Expensa::crearExpensaConImporte($expensaSinImporte);
-        return response([
-            'expensa' => $expensaConImporte
-        ]);
+        if(!$consorcioId) return response("El parametro consorcio_id es obligatorio", 400);
+        if(!$mes) return response("El parametro mes es obligatorio", 400);
+        if(!$anio) return response("El parametro anio es obligatorio",400);
+
+        if(!Liquidacion::existeParaMesAnioConsorcio($mes, $anio, $consorcioId)) return response("No se encontro una liquidacion de gastos para el periodo solicitado. Generela e intentelo nuevamente.", 400);
+        if(Expensa::cantiadadDeExpensasEnElPeriodo($consorcioId, $mes, $anio) > 0) return response("Las expensas del periodo indicado fueron generadas anteriormente", 204);
+
+        return Expensa::generarExpensasDelMes($anio, $mes, $consorcioId);
     }
 
     public function update(Request $request)
@@ -156,11 +181,11 @@ class ExpensaController extends Controller
             $expensaSinImporte->anio = $anio;
             $expensaSinImporte->mes = $mes;
             $expensaSinImporte->estado = 'impago';
-            $expensaSinImporte->emision = $anio . '-' . $mes . '-10';
-            $expensaSinImporte->vencimiento = $anio . '-' . $mes . '-20';
+            $expensaSinImporte->emision = $anio . '-' . $mes . '-01';
+            $expensaSinImporte->vencimiento = $anio . '-' . $mes . '-10';
 
             if (sizeof(Expensa::obtenerExpensaPorUnidadMesAnio($unidad_id, $mes, $anio))) {
-                return response(['Las expensas de esa unidad en ese periodo ya fueron calculadas'], 400);
+                return response(['Las expensas de esa unidad en ese periodo ya fueron calculadas'], 204);
             } else {
                 Expensa::crearExpensaConImporte($expensaSinImporte);
             }

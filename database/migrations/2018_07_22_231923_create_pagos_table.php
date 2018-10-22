@@ -15,10 +15,17 @@ class CreatePagosTable extends Migration
     {
         Schema::create('pagos', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('usuario_id');
+            $table->unsignedInteger('propietario_id');
+            $table->unsignedInteger('usuario_que_genera_el_pago_id');
             $table->unsignedInteger('factura_id');
             $table->date('fecha');
+            $table->unsignedInteger('mes');
+            $table->unsignedInteger('anio');
             $table->float('monto');
+            $table->string('estado');
+            $table->string('medio_de_pago');
+            $table->string('codigo_comprobante')->nullable();
+            $table->string('banco')->nullable();
             $table->timestamps();
         });
     }

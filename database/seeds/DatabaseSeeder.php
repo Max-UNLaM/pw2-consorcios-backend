@@ -17,10 +17,12 @@ class DatabaseSeeder extends Seeder
         $this->call(UnidadesTableSeeder::class);
         $this->call(ProveedorsTableSeeder::class);
         $this->call(GastosTableSeeder::class);
+        $this->call(LiquidacionesTableSeeder::class);
         $this->call(ExpensasTableSeeder::class);
         $this->call(EstadoDeReclamosTableSeeder::class);
         $this->call(ReclamosTableSeeder::class);
         $this->call(FacturasTableSeeder::class);
         $this->call(PagosTableSeeder::class);
+        $this->call(DeudasTableSeeder::class);
     }
 }
