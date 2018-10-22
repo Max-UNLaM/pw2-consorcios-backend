@@ -16,8 +16,8 @@ class LiquidacionesTableSeeder extends Seeder
     {
         $coeficiente = 1.2;
 
-        $mesDesdeElQueSeVaALiquidar = 7;
-        $mesHastaElQueSeVaALiquidar = 9;
+        $mesDesdeElQueSeVaALiquidar = 6;
+        $mesHastaElQueSeVaALiquidar = 8;
         $anio = 2018;
 
         for($mes = $mesDesdeElQueSeVaALiquidar; $mes <= $mesHastaElQueSeVaALiquidar; $mes++){

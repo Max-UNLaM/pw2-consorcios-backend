@@ -21,7 +21,7 @@ class PagosTableSeeder extends Seeder
 
         $arrayRandom = array(0, 0, 1);
 
-        $mesAnterior = '09';
+        $mesAnterior = 8;
 
         $user = User::find(1);
 
